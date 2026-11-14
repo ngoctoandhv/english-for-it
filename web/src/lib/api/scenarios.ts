@@ -25,4 +25,4 @@ export type ScenarioDetail = ScenarioSummary & { situation: string | null; dialo
 export const getScenarios = () => apiFetch<{ data: ScenarioSummary[] }>("/scenarios").then((r) => r.data);
 export const getScenario = (slug: string) => apiFetch<{ data: ScenarioDetail }>(`/scenarios/${slug}`).then((r) => r.data);
 export const saveScenarioProgress = (slug: string, lastPosition: number, completed = false) =>
-  apiFetch<unknown>(`/scenarios/${slug}/progress`, { method: "POST", body: { progress: { last_position: lastPosition, completed } } });
+  apiFetch<{ data: { units_completed?: { slug: string; title: string }[] } }>(`/scenarios/${slug}/progress`, { method: "POST", body: { progress: { last_position: lastPosition, completed } } });

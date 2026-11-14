@@ -66,3 +66,26 @@ scenarios["scenarios"].each_with_index do |s, i|
   rec.scenario_dialogues.where("position >= ?", s["lines"].size).destroy_all
 end
 puts "Seeded #{ItScenario.count} scenarios"
+
+path = YAML.load_file(Rails.root.join("db/seeds/path.yml"))
+path["units"].each_with_index do |u, i|
+  unit = PathUnit.find_or_initialize_by(slug: u["slug"])
+  unit.assign_attributes(title: u["title"], description: u["description"], level: u["level"], position: i)
+  unit.status = status if unit.new_record?
+  unit.save!
+  unit.path_steps.destroy_all
+  u["steps"].each_with_index do |step, pos|
+    attrs = { position: pos }
+    if step == "quiz"
+      attrs[:kind] = "quiz"
+    elsif step["words"]
+      attrs.merge!(kind: "words", learning_collection: LearningCollection.find_by!(slug: step["words"]))
+    elsif step["listening"]
+      attrs.merge!(kind: "listening", listening_lesson: ListeningLesson.find_by!(title: step["listening"]))
+    else
+      attrs.merge!(kind: "scenario", it_scenario: ItScenario.find_by!(slug: step["scenario"]))
+    end
+    unit.path_steps.create!(attrs)
+  end
+end
+puts "Seeded #{PathUnit.count} path units"

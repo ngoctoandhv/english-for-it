@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { Heatmap } from "@/features/growth/heatmap";
+import { RankCard, WeekDots } from "@/features/growth/rank-card";
 import { errorMessage } from "@/lib/api/errors";
+import { getGrowth, type Growth } from "@/lib/api/growth";
 import { useI18n } from "@/lib/i18n/provider";
 import { SectionTitle } from "@/components/layout/section-title";
 import type { Meta } from "@/lib/api/types";
@@ -12,12 +15,14 @@ import { getHistory, getProgress, type HistoryItem, type ProgressSummary } from 
 export function ProgressScreen() {
   const { t } = useI18n();
   const [summary, setSummary] = useState<ProgressSummary | null>(null);
+  const [growth, setGrowth] = useState<Growth | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [meta, setMeta] = useState<Meta | null>(null);
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    getGrowth().then(setGrowth).catch(() => undefined);
     getProgress().then(setSummary).catch((e) => setError(errorMessage(e, t)));
   }, [t]);
   useEffect(() => {
@@ -31,6 +36,19 @@ export function ProgressScreen() {
     <AppShell>
       <h1 className="mb-8 text-3xl sm:text-4xl">{t("progress.title")}</h1>
       {error && <p role="alert" className="text-destructive">{error}</p>}
+      {growth && (
+        <section aria-labelledby="growth" className="mb-12 max-w-3xl space-y-6">
+          <SectionTitle id="growth">{t("growth.title")}</SectionTitle>
+          <RankCard growth={growth} />
+          <WeekDots growth={growth} />
+          <div>
+            <h3 className="mb-2 font-display text-base">{t("growth.calendar")}</h3>
+            <Heatmap days={growth.calendar} />
+            <p className="mt-3 text-sm text-muted-foreground">{t("growth.total", { n: growth.active_days_total })} · {t("growth.unitsDone")}: {growth.units_completed}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("growth.note")}</p>
+          </div>
+        </section>
+      )}
       {summary && (
         <div className="space-y-12">
           <section aria-labelledby="words" className="max-w-xl">

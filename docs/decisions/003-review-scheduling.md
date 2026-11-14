@@ -10,3 +10,7 @@
   dropped or penalised, they are served over several sessions; new words pause while due cards exceed the session size;
   at most `max(goal/2, 3)` new words per local day. One open session per user (partial unique index).
 - Session items are word cards only (kind `new` | `review`). Listening and scenarios are separate flows (M5, M6).
+
+## Addendum: path and growth (no-guilt)
+Retention comes from visible forward motion, never from loss: XP and ranks are derived from facts that are never deleted, the calendar shows empty days as empty squares
+(no streak counter, no "missed" language, covered by a spec), and the weekly goal is shown as progress toward a target, not a deadline.

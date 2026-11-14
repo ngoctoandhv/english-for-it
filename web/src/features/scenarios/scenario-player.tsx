@@ -20,6 +20,7 @@ export function ScenarioPlayer() {
   const [revealed, setRevealed] = useState<Record<number, boolean>>({});
   const [showVi, setShowVi] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [unitsDone, setUnitsDone] = useState<{ slug: string; title: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +48,8 @@ export function ScenarioPlayer() {
   async function next() {
     try {
       if (isLast) {
-        await saveScenarioProgress(slug, step, true);
+        const res = await saveScenarioProgress(slug, step, true);
+        setUnitsDone(res.data.units_completed ?? []);
         setFinished(true);
       } else {
         await saveScenarioProgress(slug, step + 1);
@@ -69,7 +71,10 @@ export function ScenarioPlayer() {
 
         {finished ? (
           <section className="space-y-4">
-            <p className="text-xl font-medium">{t("scen.done")}</p>
+            <p className="font-display text-xl">{t("scen.done")}</p>
+            {unitsDone.map((u) => (
+              <p key={u.slug} className="font-display text-sm text-primary" data-testid="unit-completed">{t("unitdone", { title: u.title })}</p>
+            ))}
             <div className="flex gap-3">
               <Button variant="outline" onClick={() => { setFinished(false); setStep(0); setRevealed({}); }}>{t("scen.again")}</Button>
               <Link href="/scenarios" className={buttonVariants()}>{t("scen.more")}</Link>

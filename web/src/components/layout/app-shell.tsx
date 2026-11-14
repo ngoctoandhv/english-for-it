@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, BookOpen, Headphones, Home, LogOut, MessagesSquare, Settings2 } from "lucide-react";
+import { BarChart3, Dumbbell, Home, LogOut, Route, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -13,9 +13,8 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", key: "nav.today", icon: Home },
-  { href: "/library", key: "nav.vocabulary", icon: BookOpen },
-  { href: "/listening", key: "nav.listening", icon: Headphones },
-  { href: "/scenarios", key: "nav.scenarios", icon: MessagesSquare },
+  { href: "/path", key: "nav.path", icon: Route },
+  { href: "/practice", key: "nav.practice", icon: Dumbbell, also: ["/library", "/listening", "/scenarios", "/quiz"] },
   { href: "/progress", key: "nav.progress", icon: BarChart3 },
 ];
 
@@ -26,8 +25,12 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
   const pathname = usePathname();
   if (!ready) return null;
 
-  const items = user?.role === "admin" ? [...NAV, { href: "/admin", key: "nav.admin", icon: Settings2 }] : NAV;
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const items: { href: string; key: string; icon: typeof Home; also?: string[] }[] = user?.role === "admin" ? [...NAV, { href: "/admin", key: "nav.admin", icon: Settings2 }] : NAV;
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    const item = items.find((i) => i.href === href) as { also?: string[] } | undefined;
+    return [href, ...(item?.also ?? [])].some((p) => pathname.startsWith(p));
+  };
 
   return (
     <div className="flex min-h-screen flex-col">

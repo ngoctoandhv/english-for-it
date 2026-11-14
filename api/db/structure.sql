@@ -186,8 +186,8 @@ CREATE TABLE public.it_scenarios (
     "position" integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT it_scenarios_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
-    CONSTRAINT it_scenarios_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+    CONSTRAINT it_scenarios_level_check CHECK (((level)::text = ANY (ARRAY[('beginner'::character varying)::text, ('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
+    CONSTRAINT it_scenarios_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
 );
 
 
@@ -223,7 +223,7 @@ CREATE TABLE public.learning_collections (
     "position" integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
 );
 
 
@@ -259,7 +259,7 @@ CREATE TABLE public.learning_session_items (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY ((ARRAY['new'::character varying, 'review'::character varying])::text[])))
+    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY (ARRAY[('new'::character varying)::text, ('review'::character varying)::text])))
 );
 
 
@@ -294,7 +294,7 @@ CREATE TABLE public.learning_sessions (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY ((ARRAY['in_progress'::character varying, 'completed'::character varying])::text[])))
+    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY (ARRAY[('in_progress'::character varying)::text, ('completed'::character varying)::text])))
 );
 
 
@@ -369,8 +369,8 @@ CREATE TABLE public.listening_lessons (
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT listening_lessons_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
-    CONSTRAINT listening_lessons_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+    CONSTRAINT listening_lessons_level_check CHECK (((level)::text = ANY (ARRAY[('beginner'::character varying)::text, ('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
+    CONSTRAINT listening_lessons_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
 );
 
 
@@ -430,6 +430,82 @@ ALTER SEQUENCE public.listening_questions_id_seq OWNED BY public.listening_quest
 
 
 --
+-- Name: path_steps; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.path_steps (
+    id bigint NOT NULL,
+    path_unit_id bigint NOT NULL,
+    "position" integer NOT NULL,
+    kind character varying NOT NULL,
+    learning_collection_id bigint,
+    listening_lesson_id bigint,
+    it_scenario_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT path_steps_kind_check CHECK (((kind)::text = ANY ((ARRAY['words'::character varying, 'listening'::character varying, 'scenario'::character varying, 'quiz'::character varying])::text[]))),
+    CONSTRAINT path_steps_one_reference_check CHECK (((((kind)::text = 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 0)) OR (((kind)::text <> 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 1))))
+);
+
+
+--
+-- Name: path_steps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.path_steps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: path_steps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.path_steps_id_seq OWNED BY public.path_steps.id;
+
+
+--
+-- Name: path_units; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.path_units (
+    id bigint NOT NULL,
+    slug character varying NOT NULL,
+    title character varying NOT NULL,
+    description text,
+    level character varying NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT path_units_level_check CHECK (((level)::text = ANY ((ARRAY['elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT path_units_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+);
+
+
+--
+-- Name: path_units_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.path_units_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: path_units_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.path_units_id_seq OWNED BY public.path_units.id;
+
+
+--
 -- Name: refresh_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -479,7 +555,7 @@ CREATE TABLE public.review_logs (
     state_before jsonb DEFAULT '{}'::jsonb NOT NULL,
     state_after jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY ((ARRAY['again'::character varying, 'hard'::character varying, 'good'::character varying, 'easy'::character varying])::text[])))
+    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY (ARRAY[('again'::character varying)::text, ('hard'::character varying)::text, ('good'::character varying)::text, ('easy'::character varying)::text])))
 );
 
 
@@ -517,7 +593,7 @@ CREATE TABLE public.scenario_dialogues (
     tip text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT scenario_dialogues_role_check CHECK (((role)::text = ANY ((ARRAY['other'::character varying, 'you'::character varying])::text[])))
+    CONSTRAINT scenario_dialogues_role_check CHECK (((role)::text = ANY (ARRAY[('other'::character varying)::text, ('you'::character varying)::text])))
 );
 
 
@@ -584,6 +660,72 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: unit_completions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.unit_completions (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    path_unit_id bigint NOT NULL,
+    completed_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: unit_completions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.unit_completions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: unit_completions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.unit_completions_id_seq OWNED BY public.unit_completions.id;
+
+
+--
+-- Name: unit_quiz_results; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.unit_quiz_results (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    path_unit_id bigint NOT NULL,
+    score integer NOT NULL,
+    total integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: unit_quiz_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.unit_quiz_results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: unit_quiz_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.unit_quiz_results_id_seq OWNED BY public.unit_quiz_results.id;
+
+
+--
 -- Name: user_favorites; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -633,7 +775,7 @@ CREATE TABLE public.user_word_progresses (
     last_reviewed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT progress_state_check CHECK (((state)::text = ANY ((ARRAY['learning'::character varying, 'review'::character varying])::text[])))
+    CONSTRAINT progress_state_check CHECK (((state)::text = ANY (ARRAY[('learning'::character varying)::text, ('review'::character varying)::text])))
 );
 
 
@@ -673,7 +815,7 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
-    CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
+    CONSTRAINT users_role_check CHECK (((role)::text = ANY (ARRAY[('user'::character varying)::text, ('admin'::character varying)::text])))
 );
 
 
@@ -811,7 +953,7 @@ CREATE TABLE public.vocabulary_words (
     vocabulary_category_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
 );
 
 
@@ -912,6 +1054,20 @@ ALTER TABLE ONLY public.listening_questions ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: path_steps id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps ALTER COLUMN id SET DEFAULT nextval('public.path_steps_id_seq'::regclass);
+
+
+--
+-- Name: path_units id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_units ALTER COLUMN id SET DEFAULT nextval('public.path_units_id_seq'::regclass);
+
+
+--
 -- Name: refresh_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -937,6 +1093,20 @@ ALTER TABLE ONLY public.scenario_dialogues ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.scenario_progresses ALTER COLUMN id SET DEFAULT nextval('public.scenario_progresses_id_seq'::regclass);
+
+
+--
+-- Name: unit_completions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_completions ALTER COLUMN id SET DEFAULT nextval('public.unit_completions_id_seq'::regclass);
+
+
+--
+-- Name: unit_quiz_results id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_quiz_results ALTER COLUMN id SET DEFAULT nextval('public.unit_quiz_results_id_seq'::regclass);
 
 
 --
@@ -1085,6 +1255,30 @@ ALTER TABLE ONLY public.listening_questions
 
 
 --
+-- Name: path_steps path_steps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT path_steps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: path_steps path_steps_position_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT path_steps_position_unique UNIQUE (path_unit_id, "position") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: path_units path_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_units
+    ADD CONSTRAINT path_units_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: refresh_tokens refresh_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1130,6 +1324,22 @@ ALTER TABLE ONLY public.scenario_progresses
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: unit_completions unit_completions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_completions
+    ADD CONSTRAINT unit_completions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: unit_quiz_results unit_quiz_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_quiz_results
+    ADD CONSTRAINT unit_quiz_results_pkey PRIMARY KEY (id);
 
 
 --
@@ -1322,6 +1532,41 @@ CREATE INDEX index_listening_questions_on_listening_lesson_id ON public.listenin
 
 
 --
+-- Name: index_path_steps_on_it_scenario_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_path_steps_on_it_scenario_id ON public.path_steps USING btree (it_scenario_id);
+
+
+--
+-- Name: index_path_steps_on_learning_collection_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_path_steps_on_learning_collection_id ON public.path_steps USING btree (learning_collection_id);
+
+
+--
+-- Name: index_path_steps_on_listening_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_path_steps_on_listening_lesson_id ON public.path_steps USING btree (listening_lesson_id);
+
+
+--
+-- Name: index_path_steps_on_path_unit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_path_steps_on_path_unit_id ON public.path_steps USING btree (path_unit_id);
+
+
+--
+-- Name: index_path_units_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_path_units_on_slug ON public.path_units USING btree (slug);
+
+
+--
 -- Name: index_progress_unique; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1410,6 +1655,48 @@ CREATE INDEX index_scenario_progresses_on_user_id ON public.scenario_progresses 
 --
 
 CREATE UNIQUE INDEX index_sessions_one_open_per_user ON public.learning_sessions USING btree (user_id) WHERE ((status)::text = 'in_progress'::text);
+
+
+--
+-- Name: index_unit_completions_on_path_unit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_unit_completions_on_path_unit_id ON public.unit_completions USING btree (path_unit_id);
+
+
+--
+-- Name: index_unit_completions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_unit_completions_on_user_id ON public.unit_completions USING btree (user_id);
+
+
+--
+-- Name: index_unit_completions_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unit_completions_unique ON public.unit_completions USING btree (user_id, path_unit_id);
+
+
+--
+-- Name: index_unit_quiz_results_on_path_unit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_unit_quiz_results_on_path_unit_id ON public.unit_quiz_results USING btree (path_unit_id);
+
+
+--
+-- Name: index_unit_quiz_results_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_unit_quiz_results_on_user_id ON public.unit_quiz_results USING btree (user_id);
+
+
+--
+-- Name: index_unit_quiz_results_on_user_id_and_path_unit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_unit_quiz_results_on_user_id_and_path_unit_id ON public.unit_quiz_results USING btree (user_id, path_unit_id);
 
 
 --
@@ -1528,6 +1815,14 @@ ALTER TABLE ONLY public.scenario_progresses
 
 
 --
+-- Name: path_steps fk_rails_1c0acdb3f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT fk_rails_1c0acdb3f6 FOREIGN KEY (path_unit_id) REFERENCES public.path_units(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_favorites fk_rails_25ed4cb388; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1544,6 +1839,30 @@ ALTER TABLE ONLY public.refresh_tokens
 
 
 --
+-- Name: path_steps fk_rails_3f8de292d5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT fk_rails_3f8de292d5 FOREIGN KEY (learning_collection_id) REFERENCES public.learning_collections(id) ON DELETE CASCADE;
+
+
+--
+-- Name: path_steps fk_rails_49b91f9803; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT fk_rails_49b91f9803 FOREIGN KEY (listening_lesson_id) REFERENCES public.listening_lessons(id) ON DELETE CASCADE;
+
+
+--
+-- Name: unit_completions fk_rails_4a834447c2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_completions
+    ADD CONSTRAINT fk_rails_4a834447c2 FOREIGN KEY (path_unit_id) REFERENCES public.path_units(id) ON DELETE CASCADE;
+
+
+--
 -- Name: collection_words fk_rails_518d478644; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1552,11 +1871,35 @@ ALTER TABLE ONLY public.collection_words
 
 
 --
+-- Name: unit_quiz_results fk_rails_56cd458d88; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_quiz_results
+    ADD CONSTRAINT fk_rails_56cd458d88 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: collection_words fk_rails_63efa23848; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.collection_words
     ADD CONSTRAINT fk_rails_63efa23848 FOREIGN KEY (learning_collection_id) REFERENCES public.learning_collections(id) ON DELETE CASCADE;
+
+
+--
+-- Name: unit_quiz_results fk_rails_68a8b6cd38; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_quiz_results
+    ADD CONSTRAINT fk_rails_68a8b6cd38 FOREIGN KEY (path_unit_id) REFERENCES public.path_units(id) ON DELETE CASCADE;
+
+
+--
+-- Name: unit_completions fk_rails_6b6c2c559d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unit_completions
+    ADD CONSTRAINT fk_rails_6b6c2c559d FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -1597,6 +1940,14 @@ ALTER TABLE ONLY public.learning_session_items
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: path_steps fk_rails_bad9e0472b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.path_steps
+    ADD CONSTRAINT fk_rails_bad9e0472b FOREIGN KEY (it_scenario_id) REFERENCES public.it_scenarios(id) ON DELETE CASCADE;
 
 
 --
@@ -1694,6 +2045,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114150001'),
 ('20261114140001'),
 ('20261114130001'),
 ('20261114120001'),

@@ -11,6 +11,7 @@ module Api
 
         result = Reviews::Submit.call(user: current_user, word_id: attrs[:word_id], rating: attrs[:rating],
                                       client_request_id: attrs[:client_request_id], session_item_id: attrs[:session_item_id])
+        Path::Completions.sync!(current_user) unless result.duplicate
         render json: { data: payload(result), duplicate: result.duplicate }, status: result.duplicate ? :ok : :created
       rescue Reviews::Submit::InvalidItem => e
         render_error("invalid_session_item", e.message, :unprocessable_content)

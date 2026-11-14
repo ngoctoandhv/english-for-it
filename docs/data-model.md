@@ -28,3 +28,10 @@ Source of truth: `api/db/schema.rb`. Timestamps are UTC.
 ## M6 (scenarios)
 - `it_scenarios` (slug unique, level, status), `scenario_dialogues` (position unique per scenario as a DEFERRABLE constraint so lines can be renumbered,
   role other|you), `scenario_progresses` (unique per user/scenario, `last_position`, `completed_at`).
+
+## R1/R2 (learning path and growth)
+- `path_units` (slug unique, level elementary|intermediate, status), `path_steps` (kind words|listening|scenario|quiz; exactly one content reference except quiz, enforced by a check constraint;
+  position unique per unit as a DEFERRABLE constraint).
+- `unit_completions` (unique per user and unit): persisted so a completed unit and its XP never disappear when content is edited.
+- `unit_quiz_results` (score, total): best ratio counts.
+- XP, rank and the calendar are derived from existing facts (review logs, listening attempts, scenario progress, quiz results, unit completions); there is no mutable XP counter.

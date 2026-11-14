@@ -70,3 +70,18 @@ Scripted lessons, not AI chat: a fixed dialogue the learner steps through; lines
 | GET | /api/v1/scenarios/:slug | `situation`, ordered `dialogues` (`speaker, role, text_en, text_vi, tip`) |
 | POST | /api/v1/scenarios/:slug/progress | `{progress:{last_position, completed}}`; position never goes back, completion is permanent |
 | * | /api/v1/admin/scenarios | CRUD with nested `scenario_dialogues_attributes` (positions must be unique) |
+
+## Learning path and growth (R1, R2)
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/path | levels → units → steps with state (`completed`, `in_progress`, `available`, `locked`), `start_level`, `next_up`. Locks are guidance, not security: all content stays reachable. |
+| GET | /api/v1/path/units/:slug | one unit with its steps |
+| GET | /api/v1/path/units/:slug/quiz | up to 8 meaning questions from the unit's own words, no answer key |
+| POST | /api/v1/path/units/:slug/quiz/answers | `{answers:[{word_id, choice_word_id}]}`; graded on the server, best result counts (pass at 70%, at least 4 answers); returns `xp_gained`, `units_completed`, `rank_up` |
+| POST | /api/v1/learning_sessions?collection=:slug | same as before, but new words come from that collection first (used by the path's "words" step) |
+| GET | /api/v1/growth | `xp`, `rank`, `next_rank`, `progress_to_next`, 119-day `calendar`, `week {active_days, target, start}`, `units_completed` |
+Listening attempts, scenario progress and quiz answers also return `units_completed` when they finish a unit.
+
+Step rules: words ≥ 80% of the collection met at least once; listening ≥ 60% on any attempt; scenario played to the end; unit quiz ≥ 70%.
+Unlock rules: first unit of the learner's level is open; each next unit opens when the previous is complete; the next level opens when every unit of the previous level is complete; levels below the learner's own level are fully open.
+XP (never decreases): 1 per review, 3 per word met, 15 per passed lesson, 15 per completed scenario, 50 per completed unit. Ranks: Intern 0, Junior 100, Mid 400, Senior 1000, Lead 2500.

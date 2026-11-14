@@ -4,17 +4,25 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SectionTitle } from "@/components/layout/section-title";
 import { buttonVariants } from "@/components/ui/button";
+import { ProgressRing } from "@/components/ui/progress-ring";
+import { RankCard, WeekDots } from "@/features/growth/rank-card";
 import { errorMessage } from "@/lib/api/errors";
+import { getGrowth, type Growth } from "@/lib/api/growth";
+import { getPath, stepHref, type PathOverview } from "@/lib/api/path";
 import { getDashboard, type Dashboard as DashboardData } from "@/lib/api/stats";
 import { useI18n } from "@/lib/i18n/provider";
 
 export function Dashboard() {
   const { t } = useI18n();
   const [data, setData] = useState<DashboardData | null>(null);
+  const [path, setPath] = useState<PathOverview | null>(null);
+  const [growth, setGrowth] = useState<Growth | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getDashboard().then(setData).catch((e) => setError(errorMessage(e, t)));
+    Promise.all([getDashboard(), getPath(), getGrowth()])
+      .then(([d, p, g]) => (setData(d), setPath(p), setGrowth(g)))
+      .catch((e) => setError(errorMessage(e, t)));
   }, [t]);
 
   if (error) return <p role="alert" className="text-destructive">{error}</p>;
@@ -29,12 +37,8 @@ export function Dashboard() {
         : t("dash.todo", { due: data.due_count })
       : t("dash.caughtUp");
 
-  const practice = [
-    { href: "/library", title: t("nav.vocabulary"), text: t("dash.vocab") },
-    { href: "/listening", title: t("nav.listening"), text: t("dash.listening") },
-    { href: "/scenarios", title: t("nav.scenarios"), text: t("dash.scenarios") },
-    { href: "/quiz", title: t("dash.quiz"), text: t("dash.quizText") },
-  ];
+  const next = path?.next_up;
+  const step = next?.step;
 
   return (
     <div className="space-y-14">
@@ -43,43 +47,41 @@ export function Dashboard() {
         <p className="text-lg text-muted-foreground">{summary}</p>
         {data.backlog && <p className="max-w-prose text-muted-foreground">{t("dash.backlog")}</p>}
         {data.can_start && (
-          <Link href="/learn" className={buttonVariants({ size: "lg", className: "w-full sm:w-auto" })}>
+          <Link href="/learn" className={buttonVariants({ size: "lg", variant: next ? "outline" : "default", className: "w-full sm:w-auto" })}>
             {open ? t("dash.continue") : t("dash.start")}
           </Link>
         )}
       </section>
 
-      <section aria-labelledby="week" className="max-w-2xl">
-        <SectionTitle id="week">{t("dash.week")}</SectionTitle>
-        <dl className="divide-y border-y">
-          <Row label={t("dash.reviewedToday")} value={data.reviewed_today} />
-          <Row label={t("dash.daysStudied")} value={t("dash.daysOf", { n: data.days_studied_this_week })} />
-          <Row label={t("dash.wordsStarted")} value={data.words_started} />
-        </dl>
+      <section aria-labelledby="next" className="max-w-2xl">
+        <SectionTitle id="next">{t("home.next")}</SectionTitle>
+        {next && step ? (
+          <div className="flex items-center gap-4 border-y py-5">
+            <ProgressRing value={(next.steps_done / next.steps_total) * 100} size={52} label={t("path.stepsDone", { done: next.steps_done, total: next.steps_total })}>
+              {next.steps_done}/{next.steps_total}
+            </ProgressRing>
+            <div className="min-w-0 flex-1">
+              <p className="font-display text-base">{next.unit_title}</p>
+              <p className="truncate text-sm text-muted-foreground">
+                {t(`path.kind.${step.kind}`)}{step.title ? ` · ${step.title}` : ""}
+              </p>
+            </div>
+            <Link href={stepHref(step, next.unit)} className={buttonVariants({ size: "lg" })}>{t("home.go")}</Link>
+          </div>
+        ) : (
+          <p className="border-y py-5 text-muted-foreground">{t("home.allDone")}</p>
+        )}
+        <Link href="/path" className="mt-3 inline-block text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">{t("home.viewPath")}</Link>
       </section>
 
-      <section aria-labelledby="practise" className="max-w-2xl">
-        <SectionTitle id="practise">{t("dash.practise")}</SectionTitle>
-        <ul className="divide-y border-y">
-          {practice.map((p) => (
-            <li key={p.href}>
-              <Link href={p.href} className="grid gap-1 py-4 hover:bg-muted/50 sm:grid-cols-[11rem_1fr] sm:gap-8 sm:px-2">
-                <span className="font-display">{p.title}</span>
-                <span className="text-muted-foreground">{p.text}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string | number }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4 py-3">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="tnum font-display">{value}</dd>
+      {growth && (
+        <section aria-labelledby="growth" className="max-w-2xl space-y-6">
+          <SectionTitle id="growth">{t("home.growth")}</SectionTitle>
+          <RankCard growth={growth} />
+          <WeekDots growth={growth} />
+          <Link href="/progress" className="inline-block text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">{t("nav.progress")}</Link>
+        </section>
+      )}
     </div>
   );
 }

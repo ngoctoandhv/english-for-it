@@ -19,6 +19,7 @@ export type AttemptResult = {
   score: number;
   total: number;
   results: { question_id: number; correct: boolean; choice_index: number | null; correct_index: number; explanation: string | null }[];
+  units_completed?: { slug: string; title: string }[];
 };
 
 export const getLessons = () => apiFetch<{ data: LessonSummary[] }>("/listening_lessons").then((r) => r.data);

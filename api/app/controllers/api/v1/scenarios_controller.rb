@@ -25,7 +25,9 @@ module Api
         record.last_position = [ record.last_position, position ].max
         record.completed_at ||= Time.current if ActiveModel::Type::Boolean.new.cast(attrs[:completed])
         record.save!
-        render json: { data: { last_position: record.last_position, completed: record.completed_at.present? } }
+        newly = Path::Completions.sync!(current_user)
+        render json: { data: { last_position: record.last_position, completed: record.completed_at.present?,
+                               units_completed: newly.map { |u| { slug: u.slug, title: u.title } } } }
       rescue ActiveRecord::RecordNotUnique
         retry
       end

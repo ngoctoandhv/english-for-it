@@ -22,7 +22,9 @@ module Api
         grade = ListeningGrader.call(lesson, raw.map(&:to_h).map(&:symbolize_keys))
         current_user.listening_attempts.create!(listening_lesson: lesson, score: grade.score, total: grade.total,
                                                 answers: grade.results.map { |r| r.slice(:question_id, :choice_index) }, completed_at: Time.current)
-        render json: { data: { score: grade.score, total: grade.total, results: grade.results } }, status: :created
+        newly = Path::Completions.sync!(current_user)
+        render json: { data: { score: grade.score, total: grade.total, results: grade.results,
+                               units_completed: newly.map { |u| { slug: u.slug, title: u.title } } } }, status: :created
       end
 
       private
