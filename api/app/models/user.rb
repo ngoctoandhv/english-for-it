@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :refresh_tokens, dependent: :destroy
+  has_many :user_favorites, dependent: :destroy
 
   normalizes :email, with: ->(e) { e.strip.downcase }
   normalizes :name, with: ->(n) { n.strip }

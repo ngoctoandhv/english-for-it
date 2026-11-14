@@ -19,3 +19,19 @@ Base path `/api/v1`, JSON only. Errors: `{ "error": { "code", "message", "detail
 Auth header: `Authorization: Bearer <access_token>`. Validation errors: 422 with `details` keyed by field.
 
 Planned endpoints are listed in the Phase 1 plan; this file is updated every milestone.
+
+## Vocabulary (M2)
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/categories | with published `words_count` |
+| GET | /api/v1/words | `?q=&category=<slug>&collection=<slug>&page=&per_page=`; published only; `{data, meta}` |
+| GET | /api/v1/words/:id | adds `examples`, `collocations` |
+| GET | /api/v1/collections, /collections/:slug | published collections (with ordered words) |
+| GET/POST | /api/v1/favorites | POST `{type:"word", id}` is idempotent |
+| DELETE | /api/v1/favorites/:type/:id | 204 |
+
+### Admin (role `admin`, otherwise 403)
+`/api/v1/admin/{categories,words,collections}`: index (`page`, `per_page`, words also `q`, `status`), show, create, update, destroy.
+Words accept nested `vocabulary_examples_attributes` / `vocabulary_collocations_attributes` (`_destroy` to remove).
+Collections accept `word_ids` (ordered). `POST/DELETE /admin/words/:id/audio` (multipart field `audio`).
+Deleting a category that still has words returns 409.
