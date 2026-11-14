@@ -6,7 +6,7 @@ Browser (Next.js App Router, TypeScript, Tailwind, shadcn/ui)
    ▼
 Rails API-only → controllers (thin) → services / query objects → ActiveRecord models
    ├─ PostgreSQL        data, constraints, indexes, review-log trigger
-   ├─ Redis + Sidekiq   background jobs (ActiveJob adapter; none scheduled in the MVP)
+   ├─ ActiveJob (:async)  in-process; no background jobs in the MVP
    └─ Active Storage    audio; local disk in dev, S3-compatible in production
 ```
 

@@ -5,7 +5,7 @@ Base path `/api/v1`, JSON only. Errors: `{ "error": { "code", "message", "detail
 ## Implemented
 | Method | Path | Auth | Notes |
 |---|---|---|---|
-| GET | /api/v1/health | none | `{ status, database, redis }` |
+| GET | /api/v1/health | none | `{ status, database }` |
 | GET | /up | none | Rails liveness check |
 
 | POST | /api/v1/auth/register | none | body `{user:{email,password,name,time_zone}}` → 201 `{user,access_token,refresh_token,expires_in}` |

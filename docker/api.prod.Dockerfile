@@ -1,4 +1,4 @@
-# Production image for the Rails API (also runs Sidekiq with a different command).
+# Production image for the Rails API.
 # Build from the repository root: docker build -f docker/api.prod.Dockerfile -t english-for-it-api .
 FROM ruby:3.4-slim AS build
 RUN apt-get update -qq && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev git && rm -rf /var/lib/apt/lists/*
@@ -25,5 +25,5 @@ COPY --from=build --chown=rails:rails /rails /rails
 USER rails
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s CMD curl -fsS http://localhost:3000/up || exit 1
-# SECRET_KEY_BASE, DATABASE_URL, REDIS_URL, ALLOWED_HOSTS, CORS_ORIGINS, API_PUBLIC_URL are provided at runtime.
+# SECRET_KEY_BASE, DATABASE_URL, ALLOWED_HOSTS, CORS_ORIGINS, API_PUBLIC_URL are provided at runtime.
 CMD ["bash", "-c", "bin/rails db:prepare && bundle exec puma -C config/puma.rb"]
