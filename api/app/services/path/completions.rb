@@ -10,6 +10,7 @@ module Path
       progress = Progress.new(user).preload(pending)
       pending.select { |u| progress.unit_complete?(u) }.each_with_object([]) do |unit, newly|
         user.unit_completions.create!(path_unit: unit, completed_at: Time.current)
+        Event.record(user, "unit_completed", { unit: unit.slug })
         newly << unit
       rescue ActiveRecord::RecordNotUnique
         next

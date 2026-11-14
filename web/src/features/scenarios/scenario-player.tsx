@@ -4,6 +4,7 @@ import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ReportIssue } from "@/components/report-issue";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SayIt } from "@/features/speaking/say-it";
@@ -68,6 +69,7 @@ export function ScenarioPlayer() {
         <header className="space-y-1">
           <h1 className="text-2xl sm:text-3xl">{scenario.title}</h1>
           {scenario.situation && <p className="text-muted-foreground">{scenario.situation}</p>}
+          <ReportIssue type="scenario" id={scenario.id} />
         </header>
 
         {finished ? (

@@ -47,6 +47,7 @@ module Api
         raise ActionController::ParameterMissing, :level if attrs[:level].blank?
 
         current_user.update!(attrs.merge(onboarded_at: Time.current))
+        Event.record(current_user, "onboarded")
         render json: { user: UserSerializer.call(current_user) }
       end
     end

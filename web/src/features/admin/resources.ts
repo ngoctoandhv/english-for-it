@@ -16,6 +16,8 @@ export type ResourceConfig = {
   columns: { label: string; value: (r: Record<string, unknown>) => string }[];
   fields: FieldDef[];
   hasAudio?: boolean;
+  /** Records only come from learners; the admin triages them. */
+  noCreate?: boolean;
 };
 
 const STATUS: Option[] = [
@@ -181,6 +183,23 @@ RESOURCES.push({
     { kind: "select", name: "status", label: "Status", options: STATUS, required: true },
   ],
   hasAudio: true,
+});
+
+RESOURCES.push({
+  key: "reports",
+  label: "Reports",
+  path: "reports",
+  paramKey: "report",
+  noCreate: true,
+  columns: [
+    { label: "Target", value: (r) => str(r.target) },
+    { label: "Message", value: (r) => str(r.message) },
+    { label: "Reporter", value: (r) => str(r.reporter) },
+    { label: "Status", value: (r) => str(r.status) },
+  ],
+  fields: [
+    { kind: "select", name: "status", label: "Status", required: true, options: ["open", "resolved", "dismissed"].map((v) => ({ value: v, label: v })) },
+  ],
 });
 
 export const findResource = (key: string) => RESOURCES.find((r) => r.key === key);

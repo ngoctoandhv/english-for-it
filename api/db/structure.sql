@@ -175,6 +175,74 @@ ALTER SEQUENCE public.collection_words_id_seq OWNED BY public.collection_words.i
 
 
 --
+-- Name: content_reports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_reports (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    reportable_type character varying NOT NULL,
+    reportable_id bigint NOT NULL,
+    message text NOT NULL,
+    status character varying DEFAULT 'open'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT content_reports_status_check CHECK (((status)::text = ANY ((ARRAY['open'::character varying, 'resolved'::character varying, 'dismissed'::character varying])::text[])))
+);
+
+
+--
+-- Name: content_reports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.content_reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: content_reports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.content_reports_id_seq OWNED BY public.content_reports.id;
+
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    user_id bigint,
+    name character varying NOT NULL,
+    props jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
 -- Name: it_scenarios; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1049,6 +1117,20 @@ ALTER TABLE ONLY public.collection_words ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: content_reports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_reports ALTER COLUMN id SET DEFAULT nextval('public.content_reports_id_seq'::regclass);
+
+
+--
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: it_scenarios id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1247,6 +1329,22 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.collection_words
     ADD CONSTRAINT collection_words_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_reports content_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_reports
+    ADD CONSTRAINT content_reports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1504,6 +1602,48 @@ CREATE INDEX index_collection_words_on_vocabulary_word_id ON public.collection_w
 --
 
 CREATE UNIQUE INDEX index_collection_words_unique ON public.collection_words USING btree (learning_collection_id, vocabulary_word_id);
+
+
+--
+-- Name: index_content_reports_on_reportable_type_and_reportable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_reports_on_reportable_type_and_reportable_id ON public.content_reports USING btree (reportable_type, reportable_id);
+
+
+--
+-- Name: index_content_reports_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_reports_on_status ON public.content_reports USING btree (status);
+
+
+--
+-- Name: index_content_reports_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_reports_on_user_id ON public.content_reports USING btree (user_id);
+
+
+--
+-- Name: index_events_on_name_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_name_and_created_at ON public.events USING btree (name, created_at);
+
+
+--
+-- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_user_id ON public.events USING btree (user_id);
+
+
+--
+-- Name: index_events_on_user_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_user_id_and_created_at ON public.events USING btree (user_id, created_at);
 
 
 --
@@ -1873,6 +2013,14 @@ ALTER TABLE ONLY public.listening_questions
 
 
 --
+-- Name: events fk_rails_0cb5590091; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_rails_0cb5590091 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: scenario_progresses fk_rails_172200a183; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2009,6 +2157,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: content_reports fk_rails_ab5b545b3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_reports
+    ADD CONSTRAINT fk_rails_ab5b545b3f FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: path_steps fk_rails_bad9e0472b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2111,6 +2267,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114190001'),
 ('20261114180001'),
 ('20261114170001'),
 ('20261114160001'),

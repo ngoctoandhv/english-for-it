@@ -8,6 +8,7 @@ module Api
         collection = LearningCollection.published.find_by(slug: params[:collection]) if params[:collection].present?
         session = LearningSessions::Start.call(current_user, collection: collection)
         if session
+          Event.record(current_user, "session_started", { session_id: session.id }) if session.previously_new_record?
           render json: { data: LearningSessionSerializer.call(session) }, status: session.previously_new_record? ? :created : :ok
         else
           render json: { data: nil, reason: "all_caught_up" }
@@ -21,6 +22,7 @@ module Api
       def complete
         session = current_user.learning_sessions.find(params[:id])
         session.complete!
+        Event.record(current_user, "session_completed", { session_id: session.id })
         render json: { data: LearningSessionSerializer.progress(session) }
       end
     end

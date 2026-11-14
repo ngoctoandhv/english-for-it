@@ -53,9 +53,11 @@ export function AdminList() {
       <Link href="/admin" className="text-sm text-muted-foreground underline underline-offset-4">← {t("nav.admin")}</Link>
       <div className="mb-8 mt-3 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl sm:text-4xl">{name}</h1>
-        <Link href={`/admin/${config.key}/new`} className={buttonVariants({ className: "w-full sm:w-auto" })}>
-          {t("admin.new")}
-        </Link>
+        {!config.noCreate && (
+          <Link href={`/admin/${config.key}/new`} className={buttonVariants({ className: "w-full sm:w-auto" })}>
+            {t("admin.new")}
+          </Link>
+        )}
       </div>
 
       {error && <p role="alert" className="mb-4 text-sm text-destructive">{error}</p>}

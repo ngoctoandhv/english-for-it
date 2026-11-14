@@ -113,3 +113,9 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 - User fields `focus_role` (developer, qa, devops, analyst, manager, other) and `focus_goal` (daily_work, interview, docs) are set in onboarding or `PATCH /me`.
 - `path_units.audiences` lists the roles/goals a unit is aimed at (empty = everyone). `GET /path` moves units aimed at someone else to the end of their level and sets `recommended: true` on units that match the learner. Nothing is hidden and unlock rules are unchanged.
 - `GET /placement` returns 10 choice questions; `POST /placement/answers` `{ answers: [{ word_id, choice_word_id }] }` returns `{ score, total, results, suggested_level }` (8+ intermediate, 5+ elementary, else beginner). It does not change the profile; the client saves the level with `PATCH /me`.
+
+## Events, reports and metrics
+- `POST /events` `{ name: "app_open" }` (user): the only event the client may send; recorded at most once per user per day. All other events (`signup`, `onboarded`, `session_started`, `session_completed`, `unit_completed`, `scenario_completed`, `report_submitted`) are written by the server. Props hold ids only. Events are deleted with the account.
+- `POST /reports` `{ report: { type: word|listening|scenario|phrase, id, message } }` (user): "report a mistake". Message up to 500 characters, 20 per user per day.
+- Admin: `GET /admin/metrics` (users, active today/7d/30d, day-1 and day-7 return of recent signups, signup funnel, 7-day learning counts, open reports); `GET/PATCH/DELETE /admin/reports` (triage: open, resolved, dismissed).
+- No third-party analytics: numbers come from our own `events` and `review_logs` tables, so no learner data leaves the database.
