@@ -6,6 +6,7 @@ module Api
       def register
         user = User.new(params.expect(user: [ :email, :password, :name, :time_zone ]).to_h.compact_blank)
         user.save!
+        Event.record(user, "signup")
         deliver_verification(user)
         render_tokens(user, Auth::IssueTokens.call(user, user_agent: request.user_agent), status: :created)
       end

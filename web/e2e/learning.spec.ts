@@ -204,7 +204,7 @@ test("admin screens fit a phone and are translated", async ({ browser }) => {
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Admin" })).toBeVisible();
 
-  for (const path of ["/admin", "/admin/words", "/admin/words/new", "/admin/listening", "/admin/scenarios", "/admin/collections"]) {
+  for (const path of ["/admin", "/admin/words", "/admin/words/new", "/admin/listening", "/admin/scenarios", "/admin/collections", "/admin/reports"]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -369,4 +369,36 @@ test("personalization: role and goal in onboarding, vocabulary check suggests a 
 
   await page.goto("/path");
   await expect(page.getByText("For you").first()).toBeVisible();
+});
+
+test("a learner reports a mistake and the admin sees metrics and the report", async ({ page, browser }) => {
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Reporter");
+  await page.getByLabel("Email").fill(`report-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.goto("/library");
+  await page.locator('a[href^="/library/"]').first().click();
+  await page.getByRole("button", { name: "Report a mistake" }).click();
+  await page.getByLabel("What is wrong?").fill(`E2E report ${stamp}`);
+  await page.getByRole("button", { name: "Send report" }).click();
+  await expect(page.getByText("Thank you. We will check it.")).toBeVisible();
+
+  const ctx = await browser.newContext();
+  const admin = await ctx.newPage();
+  await admin.goto("/login");
+  await admin.getByLabel("Email").fill("admin@example.test");
+  await admin.getByLabel("Password").fill("dev-password-123");
+  await admin.getByRole("button", { name: "Sign in" }).click();
+  await expect(admin.getByRole("heading", { name: /^Today/ })).toBeVisible();
+  await admin.goto("/admin");
+  await expect(admin.getByRole("heading", { name: "Product metrics" })).toBeVisible();
+  await expect(admin.getByText("Back on day 1")).toBeVisible();
+  await admin.goto("/admin/reports");
+  await expect(admin.getByText(`E2E report ${stamp}`).first()).toBeVisible();
+  await expect(admin.getByRole("link", { name: "New" })).toHaveCount(0);
+  await ctx.close();
 });

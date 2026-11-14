@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import * as authApi from "@/lib/api/auth";
+import { pingAppOpen } from "@/lib/api/metrics";
 import type { User } from "@/lib/api/types";
 import { tokenStore } from "@/lib/auth/token-store";
 
@@ -21,6 +22,12 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<Status>("loading");
+  const userId = user?.id;
+
+  // Tells the server the app was opened today (one event per user per day). Failures are ignored.
+  useEffect(() => {
+    if (userId) pingAppOpen().catch(() => undefined);
+  }, [userId]);
 
   useEffect(() => {
     let cancelled = false;

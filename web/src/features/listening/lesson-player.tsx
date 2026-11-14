@@ -1,5 +1,6 @@
 "use client";
 
+import { ReportIssue } from "@/components/report-issue";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -71,6 +72,7 @@ export function LessonPlayer() {
           <header className="space-y-1">
             <h1 className="text-2xl sm:text-3xl">{lesson.title}</h1>
             <p className="text-muted-foreground">{lesson.description}</p>
+            <ReportIssue type="listening" id={lesson.id} />
           </header>
 
           <section aria-label={t("listen.audio")} className="space-y-3">

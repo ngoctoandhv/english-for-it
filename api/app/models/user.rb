@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :scenario_progresses, dependent: :destroy
   has_many :unit_completions, dependent: :destroy
   has_many :unit_quiz_results, dependent: :destroy
+  has_many :content_reports, dependent: :destroy
+  has_many :events, dependent: :delete_all
   has_many :review_logs, dependent: :restrict_with_error # erased only through Accounts::Erase
 
   normalizes :email, with: ->(e) { e.strip.downcase }

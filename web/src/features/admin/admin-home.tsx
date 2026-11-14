@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/layout/app-shell";
 import { SectionTitle } from "@/components/layout/section-title";
 import { useI18n } from "@/lib/i18n/provider";
+import { AdminMetrics } from "./admin-metrics";
 import { RESOURCES } from "./resources";
 
 export function AdminHome() {
@@ -12,6 +13,7 @@ export function AdminHome() {
     <AppShell admin>
       <h1 className="mb-3 text-3xl sm:text-4xl">{t("admin.title")}</h1>
       <p className="mb-10 max-w-prose text-muted-foreground">{t("admin.sub")}</p>
+      <AdminMetrics />
       <section aria-labelledby="content" className="max-w-3xl">
         <SectionTitle id="content">{t("nav.admin")}</SectionTitle>
         <ul className="divide-y border-y">

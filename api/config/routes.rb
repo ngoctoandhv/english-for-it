@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       post "path/units/:id/quiz/answers", to: "path#answers"
       get "progress", to: "progress#show"
       get "history", to: "progress#history"
+      post "events", to: "events#create"
+      post "reports", to: "reports#create"
       get "placement", to: "placement#show"
       post "placement/answers", to: "placement#answers"
       get "quizzes/quick", to: "quizzes#quick"
@@ -50,6 +52,8 @@ Rails.application.routes.draw do
       end
 
       namespace :admin do
+        get "metrics", to: "metrics#show"
+        resources :reports, controller: "content_reports", only: %i[index show update destroy]
         resources :categories, controller: "vocabulary_categories", except: %i[new edit]
         resources :words, controller: "vocabulary_words", except: %i[new edit] do
           member do

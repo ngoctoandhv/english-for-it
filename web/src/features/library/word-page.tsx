@@ -1,6 +1,7 @@
 "use client";
 
 import { Volume2 } from "lucide-react";
+import { ReportIssue } from "@/components/report-issue";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -46,6 +47,7 @@ export function WordPage() {
           <section>
             <p className="text-xl">{word.meaning_vi}</p>
             <p className="text-muted-foreground">{word.definition_en}</p>
+            <div className="mt-3"><ReportIssue type="word" id={word.id} /></div>
           </section>
           {word.examples.length > 0 && (
             <section>
