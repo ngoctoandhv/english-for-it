@@ -79,3 +79,22 @@ test("quick quiz gives feedback and a score, and progress shows history", async 
   await expect(page.getByRole("heading", { name: "Progress" })).toBeVisible();
   await expect(page.getByText("No reviews yet.")).toBeVisible();
 });
+
+test("listening lesson: answer questions, see the score and the transcript", async ({ page }) => {
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Listener");
+  await page.getByLabel("Email").fill(`listen-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Start learning" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.getByRole("link", { name: "Listening" }).click();
+  await page.getByRole("link", { name: /Daily Standup/ }).click();
+  await expect(page.getByText("Show transcript")).toBeVisible();
+  await expect(page.getByText("I fixed the login bug")).toHaveCount(0);
+  for (const fieldset of await page.getByRole("region", { name: "Questions" }).locator("fieldset").all()) await fieldset.getByRole("radio").first().check();
+  await page.getByRole("button", { name: "Check answers" }).click();
+  await expect(page.getByTestId("listening-score")).toContainText("/ 3");
+  await expect(page.getByText(/I fixed the login bug/)).toBeVisible();
+});

@@ -125,8 +125,14 @@ function FieldInput({ field, values, set }: { field: FieldDef; values: Values; s
               {field.fields.map((sub) => (
                 <div key={sub.name} className="space-y-1">
                   <Label htmlFor={`${id}-${i}-${sub.name}`}>{sub.label}</Label>
-                  <Input id={`${id}-${i}-${sub.name}`} value={String(item[sub.name] ?? "")}
+                  {sub.kind === "lines" ? (
+                    <Textarea id={`${id}-${i}-${sub.name}`} value={String(item[sub.name] ?? "")}
+                      onChange={(e) => set(field.name, items.map((it, j) => (j === i ? { ...it, [sub.name]: e.target.value } : it)))} />
+                  ) : (
+                  <Input id={`${id}-${i}-${sub.name}`} type={sub.kind === "number" ? "number" : "text"} value={String(item[sub.name] ?? "")}
                     onChange={(e) => set(field.name, items.map((it, j) => (j === i ? { ...it, [sub.name]: e.target.value } : it)))} />
+                  )}
+                  {"hint" in sub && sub.hint && <p className="text-xs text-muted-foreground">{sub.hint}</p>}
                 </div>
               ))}
               <Button type="button" variant="ghost" size="sm"

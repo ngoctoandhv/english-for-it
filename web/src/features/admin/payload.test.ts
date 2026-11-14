@@ -35,4 +35,14 @@ describe("admin payload", () => {
     const w = buildPayload(words, { ...toFormValues(words.fields, null), vocabulary_category_id: "" }).word as Record<string, unknown>;
     expect(w.vocabulary_category_id).toBeNull();
   });
+
+  it("turns one-choice-per-line text into an array and numbers into numbers for listening questions", () => {
+    const listening = findResource("listening")!;
+    const values = toFormValues(listening.fields, { title: "T", questions: [{ id: 3, prompt: "Q", choices: ["a", "b"], correct_index: 1 }] });
+    expect((values.listening_questions as Record<string, unknown>[])[0].choices).toBe("a\nb");
+    (values.listening_questions as Record<string, unknown>[]).push({ prompt: "N", choices: " x \n\n y ", correct_index: "0" });
+    const attrs = (buildPayload(listening, values).listening as Record<string, unknown>).listening_questions_attributes as Record<string, unknown>[];
+    expect(attrs[0]).toMatchObject({ id: 3, choices: ["a", "b"], correct_index: 1 });
+    expect(attrs[1]).toMatchObject({ choices: ["x", "y"], correct_index: 0 });
+  });
 });

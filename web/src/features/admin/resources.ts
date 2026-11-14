@@ -2,7 +2,7 @@
 export type Option = { value: string; label: string };
 
 export type FieldDef =
-  | { kind: "text" | "textarea" | "number"; name: string; label: string; required?: boolean; hint?: string }
+  | { kind: "text" | "textarea" | "number" | "lines"; name: string; label: string; required?: boolean; hint?: string }
   | { kind: "select"; name: string; label: string; options: Option[]; required?: boolean }
   | { kind: "remote-select"; name: string; label: string; source: string; labelKey: string }
   | { kind: "id-picker"; name: string; label: string; source: string; labelKey: string }
@@ -97,5 +97,38 @@ export const RESOURCES: ResourceConfig[] = [
     ],
   },
 ];
+
+RESOURCES.push({
+  key: "listening",
+  label: "Listening lessons",
+  path: "listening",
+  paramKey: "listening",
+  hasAudio: true,
+  columns: [
+    { label: "Title", value: (r) => str(r.title) },
+    { label: "Level", value: (r) => str(r.level) },
+    { label: "Questions", value: (r) => str(r.questions_count) },
+    { label: "Status", value: (r) => str(r.status) },
+  ],
+  fields: [
+    { kind: "text", name: "title", label: "Title", required: true },
+    { kind: "textarea", name: "description", label: "Description" },
+    { kind: "select", name: "level", label: "Level", required: true, options: ["beginner", "elementary", "intermediate"].map((v) => ({ value: v, label: v })) },
+    { kind: "textarea", name: "transcript_en", label: "Transcript (English)", required: true },
+    { kind: "textarea", name: "transcript_vi", label: "Transcript (Vietnamese)" },
+    { kind: "number", name: "duration_seconds", label: "Duration (seconds)" },
+    { kind: "number", name: "position", label: "Position" },
+    { kind: "select", name: "status", label: "Status", options: STATUS, required: true },
+    {
+      kind: "list", name: "listening_questions", responseKey: "questions", label: "Questions", itemLabel: "question",
+      fields: [
+        { kind: "text", name: "prompt", label: "Question", required: true },
+        { kind: "lines", name: "choices", label: "Choices (one per line)", hint: "At least two" },
+        { kind: "number", name: "correct_index", label: "Correct choice number (0 = first line)" },
+        { kind: "text", name: "explanation", label: "Explanation (optional)" },
+      ],
+    },
+  ],
+});
 
 export const findResource = (key: string) => RESOURCES.find((r) => r.key === key);
