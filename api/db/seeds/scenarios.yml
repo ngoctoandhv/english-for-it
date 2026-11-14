@@ -1,0 +1,41 @@
+# DRAFT scripted scenarios (not yet reviewed). role "you" = the learner's own line to practise.
+scenarios:
+  - slug: daily-standup
+    title: Daily Standup
+    level: elementary
+    description: "Share what you did, what you will do and what blocks you."
+    situation: "It is 9:30. Your team has its daily standup. You go second."
+    lines:
+      - { speaker: Manager, role: other, en: "Good morning. Let's start. What did you work on yesterday?", vi: "Chào buổi sáng. Bắt đầu nhé. Hôm qua bạn đã làm gì?" }
+      - { speaker: You, role: you, en: "Yesterday I fixed a bug in the login page and reviewed two pull requests.", vi: "Hôm qua tôi đã sửa một lỗi ở trang đăng nhập và review hai pull request.", tip: "Use the past simple for finished work: fixed, reviewed, finished." }
+      - { speaker: Manager, role: other, en: "Great. What will you do today?", vi: "Tốt. Hôm nay bạn sẽ làm gì?" }
+      - { speaker: You, role: you, en: "Today I will write tests and start the payment page.", vi: "Hôm nay tôi sẽ viết test và bắt đầu trang thanh toán.", tip: "Use 'I will' + verb for your plan." }
+      - { speaker: Manager, role: other, en: "Do you have any blockers?", vi: "Bạn có vấn đề gì cản trở không?" }
+      - { speaker: You, role: you, en: "Yes, I need access to the staging server. Could you help me with that?", vi: "Có, tôi cần quyền truy cập máy chủ staging. Bạn có thể giúp tôi không?", tip: "'Could you help me with…?' is a polite way to ask." }
+      - { speaker: Manager, role: other, en: "Sure. I will ask IT today.", vi: "Được. Hôm nay tôi sẽ nhờ IT." }
+  - slug: code-review
+    title: Code Review
+    level: elementary
+    description: "Give and receive feedback on a pull request politely."
+    situation: "A colleague asks you to review their pull request."
+    lines:
+      - { speaker: Colleague, role: other, en: "Hi, could you review my pull request when you have time?", vi: "Chào, bạn có thể review pull request của mình khi rảnh không?" }
+      - { speaker: You, role: you, en: "Sure. I will take a look this afternoon.", vi: "Được. Chiều nay mình sẽ xem.", tip: "'Take a look' is a friendly way to say 'review'." }
+      - { speaker: You, role: you, en: "The code looks good overall. I have one suggestion about the function name.", vi: "Nhìn chung code ổn. Mình có một gợi ý về tên hàm.", tip: "Start with something positive, then give your suggestion." }
+      - { speaker: Colleague, role: other, en: "Thanks. What would you change?", vi: "Cảm ơn. Bạn sẽ đổi thế nào?" }
+      - { speaker: You, role: you, en: "Maybe we can rename it to make it more readable.", vi: "Có lẽ chúng ta có thể đổi tên để dễ đọc hơn.", tip: "'Maybe we can…' sounds gentle, not like an order." }
+      - { speaker: Colleague, role: other, en: "Good point. I will update it and push the change.", vi: "Ý hay. Mình sẽ cập nhật và đẩy thay đổi lên." }
+      - { speaker: You, role: you, en: "Thanks. I will approve it after that.", vi: "Cảm ơn. Mình sẽ phê duyệt sau đó." }
+  - slug: bug-investigation
+    title: Bug Investigation
+    level: intermediate
+    description: "Describe a problem, ask questions and share what you found."
+    situation: "A teammate tells you that the app shows an error after login. You investigate."
+    lines:
+      - { speaker: Teammate, role: other, en: "The app shows an error after I log in. Can you take a look?", vi: "Ứng dụng báo lỗi sau khi mình đăng nhập. Bạn xem giúp được không?" }
+      - { speaker: You, role: you, en: "Of course. Can you reproduce it every time?", vi: "Tất nhiên. Bạn có tái hiện được lỗi mỗi lần không?", tip: "'Reproduce' means to make the problem happen again." }
+      - { speaker: Teammate, role: other, en: "Yes. It happens every time with a new account.", vi: "Có. Lỗi xảy ra mỗi lần với tài khoản mới." }
+      - { speaker: You, role: you, en: "Thanks. I will check the logs and the stack trace.", vi: "Cảm ơn. Mình sẽ kiểm tra log và stack trace." }
+      - { speaker: You, role: you, en: "I found the root cause. The profile data is missing for new accounts.", vi: "Mình đã tìm ra nguyên nhân gốc. Dữ liệu hồ sơ bị thiếu với tài khoản mới.", tip: "Say what you found first, then the reason." }
+      - { speaker: Teammate, role: other, en: "Is there a workaround?", vi: "Có giải pháp tạm thời không?" }
+      - { speaker: You, role: you, en: "Yes. Please fill in your profile first. I will deploy a fix today.", vi: "Có. Hãy điền hồ sơ trước. Hôm nay mình sẽ triển khai bản sửa.", tip: "A workaround is temporary; a fix solves the problem." }

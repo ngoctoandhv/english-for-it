@@ -53,8 +53,8 @@ test("learners cannot open the admin area, admins can create a word", async ({ p
   await page.getByLabel(/^Simple English definition/).fill("A word created by an automated test.");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page).toHaveURL(/\/admin\/words\/\d+/);
-  await page.goto("/admin/words");
-  await expect(page.getByText(`e2eword${stamp}`)).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel(/^Term/)).toHaveValue(`e2eword${stamp}`);
 });
 
 test("quick quiz gives feedback and a score, and progress shows history", async ({ page }) => {
@@ -97,4 +97,33 @@ test("listening lesson: answer questions, see the score and the transcript", asy
   await page.getByRole("button", { name: "Check answers" }).click();
   await expect(page.getByTestId("listening-score")).toContainText("/ 3");
   await expect(page.getByText(/I fixed the login bug/)).toBeVisible();
+});
+
+test("scripted scenario: step through, reveal the learner's line, complete", async ({ page }) => {
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Talker");
+  await page.getByLabel("Email").fill(`talk-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Start learning" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.getByRole("link", { name: "Scenarios" }).click();
+  await page.getByRole("link", { name: /Code Review/ }).click();
+  await expect(page.getByText("could you review my pull request")).toBeVisible();
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByText(/Your turn/)).toBeVisible();
+  await page.getByRole("button", { name: "Show my line" }).click();
+  await expect(page.getByText(/Tip:/)).toBeVisible();
+
+  const done = page.getByText("Scenario complete");
+  const action = page.getByRole("button", { name: /^(Show my line|Continue|Finish)$/ });
+  for (let i = 0; i < 30; i++) {
+    // After the last click the button disappears; a failed click then simply ends the loop.
+    const clicked = await action.first().click({ timeout: 3000 }).then(() => true, () => false);
+    if (!clicked) break;
+  }
+  await expect(page.getByText(/Scenario complete/)).toBeVisible();
+  await page.goto("/scenarios");
+  await expect(page.getByText("Completed")).toBeVisible();
 });

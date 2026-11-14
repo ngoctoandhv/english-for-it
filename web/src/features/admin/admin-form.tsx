@@ -125,7 +125,12 @@ function FieldInput({ field, values, set }: { field: FieldDef; values: Values; s
               {field.fields.map((sub) => (
                 <div key={sub.name} className="space-y-1">
                   <Label htmlFor={`${id}-${i}-${sub.name}`}>{sub.label}</Label>
-                  {sub.kind === "lines" ? (
+                  {sub.kind === "select" ? (
+                    <select id={`${id}-${i}-${sub.name}`} className={selectClass} value={String(item[sub.name] ?? sub.options[0]?.value ?? "")}
+                      onChange={(e) => set(field.name, items.map((it, j) => (j === i ? { ...it, [sub.name]: e.target.value } : it)))}>
+                      {sub.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  ) : sub.kind === "lines" || sub.kind === "textarea" ? (
                     <Textarea id={`${id}-${i}-${sub.name}`} value={String(item[sub.name] ?? "")}
                       onChange={(e) => set(field.name, items.map((it, j) => (j === i ? { ...it, [sub.name]: e.target.value } : it)))} />
                   ) : (

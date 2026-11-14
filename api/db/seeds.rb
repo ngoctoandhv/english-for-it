@@ -49,3 +49,16 @@ listening["lessons"].each_with_index do |l, i|
   end
 end
 puts "Seeded #{ListeningLesson.count} listening lessons"
+
+scenarios = YAML.load_file(Rails.root.join("db/seeds/scenarios.yml"))
+scenarios["scenarios"].each_with_index do |s, i|
+  rec = ItScenario.find_or_initialize_by(slug: s["slug"])
+  rec.assign_attributes(title: s["title"], level: s["level"], description: s["description"], situation: s["situation"], position: i)
+  rec.status = status if rec.new_record?
+  rec.save!
+  rec.scenario_dialogues.destroy_all
+  s["lines"].each_with_index do |l, j|
+    rec.scenario_dialogues.create!(position: j, speaker: l["speaker"], role: l["role"], text_en: l["en"], text_vi: l["vi"], tip: l["tip"])
+  end
+end
+puts "Seeded #{ItScenario.count} scenarios"

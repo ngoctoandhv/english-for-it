@@ -24,3 +24,7 @@ Source of truth: `api/db/schema.rb`. Timestamps are UTC.
 ## M5 (listening)
 - `listening_lessons` (level, transcripts EN/VI, status, Active Storage `audio`), `listening_questions` (`choices` jsonb array, `correct_index`; model validates consistency),
   `listening_attempts` (score, total, answers; many per user and lesson, best score is derived).
+
+## M6 (scenarios)
+- `it_scenarios` (slug unique, level, status), `scenario_dialogues` (position unique per scenario as a DEFERRABLE constraint so lines can be renumbered,
+  role other|you), `scenario_progresses` (unique per user/scenario, `last_position`, `completed_at`).
