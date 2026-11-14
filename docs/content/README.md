@@ -18,3 +18,7 @@ Design basis: the topic areas and the functional language (advice and requests, 
 follow the public syllabi of English for IT (OpenEDG, A2–B2) and English4IT. No text from those courses is copied; all sentences are original.
 The Cisco Networking Academy "Describing and Comparing" page could not be read (it needs JavaScript), so that course's module list was not used.
 Quizlet could not be read either (HTTP 403). The quiz modes (choose, listen, type) and the "next review" feedback follow common study-app patterns and Lingvist's public description.
+
+## Work toolkit content
+`api/db/seeds/toolkit.yml` holds 49 phrases in five categories (pull request feedback, standup, meetings, incidents, email). Same status as the rest: draft until reviewed.
+Verb glosses for the standup builder live in `web/src/lib/toolkit/standup.ts`, and the email templates in `web/src/lib/toolkit/email.ts`; both need the same human review before being promoted as "correct" workplace English.

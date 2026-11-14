@@ -1,0 +1,56 @@
+# DRAFT work phrases (not yet reviewed). Categories: pr_feedback, standup, meeting, incident, email.
+phrases:
+  # Pull request and code review feedback
+  - { c: pr_feedback, en: "Looks good to me.", vi: "Mình thấy ổn." }
+  - { c: pr_feedback, en: "Nice work on this!", vi: "Làm tốt lắm!" }
+  - { c: pr_feedback, en: "I have a small suggestion: could we rename this variable?", vi: "Mình có một gợi ý nhỏ: chúng ta đổi tên biến này được không?" }
+  - { c: pr_feedback, en: "Could you add a test for this case?", vi: "Bạn có thể thêm test cho trường hợp này không?" }
+  - { c: pr_feedback, en: "Would it be better to move this into a separate function?", vi: "Tách đoạn này thành một hàm riêng có tốt hơn không?" }
+  - { c: pr_feedback, en: "I'm not sure I understand this part. Could you explain it?", vi: "Mình chưa chắc hiểu đoạn này. Bạn giải thích giúp được không?" }
+  - { c: pr_feedback, en: "This might cause an error when the list is empty.", vi: "Đoạn này có thể gây lỗi khi danh sách rỗng." }
+  - { c: pr_feedback, en: "Nit: there is a typo in the comment.", vi: "Lỗi nhỏ: có lỗi chính tả trong phần comment." }
+  - { c: pr_feedback, en: "Can we handle the error case here?", vi: "Chúng ta xử lý trường hợp lỗi ở đây được không?" }
+  - { c: pr_feedback, en: "Please update the documentation as well.", vi: "Bạn cập nhật cả tài liệu giúp mình nhé." }
+  - { c: pr_feedback, en: "I'll approve it once the tests pass.", vi: "Mình sẽ phê duyệt khi các test chạy qua." }
+  - { c: pr_feedback, en: "Thanks for the feedback. I'll fix it today.", vi: "Cảm ơn góp ý của bạn. Hôm nay mình sẽ sửa." }
+  - { c: pr_feedback, en: "Good catch! I'll change it.", vi: "Bạn phát hiện đúng đấy! Mình sẽ sửa." }
+  - { c: pr_feedback, en: "I see your point, but I think this approach is simpler. What do you think?", vi: "Mình hiểu ý bạn, nhưng mình nghĩ cách này đơn giản hơn. Bạn thấy sao?" }
+  # Daily standup
+  - { c: standup, en: "Yesterday I worked on the login page.", vi: "Hôm qua tôi làm trang đăng nhập." }
+  - { c: standup, en: "Today I'm going to write tests for the API.", vi: "Hôm nay tôi sẽ viết test cho API." }
+  - { c: standup, en: "I'm blocked by the missing access to the staging server.", vi: "Tôi đang bị chặn vì chưa có quyền truy cập máy chủ staging." }
+  - { c: standup, en: "I have no blockers.", vi: "Tôi không có vấn đề gì cản trở." }
+  - { c: standup, en: "I need a review on my pull request.", vi: "Tôi cần được review pull request của mình." }
+  - { c: standup, en: "I'm almost done with this task.", vi: "Tôi sắp xong việc này." }
+  - { c: standup, en: "I need a bit more time on this ticket.", vi: "Tôi cần thêm một chút thời gian cho ticket này." }
+  - { c: standup, en: "Can someone help me with this error after the standup?", vi: "Sau standup, ai đó giúp tôi xử lý lỗi này được không?" }
+  # Meetings
+  - { c: meeting, en: "Could you clarify what you mean by that?", vi: "Bạn có thể nói rõ hơn ý đó không?" }
+  - { c: meeting, en: "Just to confirm, we agreed to release on Friday, right?", vi: "Để xác nhận lại, chúng ta đã thống nhất phát hành vào thứ Sáu, đúng không?" }
+  - { c: meeting, en: "Sorry, could you repeat that, please?", vi: "Xin lỗi, bạn nhắc lại giúp được không?" }
+  - { c: meeting, en: "Let me summarize what we decided.", vi: "Để tôi tóm tắt những gì chúng ta đã quyết định." }
+  - { c: meeting, en: "I'd like to add one point.", vi: "Tôi muốn bổ sung một ý." }
+  - { c: meeting, en: "Can we take this offline?", vi: "Chúng ta bàn riêng việc này sau được không?" }
+  - { c: meeting, en: "Let's move on to the next topic.", vi: "Chúng ta chuyển sang chủ đề tiếp theo nhé." }
+  - { c: meeting, en: "Who is going to take this action item?", vi: "Ai sẽ nhận việc cần làm này?" }
+  - { c: meeting, en: "I'll send the meeting notes by the end of the day.", vi: "Tôi sẽ gửi biên bản họp trước cuối ngày." }
+  # Incidents
+  - { c: incident, en: "We are investigating an issue with the payment service.", vi: "Chúng tôi đang điều tra sự cố ở dịch vụ thanh toán." }
+  - { c: incident, en: "Some customers cannot log in at the moment.", vi: "Hiện một số khách hàng không đăng nhập được." }
+  - { c: incident, en: "We have identified the cause and we are working on a fix.", vi: "Chúng tôi đã xác định nguyên nhân và đang xử lý." }
+  - { c: incident, en: "We expect to restore the service within thirty minutes.", vi: "Chúng tôi dự kiến khôi phục dịch vụ trong vòng ba mươi phút." }
+  - { c: incident, en: "The service is back to normal. We are still monitoring it.", vi: "Dịch vụ đã hoạt động bình thường. Chúng tôi vẫn đang theo dõi." }
+  - { c: incident, en: "The issue has been resolved. We apologize for the inconvenience.", vi: "Sự cố đã được khắc phục. Chúng tôi xin lỗi vì sự bất tiện." }
+  - { c: incident, en: "I will send another update at ten o'clock.", vi: "Tôi sẽ gửi cập nhật tiếp vào lúc mười giờ." }
+  - { c: incident, en: "Could you roll back the last release?", vi: "Bạn có thể quay lui bản phát hành gần nhất không?" }
+  - { c: incident, en: "Is anyone else seeing this error?", vi: "Có ai khác cũng thấy lỗi này không?" }
+  - { c: incident, en: "Let's write a short postmortem tomorrow.", vi: "Ngày mai chúng ta viết một bản postmortem ngắn nhé." }
+  # Email
+  - { c: email, en: "I hope you are doing well.", vi: "Hy vọng bạn vẫn khỏe." }
+  - { c: email, en: "Thank you for your quick reply.", vi: "Cảm ơn bạn đã trả lời nhanh." }
+  - { c: email, en: "I'm writing to follow up on our meeting.", vi: "Tôi viết email này để tiếp nối cuộc họp của chúng ta." }
+  - { c: email, en: "Please find the report attached.", vi: "Vui lòng xem báo cáo đính kèm." }
+  - { c: email, en: "Could you please send me the latest version?", vi: "Bạn vui lòng gửi cho tôi phiên bản mới nhất được không?" }
+  - { c: email, en: "I apologize for the delay.", vi: "Tôi xin lỗi vì sự chậm trễ." }
+  - { c: email, en: "Let me know if you have any questions.", vi: "Hãy cho tôi biết nếu bạn có câu hỏi nào." }
+  - { c: email, en: "Looking forward to hearing from you.", vi: "Rất mong nhận được phản hồi của bạn." }

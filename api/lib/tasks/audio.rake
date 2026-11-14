@@ -31,6 +31,10 @@ namespace :audio do
       end
     end
 
+    ToolkitPhrase.published.find_each do |phrase|
+      entries << tagged({ file: clip_name(NARRATOR_VOICE, phrase.text_en), voice: NARRATOR_VOICE, text: phrase.text_en }, phrase)
+    end
+
     ListeningLesson.published.find_each do |lesson|
       lines = transcript_lines(lesson.transcript_en)
       voices = speaker_voices(lines.map(&:first))

@@ -170,8 +170,8 @@ test("on a phone the app shows a bottom tab bar and no horizontal scroll", async
 
   const tabBar = page.getByRole("navigation", { name: "Main" });
   await expect(tabBar).toBeVisible();
-  await expect(tabBar.getByRole("link")).toHaveCount(4);
-  for (const path of ["/", "/path", "/practice", "/library", "/listening", "/scenarios", "/progress", "/quiz"]) {
+  await expect(tabBar.getByRole("link")).toHaveCount(5);
+  for (const path of ["/", "/path", "/practice", "/tools", "/tools/standup", "/tools/incident", "/tools/email", "/tools/phrases", "/library", "/listening", "/scenarios", "/progress", "/quiz"]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -242,4 +242,48 @@ test("learning path: next step on home, focused words session, unit steps and gr
 
   await page.goto("/path/daily-standup/quiz");
   await expect(page.getByTestId("quiz-term")).toBeVisible();
+});
+
+
+test("work toolkit: standup, incident and email builders and the phrase bank", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Tools User");
+  await page.getByLabel("Email").fill(`tools-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: "Today" })).toBeVisible();
+
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Tools" }).click();
+  await page.getByRole("link", { name: /^Standup update/ }).click();
+  await page.getByLabel("Yesterday: What? (for example: the login bug)").fill("the login bug");
+  await page.getByLabel("Today: What? (for example: the login bug)").fill("tests for it");
+  await expect(page.getByTestId("tool-output")).toHaveText(
+    "Yesterday I fixed the login bug.\nToday I will write tests for it.\nI have no blockers.",
+  );
+  await page.getByRole("button", { name: "Copy" }).click();
+  await expect(page.getByRole("button", { name: "Copied" })).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain("Yesterday I fixed the login bug.");
+
+  await page.goto("/tools/incident");
+  await page.getByLabel("Service or system").fill("the payment service");
+  await page.getByLabel("What can they not do?").fill("check out");
+  await page.getByLabel("Next update").fill("at 10:00");
+  await expect(page.getByTestId("tool-output")).toHaveText(
+    "We are investigating an issue with the payment service. Some customers cannot check out. We will send the next update at 10:00.",
+  );
+  await page.getByRole("button", { name: "Resolved" }).click();
+  await expect(page.getByTestId("tool-output")).toContainText("has been resolved");
+
+  await page.goto("/tools/email");
+  await page.getByLabel("Recipient's name").fill("Anna");
+  await page.getByLabel("Topic").fill("the release");
+  await expect(page.getByTestId("tool-output")).toContainText("Hi Anna,");
+  await expect(page.getByTestId("tool-output")).toContainText("[first option]");
+
+  await page.goto("/tools/phrases");
+  await expect(page.getByText("Looks good to me.")).toBeVisible();
+  await page.getByRole("button", { name: "Incidents" }).click();
+  await expect(page.getByText("We are investigating an issue with the payment service.")).toBeVisible();
 });
