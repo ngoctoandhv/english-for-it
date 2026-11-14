@@ -219,3 +219,57 @@ scenarios:
       - { speaker: Ngoc, role: other, en: "That's kind. By the way, I heard your release was postponed.", vi: "Bạn tốt quá. Nhân tiện, mình nghe nói đợt phát hành của bạn bị hoãn." }
       - { speaker: You, role: you, en: "Yes, it was. I was frustrated at first, but I am relieved we found the bug early.", vi: "Ừ, đúng vậy. Lúc đầu mình bực, nhưng mình thấy nhẹ nhõm vì đã tìm ra lỗi sớm.", tip: "Name your feelings: frustrated, relieved, worried, excited." }
       - { speaker: Ngoc, role: other, en: "Good attitude. Let's get lunch to celebrate anyway.", vi: "Thái độ tốt đấy. Dù sao mình cũng đi ăn trưa ăn mừng nhé." }
+  # A1 and B2 (batch 4). DRAFT.
+  - slug: first-day-at-work
+    title: First Day at Work
+    level: a1
+    description: "Introduce yourself to a new colleague on your first day."
+    situation: "It is your first day. A colleague, Nam, comes to your desk."
+    lines:
+      - { speaker: Nam, role: other, en: "Hi! Welcome to the team. My name is Nam.", vi: "Chào bạn! Chào mừng đến với nhóm. Tôi tên là Nam." }
+      - { speaker: You, role: you, en: "Hi Nam. Nice to meet you. My name is Thu.", vi: "Chào anh Nam. Rất vui được gặp anh. Em tên là Thu.", tip: "Say 'Nice to meet you' and then your name." }
+      - { speaker: Nam, role: other, en: "What is your job, Thu?", vi: "Thu làm nghề gì?" }
+      - { speaker: You, role: you, en: "I work as a developer. I write code for the mobile app.", vi: "Em làm lập trình viên. Em viết mã cho ứng dụng di động.", tip: "'I work as a…' + your job." }
+      - { speaker: Nam, role: other, en: "Great. Where do you live?", vi: "Tuyệt. Em sống ở đâu?" }
+      - { speaker: You, role: you, en: "I live in Da Nang, but I come from Hue.", vi: "Em sống ở Đà Nẵng, nhưng em đến từ Huế.", tip: "'I live in…' for now, 'I come from…' for your home town." }
+      - { speaker: Nam, role: other, en: "Nice. Tell me if you have a question.", vi: "Hay đấy. Có câu hỏi gì thì cứ nói với anh nhé." }
+      - { speaker: You, role: you, en: "Thank you. You are very kind.", vi: "Cảm ơn anh. Anh tốt quá.", tip: "A short, warm thank-you." }
+  - slug: asking-it-for-help-basic
+    title: Asking IT for Help
+    level: a1
+    description: "Explain a simple computer problem and follow the steps."
+    situation: "You cannot log in to your computer. You go to the IT desk."
+    lines:
+      - { speaker: You, role: you, en: "Hi, can you help me? I cannot log in.", vi: "Chào anh, anh giúp em được không? Em không đăng nhập được.", tip: "Start with 'Can you help me?' and then the problem." }
+      - { speaker: IT, role: other, en: "Sure. Did you type your password again?", vi: "Được. Em gõ lại mật khẩu chưa?" }
+      - { speaker: You, role: you, en: "Yes, two times. It does not work.", vi: "Rồi ạ, hai lần. Không được.", tip: "Use 'It does not work' for any problem." }
+      - { speaker: IT, role: other, en: "OK. Please restart your laptop and try again.", vi: "Được. Em khởi động lại máy rồi thử lại nhé." }
+      - { speaker: You, role: you, en: "OK. Now I can log in. Thank you very much!", vi: "Vâng. Giờ em đăng nhập được rồi. Cảm ơn anh nhiều!", tip: "Say what happened, then thank them." }
+      - { speaker: IT, role: other, en: "No problem. Have a nice day.", vi: "Không có gì. Chúc em một ngày tốt lành." }
+  - slug: negotiating-scope
+    title: Negotiating Scope
+    level: b2
+    description: "Push back on an unrealistic deadline and agree on a compromise with a stakeholder."
+    situation: "A product owner wants three new features by Friday. Your team can realistically finish one."
+    lines:
+      - { speaker: Product owner, role: other, en: "The client wants all three features by Friday. Can we make it?", vi: "Khách hàng muốn cả ba tính năng trước thứ Sáu. Chúng ta kịp không?" }
+      - { speaker: You, role: you, en: "I understand the pressure, but to be honest, three features by Friday isn't realistic without cutting testing.", vi: "Tôi hiểu áp lực, nhưng thành thật mà nói, ba tính năng trước thứ Sáu là không thực tế nếu không cắt bớt kiểm thử.", tip: "Acknowledge the pressure first, then push back with a reason." }
+      - { speaker: Product owner, role: other, en: "What can you deliver, then?", vi: "Vậy các bạn có thể bàn giao được gì?" }
+      - { speaker: You, role: you, en: "We can deliver the export feature, fully tested, by Friday. The other two would follow next sprint.", vi: "Chúng tôi có thể bàn giao tính năng xuất dữ liệu, đã kiểm thử đầy đủ, trước thứ Sáu. Hai tính năng còn lại sẽ có vào sprint sau.", tip: "Offer a concrete alternative, not just a no." }
+      - { speaker: Product owner, role: other, en: "The client may not be happy with that.", vi: "Khách hàng có thể không hài lòng với phương án đó." }
+      - { speaker: You, role: you, en: "Bear in mind that a rushed release could break payments. On balance, one reliable feature is a better outcome.", vi: "Hãy lưu ý rằng phát hành vội có thể làm hỏng phần thanh toán. Cân nhắc mọi mặt, một tính năng ổn định là kết quả tốt hơn.", tip: "Use the risk to persuade: 'Bear in mind…', 'On balance…'" }
+      - { speaker: Product owner, role: other, en: "OK. Could you help me explain the rationale to the client?", vi: "Được. Bạn giúp tôi giải thích lý do cho khách hàng được không?" }
+      - { speaker: You, role: you, en: "Of course. I'll outline the plan and the risks in a short email today.", vi: "Tất nhiên. Hôm nay tôi sẽ trình bày khái quát kế hoạch và rủi ro trong một email ngắn.", tip: "Close with a clear next step and owner." }
+  - slug: presenting-a-design
+    title: Presenting a Design
+    level: b2
+    description: "Present a technical design, answer a hard question and summarize."
+    situation: "You present a new caching design to senior engineers."
+    lines:
+      - { speaker: You, role: you, en: "Let me outline the design. We put a cache in front of the product service to cut database load.", vi: "Để tôi trình bày khái quát thiết kế. Chúng tôi đặt bộ nhớ đệm trước dịch vụ sản phẩm để giảm tải cho cơ sở dữ liệu.", tip: "'Let me outline…' opens a presentation clearly." }
+      - { speaker: Architect, role: other, en: "What happens when a price changes? Users might see the old price.", vi: "Chuyện gì xảy ra khi giá thay đổi? Người dùng có thể thấy giá cũ." }
+      - { speaker: You, role: you, en: "Good question. We clear the cache entry whenever a price is updated, so the delay is a few seconds at most.", vi: "Câu hỏi hay. Chúng tôi xóa mục trong bộ nhớ đệm mỗi khi giá được cập nhật, nên độ trễ tối đa chỉ vài giây.", tip: "Thank the asker, then answer directly with a number." }
+      - { speaker: Architect, role: other, en: "And at checkout?", vi: "Còn lúc thanh toán thì sao?" }
+      - { speaker: You, role: you, en: "It's worth noting that checkout always reads the price from the database, whereas product pages use the cache.", vi: "Cần lưu ý rằng lúc thanh toán luôn đọc giá từ cơ sở dữ liệu, trong khi đó trang sản phẩm dùng bộ nhớ đệm.", tip: "'Whereas' compares two cases in one sentence." }
+      - { speaker: Architect, role: other, en: "That sounds reasonable. What's the expected gain?", vi: "Nghe hợp lý. Lợi ích dự kiến là gì?" }
+      - { speaker: You, role: you, en: "To sum up, we expect database load to drop by about sixty percent, with no stale prices at checkout.", vi: "Tóm lại, chúng tôi kỳ vọng tải cơ sở dữ liệu giảm khoảng sáu mươi phần trăm, và không có giá cũ khi thanh toán.", tip: "End with 'To sum up' and the key number." }

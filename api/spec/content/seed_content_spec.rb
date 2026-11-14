@@ -4,7 +4,7 @@ require "rails_helper"
 # These do not prove the English is right; they catch broken references, missing fields and inconsistent data.
 RSpec.describe "Seed content" do
   root = Rails.root.join("db/seeds")
-  files = %w[it_vocabulary it_vocabulary_2 it_vocabulary_3].map { |f| YAML.load_file(root.join("#{f}.yml")) }
+  files = %w[it_vocabulary it_vocabulary_2 it_vocabulary_3 it_vocabulary_4].map { |f| YAML.load_file(root.join("#{f}.yml")) }
   words = files.flat_map { |d| d["words"] }
   categories = files.flat_map { |d| d["categories"].map { |c| c["slug"] } }
   collections = files.flat_map { |d| d["collections"] }

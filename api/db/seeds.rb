@@ -4,7 +4,7 @@
 status = Rails.env.development? ? "published" : "draft"
 
 # Vocabulary comes in batches (one file per batch); categories, words and collections are merged before importing.
-data = %w[it_vocabulary it_vocabulary_2 it_vocabulary_3].map { |f| YAML.load_file(Rails.root.join("db/seeds/#{f}.yml")) }
+data = %w[it_vocabulary it_vocabulary_2 it_vocabulary_3 it_vocabulary_4].map { |f| YAML.load_file(Rails.root.join("db/seeds/#{f}.yml")) }
           .each_with_object({ "categories" => [], "words" => [], "collections" => [] }) { |d, all| all.each_key { |k| all[k].concat(d.fetch(k, [])) } }
 
 category_levels = data["categories"].to_h { |c| [ c["slug"], c["level"] ] }

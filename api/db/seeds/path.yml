@@ -49,3 +49,15 @@ units:
       steps: [ { words: opinions-and-agreeing }, { listening: "Agreeing and Disagreeing Politely" }, { scenario: disagreeing-politely }, quiz ] }
   - { slug: feelings-and-reactions, title: Feelings & Reactions, level: b1, description: "Say how you feel and react to good and bad news.",
       steps: [ { words: feelings-and-reactions }, { listening: "Good News and Bad News" }, { scenario: reacting-to-news }, quiz ] }
+  - { slug: introducing-yourself, title: Introducing Yourself, level: a1, description: "Say your name, your job and where you live on your first day.",
+      steps: [ { words: introducing-yourself }, { listening: "First Day: Meeting the Team" }, { scenario: first-day-at-work }, quiz ] }
+  - { slug: computer-basics, title: Computer Basics, level: a1, description: "Click, save, log in: the first words for using a computer at work.",
+      steps: [ { words: computer-basics }, { listening: "My Computer Does Not Work" }, { scenario: asking-it-for-help-basic }, quiz ] }
+  - { slug: your-work-day, title: Your Work Day, level: a1, description: "Times, tasks and simple questions for every day at work.",
+      steps: [ { words: your-work-day }, quiz ] }
+  - { slug: leading-and-influencing, title: Leading & Influencing, level: b2, audiences: [manager, analyst, developer], description: "Persuade, negotiate and push back without damaging relationships.",
+      steps: [ { words: leading-and-influencing }, { listening: "Paying Down Technical Debt" }, { scenario: negotiating-scope }, quiz ] }
+  - { slug: advanced-architecture, title: Advanced Architecture, level: b2, audiences: [developer, devops], description: "Discuss reliability, consistency and concurrency precisely.",
+      steps: [ { words: advanced-architecture }, { listening: "Designing for Failure" }, quiz ] }
+  - { slug: presenting-and-writing, title: Presenting & Writing, level: b2, description: "Structure presentations and documents like a senior engineer.",
+      steps: [ { words: presenting-and-writing }, { scenario: presenting-a-design }, quiz ] }
