@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :scenario_progresses, dependent: :destroy
   has_many :unit_completions, dependent: :destroy
   has_many :unit_quiz_results, dependent: :destroy
+  has_many :push_subscriptions, dependent: :destroy
   has_many :content_reports, dependent: :destroy
   has_many :events, dependent: :delete_all
   has_many :review_logs, dependent: :restrict_with_error # erased only through Accounts::Erase
@@ -32,6 +33,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :role, inclusion: { in: ROLES }
   validates :level, inclusion: { in: LEVELS }, allow_nil: true
+  validates :reminder_hour, inclusion: { in: 0..23 }, allow_nil: true
   validates :focus_role, inclusion: { in: FOCUS_ROLES }, allow_nil: true
   validates :focus_goal, inclusion: { in: FOCUS_GOALS }, allow_nil: true
   validates :daily_goal_minutes, inclusion: { in: GOALS }

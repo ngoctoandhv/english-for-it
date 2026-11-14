@@ -428,3 +428,26 @@ test("public pages: landing try-it, glossary, privacy and terms work signed out 
   await page.goto("/sitemap.xml");
   await expect(page.locator("body")).toContainText("/glossary");
 });
+
+test("installable app and reminders: manifest, service worker, icons and the Settings section", async ({ page }) => {
+  await page.goto("/manifest.webmanifest");
+  await expect(page.locator("body")).toContainText("standalone");
+  await page.goto("/sw.js");
+  await expect(page.locator("body")).toContainText("showNotification");
+  const icon = await page.goto("/pwa-icon/192");
+  expect(icon?.headers()["content-type"]).toContain("image/png");
+
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Reminder");
+  await page.getByLabel("Email").fill(`remind-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+  await expect(page.getByTestId("welcome-back")).toHaveCount(0);
+
+  await page.getByRole("link", { name: "Settings" }).click();
+  await expect(page.getByRole("heading", { name: "Daily reminder" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Turn on reminders" })).toBeVisible();
+  await expect(page.getByText(/never send streak or guilt/)).toBeVisible();
+});

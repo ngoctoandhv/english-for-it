@@ -11,6 +11,8 @@ export type User = {
   time_zone: string;
   onboarded: boolean;
   email_verified: boolean;
+  reminder_hour: number | null;
+  push_devices: number;
   focus_role: FocusRole | null;
   focus_goal: FocusGoal | null;
   created_at: string;

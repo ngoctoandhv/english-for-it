@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, JetBrains_Mono } from "next/font/google";
 import { AuthProvider } from "@/features/auth/auth-provider";
+import { RegisterServiceWorker } from "@/lib/pwa/register";
 import { I18nProvider } from "@/lib/i18n/provider";
 import { ThemeProvider, themeInitScript } from "@/lib/theme/provider";
 import { SITE_URL } from "@/lib/site";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           <I18nProvider>
             <AuthProvider>{children}</AuthProvider>
+            <RegisterServiceWorker />
           </I18nProvider>
         </ThemeProvider>
       </body>
