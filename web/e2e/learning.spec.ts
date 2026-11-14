@@ -124,7 +124,6 @@ test("scripted scenario: step through, reveal the learner's line, complete", asy
   await page.getByRole("button", { name: "Show my line" }).click();
   await expect(page.getByText(/Tip:/)).toBeVisible();
 
-  const done = page.getByText("Scenario complete");
   const action = page.getByRole("button", { name: /^(Show my line|Continue|Finish)$/ });
   for (let i = 0; i < 30; i++) {
     // After the last click the button disappears; a failed click then simply ends the loop.
@@ -176,5 +175,28 @@ test("on a phone the app shows a bottom tab bar and no horizontal scroll", async
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, `horizontal overflow on ${path}`).toBeLessThanOrEqual(1);
   }
+  await context.close();
+});
+
+test("admin screens fit a phone and are translated", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const page = await context.newPage();
+  await page.goto("/login");
+  await page.getByLabel("Email").fill("admin@example.test");
+  await page.getByLabel("Password").fill("dev-password-123");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Admin" })).toBeVisible();
+
+  for (const path of ["/admin", "/admin/words", "/admin/words/new", "/admin/listening", "/admin/scenarios", "/admin/collections"]) {
+    await page.goto(path);
+    await expect(page.getByRole("main")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `horizontal overflow on ${path}`).toBeLessThanOrEqual(1);
+  }
+
+  await page.getByRole("button", { name: "vi", exact: true }).click();
+  await page.goto("/admin/words/new");
+  await expect(page.getByRole("heading", { name: "Tạo từ" })).toBeVisible();
   await context.close();
 });
