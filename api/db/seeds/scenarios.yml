@@ -21,6 +21,7 @@ scenarios:
     lines:
       - { speaker: Colleague, role: other, en: "Hi, could you review my pull request when you have time?", vi: "Chào, bạn có thể review pull request của mình khi rảnh không?" }
       - { speaker: You, role: you, en: "Sure. I will take a look this afternoon.", vi: "Được. Chiều nay mình sẽ xem.", tip: "'Take a look' is a friendly way to say 'review'." }
+      - { speaker: Colleague, role: other, en: "Hi again. Did you finish the review?", vi: "Chào bạn lần nữa. Bạn review xong chưa?" }
       - { speaker: You, role: you, en: "The code looks good overall. I have one suggestion about the function name.", vi: "Nhìn chung code ổn. Mình có một gợi ý về tên hàm.", tip: "Start with something positive, then give your suggestion." }
       - { speaker: Colleague, role: other, en: "Thanks. What would you change?", vi: "Cảm ơn. Bạn sẽ đổi thế nào?" }
       - { speaker: You, role: you, en: "Maybe we can rename it to make it more readable.", vi: "Có lẽ chúng ta có thể đổi tên để dễ đọc hơn.", tip: "'Maybe we can…' sounds gentle, not like an order." }
@@ -36,6 +37,7 @@ scenarios:
       - { speaker: You, role: you, en: "Of course. Can you reproduce it every time?", vi: "Tất nhiên. Bạn có tái hiện được lỗi mỗi lần không?", tip: "'Reproduce' means to make the problem happen again." }
       - { speaker: Teammate, role: other, en: "Yes. It happens every time with a new account.", vi: "Có. Lỗi xảy ra mỗi lần với tài khoản mới." }
       - { speaker: You, role: you, en: "Thanks. I will check the logs and the stack trace.", vi: "Cảm ơn. Mình sẽ kiểm tra log và stack trace." }
+      - { speaker: Teammate, role: other, en: "Thanks. Let me know what you find.", vi: "Cảm ơn. Có kết quả thì báo mình nhé." }
       - { speaker: You, role: you, en: "I found the root cause. The profile data is missing for new accounts.", vi: "Mình đã tìm ra nguyên nhân gốc. Dữ liệu hồ sơ bị thiếu với tài khoản mới.", tip: "Say what you found first, then the reason." }
       - { speaker: Teammate, role: other, en: "Is there a workaround?", vi: "Có giải pháp tạm thời không?" }
       - { speaker: You, role: you, en: "Yes. Please fill in your profile first. I will deploy a fix today.", vi: "Có. Hãy điền hồ sơ trước. Hôm nay mình sẽ triển khai bản sửa.", tip: "A workaround is temporary; a fix solves the problem." }
