@@ -1,51 +1,51 @@
 # DRAFT learning path built from existing content. Each unit is a route: words -> listening -> scenario -> quiz.
 # Steps: {words: collection-slug} | {listening: lesson title} | {scenario: slug} | quiz
 units:
-  - { slug: daily-standup, title: Daily Standup, level: elementary, description: "Share what you did, what you will do and what blocks you.",
+  - { slug: daily-standup, title: Daily Standup, level: a2, description: "Share what you did, what you will do and what blocks you.",
       steps: [ { words: daily-standup }, { listening: "Daily Standup: Yesterday, Today, Blockers" }, { scenario: daily-standup }, quiz ] }
-  - { slug: meetings-and-email, audiences: [analyst, manager, daily_work], title: Meetings & Email, level: elementary, description: "Plan meetings, ask for clarification and write clear work emails.",
+  - { slug: meetings-and-email, audiences: [analyst, manager, daily_work], title: Meetings & Email, level: a2, description: "Plan meetings, ask for clarification and write clear work emails.",
       steps: [ { words: meetings-and-email }, { listening: "Setting Up a Meeting" }, { scenario: asking-for-clarification }, quiz ] }
-  - { slug: devices-and-support, title: Devices & IT Support, level: elementary, description: "Talk about equipment and ask IT support for help.",
+  - { slug: devices-and-support, title: Devices & IT Support, level: a1, description: "Talk about equipment and ask IT support for help.",
       steps: [ { words: devices-and-hardware }, { listening: "Describing and Comparing Two Laptops" }, { scenario: asking-it-support }, quiz ] }
-  - { slug: code-review, audiences: [developer, qa, devops], title: Code Review, level: elementary, description: "Give and receive feedback on pull requests politely.",
+  - { slug: code-review, audiences: [developer, qa, devops], title: Code Review, level: a2, description: "Give and receive feedback on pull requests politely.",
       steps: [ { words: code-review }, { listening: "Code Review Feedback" }, { scenario: code-review }, { scenario: commenting-on-a-ticket }, quiz ] }
-  - { slug: bug-investigation, audiences: [developer, qa], title: Bug Investigation, level: intermediate, description: "Describe a problem, ask questions and share what you found.",
+  - { slug: bug-investigation, audiences: [developer, qa], title: Bug Investigation, level: b1, description: "Describe a problem, ask questions and share what you found.",
       steps: [ { words: bug-investigation }, { listening: "Reporting a Bug" }, { scenario: bug-investigation }, quiz ] }
-  - { slug: incident-update, audiences: [devops, developer, manager], title: Incident Update, level: intermediate, description: "Tell your team and customers what is wrong and when you will update again.",
+  - { slug: incident-update, audiences: [devops, developer, manager], title: Incident Update, level: b2, description: "Tell your team and customers what is wrong and when you will update again.",
       steps: [ { words: cloud-and-data }, { words: deploy-and-release }, { listening: "Server Outage Update" }, { scenario: incident-update }, quiz ] }
-  - { slug: security-basics, audiences: [devops, developer], title: Networks & Security, level: intermediate, description: "Words and phrases for connections, requests and keeping systems safe.",
+  - { slug: security-basics, audiences: [devops, developer], title: Networks & Security, level: b1, description: "Words and phrases for connections, requests and keeping systems safe.",
       steps: [ { words: networking-and-security }, { listening: "A Security Reminder" }, quiz ] }
-  - { slug: compare-and-decide, audiences: [analyst, manager, developer], title: Compare & Decide, level: intermediate, description: "Compare two solutions and recommend one.",
+  - { slug: compare-and-decide, audiences: [analyst, manager, developer], title: Compare & Decide, level: b2, description: "Compare two solutions and recommend one.",
       steps: [ { words: describing-and-comparing }, { scenario: comparing-two-options }, quiz ] }
-  - { slug: job-interview, audiences: [interview], title: Job Interview, level: intermediate, description: "Introduce yourself and talk about your experience and strengths.",
+  - { slug: job-interview, audiences: [interview], title: Job Interview, level: b1, description: "Introduce yourself and talk about your experience and strengths.",
       steps: [ { words: job-interview }, { listening: "Tell Me About Yourself" }, { scenario: tell-me-about-yourself }, quiz ] }
-  - { slug: say-it-right, title: Say It Right, level: elementary, description: "Pronounce the IT words that people often get wrong, such as cache, queue and daemon.",
+  - { slug: say-it-right, title: Say It Right, level: a2, description: "Pronounce the IT words that people often get wrong, such as cache, queue and daemon.",
       steps: [ { words: say-it-right }, quiz ] }
-  - { slug: working-together, title: Working Together, level: elementary, description: "Words and phrases for raising concerns, giving a heads-up and asking for help kindly.",
+  - { slug: working-together, title: Working Together, level: a2, description: "Words and phrases for raising concerns, giving a heads-up and asking for help kindly.",
       steps: [ { words: working-together }, quiz ] }
-  - { slug: testing-and-qa, title: Testing & QA, level: intermediate, audiences: [qa, developer], description: "Talk about test cases, flaky tests, bug reports and how serious a bug is.",
+  - { slug: testing-and-qa, title: Testing & QA, level: b1, audiences: [qa, developer], description: "Talk about test cases, flaky tests, bug reports and how serious a bug is.",
       steps: [ { words: testing-and-qa }, quiz ] }
-  - { slug: ci-cd-and-devops, title: CI/CD & DevOps, level: intermediate, audiences: [devops, developer], description: "Builds, monitoring, incidents, rollouts and the words of the on-call engineer.",
+  - { slug: ci-cd-and-devops, title: CI/CD & DevOps, level: b2, audiences: [devops, developer], description: "Builds, monitoring, incidents, rollouts and the words of the on-call engineer.",
       steps: [ { words: ci-cd-and-devops }, quiz ] }
-  - { slug: apis-and-architecture, title: APIs & Architecture, level: intermediate, audiences: [developer, devops], description: "Explain APIs, caches, queues and how services fit together.",
+  - { slug: apis-and-architecture, title: APIs & Architecture, level: b2, audiences: [developer, devops], description: "Explain APIs, caches, queues and how services fit together.",
       steps: [ { words: apis-and-architecture }, quiz ] }
-  - { slug: frontend-and-backend, title: Frontend & Backend, level: intermediate, audiences: [developer], description: "Words for the parts of a web application and how they are built.",
+  - { slug: frontend-and-backend, title: Frontend & Backend, level: b1, audiences: [developer], description: "Words for the parts of a web application and how they are built.",
       steps: [ { words: frontend-and-backend }, quiz ] }
-  - { slug: projects-and-planning, title: Projects & Planning, level: intermediate, audiences: [manager, analyst], description: "Scope, stakeholders, milestones and the words of planning meetings.",
+  - { slug: projects-and-planning, title: Projects & Planning, level: b1, audiences: [manager, analyst], description: "Scope, stakeholders, milestones and the words of planning meetings.",
       steps: [ { words: projects-and-planning }, quiz ] }
-  - { slug: small-talk, title: Small Talk, level: elementary, description: "Start and end conversations with colleagues naturally.",
+  - { slug: small-talk, title: Small Talk, level: a1, description: "Start and end conversations with colleagues naturally.",
       steps: [ { words: small-talk }, { listening: "Monday Morning Small Talk" }, { scenario: small-talk-at-work }, quiz ] }
-  - { slug: polite-requests, title: Polite Requests, level: elementary, description: "Ask for help, say thanks and answer politely.",
+  - { slug: polite-requests, title: Polite Requests, level: a1, description: "Ask for help, say thanks and answer politely.",
       steps: [ { words: polite-requests }, { listening: "Asking a Colleague for Help" }, { scenario: asking-for-a-favor }, quiz ] }
-  - { slug: calls-and-video-meetings, title: Calls & Video Meetings, level: elementary, description: "Mute, share your screen, deal with a bad connection.",
+  - { slug: calls-and-video-meetings, title: Calls & Video Meetings, level: a2, description: "Mute, share your screen, deal with a bad connection.",
       steps: [ { words: calls-and-video-meetings }, { listening: "A Video Call With Problems" }, { scenario: video-call-problems }, quiz ] }
-  - { slug: clarifying-and-checking, title: Clarifying & Checking, level: elementary, description: "Ask people to repeat, explain and confirm without feeling awkward.",
+  - { slug: clarifying-and-checking, title: Clarifying & Checking, level: a2, description: "Ask people to repeat, explain and confirm without feeling awkward.",
       steps: [ { words: clarifying-and-checking }, { listening: "Sorry, Could You Repeat That?" }, { scenario: checking-you-understood }, quiz ] }
-  - { slug: time-and-plans, title: Time & Plans, level: elementary, description: "Talk about delays, free time and changes of plan.",
+  - { slug: time-and-plans, title: Time & Plans, level: a1, description: "Talk about delays, free time and changes of plan.",
       steps: [ { words: time-and-plans }, { listening: "Running Late and Rescheduling" }, { scenario: rescheduling-a-meeting }, quiz ] }
-  - { slug: office-life, title: Office Life, level: elementary, description: "People, time off and everyday life at the office.",
+  - { slug: office-life, title: Office Life, level: a1, description: "People, time off and everyday life at the office.",
       steps: [ { words: office-life }, { listening: "A Day Off and Working From Home" }, { scenario: asking-for-a-day-off }, quiz ] }
-  - { slug: opinions-and-agreeing, title: Opinions & Agreeing, level: intermediate, description: "Give your view, agree and disagree politely in meetings.",
+  - { slug: opinions-and-agreeing, title: Opinions & Agreeing, level: b1, description: "Give your view, agree and disagree politely in meetings.",
       steps: [ { words: opinions-and-agreeing }, { listening: "Agreeing and Disagreeing Politely" }, { scenario: disagreeing-politely }, quiz ] }
-  - { slug: feelings-and-reactions, title: Feelings & Reactions, level: intermediate, description: "Say how you feel and react to good and bad news.",
+  - { slug: feelings-and-reactions, title: Feelings & Reactions, level: b1, description: "Say how you feel and react to good and bad news.",
       steps: [ { words: feelings-and-reactions }, { listening: "Good News and Bad News" }, { scenario: reacting-to-news }, quiz ] }

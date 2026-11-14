@@ -7,6 +7,7 @@ status = Rails.env.development? ? "published" : "draft"
 data = %w[it_vocabulary it_vocabulary_2 it_vocabulary_3].map { |f| YAML.load_file(Rails.root.join("db/seeds/#{f}.yml")) }
           .each_with_object({ "categories" => [], "words" => [], "collections" => [] }) { |d, all| all.each_key { |k| all[k].concat(d.fetch(k, [])) } }
 
+category_levels = data["categories"].to_h { |c| [ c["slug"], c["level"] ] }
 categories = data["categories"].each_with_index.to_h do |c, i|
   rec = VocabularyCategory.find_or_initialize_by(slug: c["slug"])
   rec.update!(name: c["name"], position: i)
@@ -17,7 +18,9 @@ words = {}
 data["words"].each do |w|
   rec = VocabularyWord.find_or_initialize_by(term: w["t"], part_of_speech: w["pos"])
   rec.assign_attributes(ipa: w["ipa"], meaning_vi: w["vi"], definition_en: w["def"],
-                        vocabulary_category: categories.fetch(w["cat"]))
+                        vocabulary_category: categories.fetch(w["cat"]),
+                        # CEFR level: an estimate from the topic (category level) unless the word sets its own (lv). Needs review.
+                        cefr_level: w["lv"] || category_levels[w["cat"]])
   rec.status = status if rec.new_record?
   rec.save!
   # Update in place (keeps ids, so attached audio survives re-seeding).

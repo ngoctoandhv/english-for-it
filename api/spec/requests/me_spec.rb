@@ -25,10 +25,10 @@ RSpec.describe "Me", type: :request do
   end
 
   it "completes onboarding" do
-    post "/api/v1/me/onboarding", params: { user: { level: "beginner", daily_goal_minutes: 5, time_zone: "Asia/Ho_Chi_Minh" } },
+    post "/api/v1/me/onboarding", params: { user: { level: "a1", daily_goal_minutes: 5, time_zone: "Asia/Ho_Chi_Minh" } },
                                   headers: auth_headers(user), as: :json
     expect(response).to have_http_status(:ok)
-    expect(json["user"]).to include("onboarded" => true, "level" => "beginner", "time_zone" => "Asia/Ho_Chi_Minh")
+    expect(json["user"]).to include("onboarded" => true, "level" => "a1", "time_zone" => "Asia/Ho_Chi_Minh")
   end
 
   it "rejects invalid onboarding values" do

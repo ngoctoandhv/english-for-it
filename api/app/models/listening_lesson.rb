@@ -2,7 +2,8 @@ class ListeningLesson < ApplicationRecord
   include Publishable
   include AudioAttachable
 
-  LEVELS = User::LEVELS
+  LEVELS = Cefr::LEVELS
+  normalizes :level, with: ->(l) { Cefr.normalize(l) }
 
   has_many :listening_questions, -> { order(:position, :id) }, dependent: :destroy, inverse_of: :listening_lesson
   has_many :listening_attempts, dependent: :destroy

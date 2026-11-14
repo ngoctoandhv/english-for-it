@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { LevelBadge } from "@/components/ui/level-badge";
+import { CEFR_LEVELS } from "@/lib/cefr";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ export function LibraryPage() {
   const { t } = useI18n();
   const [categories, setCategories] = useState<Category[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [filters, setFilters] = useState({ q: "", category: "", collection: "" });
+  const [filters, setFilters] = useState({ q: "", category: "", collection: "", level: "" });
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [words, setWords] = useState<WordSummary[]>([]);
@@ -56,6 +58,10 @@ export function LibraryPage() {
         role="search"
       >
         <Input className="sm:max-w-56" placeholder={t("lib.search")} aria-label={t("lib.searchLabel")} value={query} onChange={(e) => setQuery(e.target.value)} />
+        <select className={selectClass} aria-label={t("lib.level")} value={filters.level} onChange={(e) => update({ level: e.target.value })}>
+          <option value="">{t("lib.allLevels")}</option>
+          {CEFR_LEVELS.map((l) => <option key={l} value={l}>{t(`level.${l}`)}</option>)}
+        </select>
         <select className={selectClass} aria-label={t("lib.topic")} value={filters.category} onChange={(e) => update({ category: e.target.value, collection: "" })}>
           <option value="">{t("lib.allTopics")}</option>
           {categories.map((c) => (
@@ -85,6 +91,7 @@ export function LibraryPage() {
             <PlayButton term={w.term} audioUrl={w.audio_url} />
             <Link href={`/library/${w.id}`} className="min-w-0 flex-1 rounded-md py-1 hover:bg-muted/50">
               <span className="font-display text-base">{w.term}</span>{" "}
+              <LevelBadge level={w.level} className="mr-1 align-middle" />
               <span className="font-display text-xs text-muted-foreground">{w.ipa} · {w.part_of_speech}</span>
               <span className="block truncate text-sm text-muted-foreground">{w.meaning_vi}</span>
             </Link>

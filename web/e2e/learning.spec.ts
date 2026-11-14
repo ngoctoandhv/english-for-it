@@ -530,3 +530,27 @@ test("everyday English: a path unit with words, listening and a scenario, and th
   await expect(page.getByText("Not bad, thanks. How about you?")).toBeVisible();
   await expect(page.getByText(/Always ask back/)).toBeVisible();
 });
+
+test("CEFR levels: A1-B2 in onboarding, the path and the library filter", async ({ page }) => {
+  await page.goto("/register");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Name").fill("Leveller");
+  await page.getByLabel("Email").fill(`cefr-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  for (const l of ["A1 · Beginner", "A2 · Elementary", "B1 · Intermediate", "B2 · Upper intermediate"]) {
+    await expect(page.getByLabel(l)).toBeAttached();
+  }
+  await page.getByLabel("B1 · Intermediate").check({ force: true });
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.goto("/path");
+  for (const h of ["A1 · Beginner", "A2 · Elementary", "B1 · Intermediate", "B2 · Upper intermediate"]) {
+    await expect(page.getByRole("heading", { name: h })).toBeVisible();
+  }
+
+  await page.goto("/library");
+  await page.getByLabel("Level").selectOption("b2");
+  await expect(page.locator("main li").first()).toContainText("B2");
+});

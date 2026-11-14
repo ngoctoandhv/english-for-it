@@ -4,6 +4,6 @@
   user = User.find_or_initialize_by(email: email)
   next unless user.new_record?
 
-  user.update!(attrs.merge(password: "dev-password-123", level: "elementary", time_zone: "Asia/Ho_Chi_Minh",
+  user.update!(attrs.merge(password: "dev-password-123", level: "a2", time_zone: "Asia/Ho_Chi_Minh",
                            onboarded_at: Time.current))
 end

@@ -11,6 +11,7 @@ module Api
                        .where(learning_collections: { slug: params[:collection], status: "published" })
                        .reorder("collection_words.position")
         end
+        scope = scope.where(cefr_level: Cefr.normalize(params[:level])) if params[:level].present?
         scope = scope.search(params[:q])
         page, per = page_params
         total = scope.count

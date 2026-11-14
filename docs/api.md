@@ -132,3 +132,10 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 - New words in a session are taken one per topic in turn, so a session mixes IT and everyday English (collection-focused sessions keep the collection order).
 - `users.new_words_per_day` (1–100, or null for automatic = max(daily minutes / 2, 3)) sets how many new words the daily session brings. Settable with `PATCH /me`.
 - `GET /dashboard` adds `new_words_per_day` and `new_words_left` (published words the learner has not started).
+
+## CEFR levels (A1, A2, B1, B2)
+Learners (`users.level`), words (`vocabulary_words.cefr_level`), listening lessons, scenarios and path units all use `a1`, `a2`, `b1`, `b2`. The old names
+beginner, elementary and intermediate are still accepted and mapped to a1, a2 and b1. `GET /words?level=b1` filters the library; words include `level`.
+`GET /path` returns four levels; the next step is the first open unit at or above the learner's level (easier units stay open). New words in a session
+come at or below the learner's level first. `GET /placement` asks 3 A1, 3 A2, 2 B1 and 2 B2 words; `POST /placement/answers` returns `by_level` and suggests
+the highest level passed (60%) with every level below it passed too. CSV import accepts a `level` column.

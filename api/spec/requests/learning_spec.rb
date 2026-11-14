@@ -111,6 +111,17 @@ RSpec.describe "Learning sessions and reviews", type: :request do
       expect(cats.first(4).tally).to eq("it" => 2, "daily" => 2)
     end
 
+    it "brings words at the learner's CEFR level before harder ones" do
+      VocabularyWord.delete_all
+      user.update!(level: "a1")
+      3.times { |i| create(:vocabulary_word, term: "hard#{i}", cefr_level: "b2") }
+      3.times { |i| create(:vocabulary_word, term: "easy#{i}", cefr_level: "a1") }
+      post "/api/v1/learning_sessions", params: { extra: 5 }, headers: headers, as: :json
+      terms = json["data"]["items"].map { |i| i["word"]["term"] }
+      expect(terms.first(3)).to all(start_with("easy"))
+      expect(json["data"]["items"].first["word"]["level"]).to eq("a1")
+    end
+
     it "never offers draft words" do
       VocabularyWord.update_all(status: "draft")
       start

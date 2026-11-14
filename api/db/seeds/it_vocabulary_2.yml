@@ -1,13 +1,13 @@
 # DRAFT content, not yet reviewed by a domain expert. Second batch of words, grouped by job area.
 # Same fields as it_vocabulary.yml. Imported with status "draft" outside development.
 categories:
-  - { slug: testing-qa, name: Testing & QA }
-  - { slug: devops-ci-cd, name: DevOps & CI/CD }
-  - { slug: apis-architecture, name: APIs & Architecture }
-  - { slug: frontend-backend, name: Frontend & Backend }
-  - { slug: project-planning, name: Projects & Planning }
-  - { slug: working-together, name: Working Together }
-  - { slug: say-it-right, name: Say It Right }
+  - { slug: testing-qa, name: Testing & QA, level: b1 }
+  - { slug: devops-ci-cd, name: DevOps & CI/CD, level: b2 }
+  - { slug: apis-architecture, name: APIs & Architecture, level: b2 }
+  - { slug: frontend-backend, name: Frontend & Backend, level: b1 }
+  - { slug: project-planning, name: Projects & Planning, level: b1 }
+  - { slug: working-together, name: Working Together, level: a2 }
+  - { slug: say-it-right, name: Say It Right, level: a2 }
 
 words:
   # Testing & QA

@@ -1,3 +1,5 @@
+import type { CefrLevel } from "@/lib/cefr";
+
 export type FocusRole = "developer" | "qa" | "devops" | "analyst" | "manager" | "other";
 export type FocusGoal = "daily_work" | "interview" | "docs";
 
@@ -6,7 +8,7 @@ export type User = {
   email: string;
   name: string;
   role: "user" | "admin";
-  level: "beginner" | "elementary" | "intermediate" | null;
+  level: CefrLevel | null;
   daily_goal_minutes: 5 | 10 | 15;
   time_zone: string;
   onboarded: boolean;

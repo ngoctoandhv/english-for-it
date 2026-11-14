@@ -8,6 +8,7 @@ export type WordSummary = {
   term: string;
   ipa: string | null;
   part_of_speech: string;
+  level: string | null;
   meaning_vi: string;
   definition_en: string;
   audio_url: string | null;
@@ -22,7 +23,7 @@ export type WordDetail = WordSummary & {
 export const getCategories = () => apiFetch<{ data: Category[] }>("/categories").then((r) => r.data);
 export const getCollections = () => apiFetch<{ data: Collection[] }>("/collections").then((r) => r.data);
 
-export function getWords(params: { q?: string; category?: string; collection?: string; page?: number }) {
+export function getWords(params: { q?: string; category?: string; collection?: string; level?: string; page?: number }) {
   const qs = new URLSearchParams();
   Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && qs.set(k, String(v)));
   return apiFetch<Paginated<WordSummary>>(`/words?${qs}`);

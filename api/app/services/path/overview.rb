@@ -60,9 +60,13 @@ module Path
       end
     end
 
+    # Continue what is started; otherwise the first open unit at or above the learner's level (easier levels stay open for review).
     def next_up(levels)
       units = levels.flat_map { |l| l[:units] }
-      unit = units.find { |u| u[:status] == "in_progress" } || units.find { |u| u[:status] == "available" }
+      start = LEVELS.index(@user.level) || 0
+      unit = units.find { |u| u[:status] == "in_progress" } ||
+             units.find { |u| u[:status] == "available" && LEVELS.index(u[:level]).to_i >= start } ||
+             units.find { |u| u[:status] == "available" }
       unit && { unit: unit[:slug], unit_title: unit[:title], step: unit[:next_step], steps_done: unit[:steps_done], steps_total: unit[:steps_total] }
     end
   end

@@ -1,3 +1,4 @@
+import type { CefrLevel } from "@/lib/cefr";
 import { apiFetch } from "./client";
 
 export type StepKind = "words" | "listening" | "scenario" | "quiz";
@@ -15,7 +16,7 @@ export type PathUnit = {
   slug: string;
   title: string;
   description: string | null;
-  level: "elementary" | "intermediate";
+  level: CefrLevel;
   status: UnitStatus;
   recommended: boolean;
   steps_done: number;
@@ -25,7 +26,7 @@ export type PathUnit = {
 };
 export type PathOverview = {
   start_level: string;
-  levels: { level: "elementary" | "intermediate"; units: PathUnit[] }[];
+  levels: { level: CefrLevel; units: PathUnit[] }[];
   next_up: { unit: string; unit_title: string; step: PathStep | null; steps_done: number; steps_total: number } | null;
 };
 

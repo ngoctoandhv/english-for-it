@@ -2,7 +2,7 @@
 # No audio files are included: upload recordings in the admin; until then the app reads the transcript with the browser voice.
 lessons:
   - title: "Daily Standup: Yesterday, Today, Blockers"
-    level: elementary
+    level: a2
     description: "A short team standup. Listen for what each person did and what is blocking them."
     transcript_en: |
       Manager: Good morning, everyone. Let's start the standup. Mai, can you go first?
@@ -21,7 +21,7 @@ lessons:
       - { prompt: "What is Tuan's blocker?", choices: ["He has too many meetings.", "He needs access to the test server.", "He cannot find the pull request.", "He is sick."], correct: 1 }
       - { prompt: "Who will ask IT for access?", choices: ["Mai", "Tuan", "The manager", "A customer"], correct: 2 }
   - title: "Code Review Feedback"
-    level: elementary
+    level: a2
     description: "A colleague gives feedback on a pull request."
     transcript_en: |
       Linh: Hi Hoang, I looked at your pull request. The code works well, but I have a small suggestion.
@@ -40,7 +40,7 @@ lessons:
       - { prompt: "When will Hoang update the code?", choices: ["Tomorrow morning", "Tonight", "This afternoon", "Next week"], correct: 2 }
       - { prompt: "What will Linh do after the update?", choices: ["Approve the pull request.", "Write a new feature.", "Close the ticket.", "Ask for a rollback."], correct: 0 }
   - title: "Reporting a Bug"
-    level: intermediate
+    level: b1
     description: "Support reports a problem and a developer starts investigating."
     transcript_en: |
       Support: Hi team, a customer cannot upload a file. They see an error message after they click the upload button.
@@ -59,7 +59,7 @@ lessons:
       - { prompt: "What does the developer check first?", choices: ["The logs", "The database backup", "The customer's email", "The sprint backlog"], correct: 0 }
       - { prompt: "What is the temporary solution?", choices: ["Restart the server.", "Roll back the release.", "Use a smaller file.", "Wait one week."], correct: 2 }
   - title: "Describing and Comparing Two Laptops"
-    level: elementary
+    level: a1
     description: "Two colleagues compare laptops. Listen for comparatives such as lighter, faster and more expensive."
     transcript_en: |
       Anna: I need a new laptop for work. Can you help me choose?
@@ -78,7 +78,7 @@ lessons:
       - { prompt: "What is the disadvantage of the second laptop?", choices: ["It is slower.", "Its battery is shorter.", "It is more expensive.", "It has less memory."], correct: 2 }
       - { prompt: "Why does Anna choose the faster laptop?", choices: ["It is cheaper.", "Speed is important for her.", "It is lighter.", "Ben tells her to."], correct: 1 }
   - title: "Server Outage Update"
-    level: intermediate
+    level: b2
     description: "A team talks about a website outage and what to tell customers."
     transcript_en: |
       Lead: Team, we have a problem. The website has been down since eight o'clock.
@@ -99,7 +99,7 @@ lessons:
       - { prompt: "What does the developer think is the cause?", choices: ["A firewall rule", "A bad password", "The database server ran out of storage", "A slow network"], correct: 2 }
       - { prompt: "What will Support do?", choices: ["Add more storage", "Send an update to customers", "Restart the website", "Write a postmortem"], correct: 1 }
   - title: "Setting Up a Meeting"
-    level: elementary
+    level: a2
     description: "Two colleagues find a time and decide what to discuss."
     transcript_en: |
       Sara: Hi Tom, can we schedule a meeting about the new feature?
@@ -118,7 +118,7 @@ lessons:
       - { prompt: "What will Tom send?", choices: ["A report", "An invitation with the agenda", "A design file", "A reminder about Friday"], correct: 1 }
       - { prompt: "What is the first topic?", choices: ["The deadline", "The backlog", "The design review", "The release"], correct: 2 }
   - title: "Tell Me About Yourself"
-    level: intermediate
+    level: b1
     description: "The start of a job interview for a developer."
     transcript_en: |
       Interviewer: Can you tell me about yourself?
@@ -137,7 +137,7 @@ lessons:
       - { prompt: "What did the candidate help to reduce?", choices: ["The server cost", "The page load time", "The number of bugs", "The team size"], correct: 1 }
       - { prompt: "What is the candidate's biggest strength?", choices: ["Teamwork", "Speed", "Design", "Testing"], correct: 0 }
   - title: "A Security Reminder"
-    level: elementary
+    level: b1
     description: "An administrator reminds the team about passwords and suspicious emails."
     transcript_en: |
       Admin: Hi everyone, here is a quick security reminder.
@@ -153,7 +153,7 @@ lessons:
       - { prompt: "What should you do with a strange email?", choices: ["Click the link to check it", "Reply with your password", "Send it to the security team", "Delete your account"], correct: 2 }
   # Everyday English (batch 3). DRAFT.
   - title: "Monday Morning Small Talk"
-    level: elementary
+    level: a1
     description: "Two colleagues chat before work. Listen for what they did at the weekend."
     transcript_en: |
       Lan: Hi Minh! How is it going?
@@ -174,7 +174,7 @@ lessons:
       - { prompt: "How does Minh feel?", choices: ["Excited", "A bit tired", "Worried", "Sick"], correct: 1 }
       - { prompt: "When will they meet?", choices: ["At ten", "After work", "At twelve", "Tomorrow"], correct: 2 }
   - title: "Asking a Colleague for Help"
-    level: elementary
+    level: a1
     description: "A developer asks a busy colleague for help. Listen for the polite phrases."
     transcript_en: |
       Hoa: Excuse me, Nam. Do you have a minute?
@@ -195,7 +195,7 @@ lessons:
       - { prompt: "Why can Nam not help now?", choices: ["He is on sick leave.", "He is having lunch.", "He is in a meeting.", "He does not know the script."], correct: 2 }
       - { prompt: "What should Hoa send?", choices: ["The error message", "A meeting invite", "The slides", "Her code review"], correct: 0 }
   - title: "A Video Call With Problems"
-    level: elementary
+    level: a2
     description: "The start of an online meeting. Listen for the problems people have."
     transcript_en: |
       Anna: Hi everyone. Can you hear me?
@@ -216,7 +216,7 @@ lessons:
       - { prompt: "Why is Phong breaking up?", choices: ["His internet is slow.", "His microphone is old.", "There is too much noise.", "He is outside."], correct: 0 }
       - { prompt: "What will Anna do next?", choices: ["End the call", "Turn off her camera", "Share her screen", "Call Phong"], correct: 2 }
   - title: "Sorry, Could You Repeat That?"
-    level: elementary
+    level: a2
     description: "A new team member checks the details of a task. Listen for how she asks."
     transcript_en: |
       Manager: Please update the user guide and send it to the client by Thursday.
@@ -239,7 +239,7 @@ lessons:
       - { prompt: "Which user guide should she update?", choices: ["The printed one", "The online one", "The old one", "The video"], correct: 1 }
       - { prompt: "When is the deadline?", choices: ["Today", "Wednesday", "By Thursday", "Next week"], correct: 2 }
   - title: "Running Late and Rescheduling"
-    level: elementary
+    level: a1
     description: "A phone call about a meeting that needs to move. Listen for the new time."
     transcript_en: |
       Khoa: Hi Mai, it's Khoa. I'm sorry, I am running late. There is a lot of traffic.
@@ -260,7 +260,7 @@ lessons:
       - { prompt: "What is the new meeting time?", choices: ["Twelve o'clock", "One o'clock", "Two o'clock", "Tomorrow morning"], correct: 2 }
       - { prompt: "What will Khoa do?", choices: ["Book a meeting room", "Send the slides", "Call the client", "Take a day off"], correct: 0 }
   - title: "A Day Off and Working From Home"
-    level: elementary
+    level: a1
     description: "A developer talks to her manager about next week. Listen for her plans."
     transcript_en: |
       Vy: Hi Duc. Do you have a minute? I would like to take a day off next Friday.
@@ -281,7 +281,7 @@ lessons:
       - { prompt: "What should Vy add to the team calendar?", choices: ["Her day off", "The wedding photos", "A meeting", "Her commute time"], correct: 0 }
       - { prompt: "Why will she work from home on Monday?", choices: ["Her laptop is at home.", "There is no office on Monday.", "Her commute will be long.", "She is tired."], correct: 2 }
   - title: "Agreeing and Disagreeing Politely"
-    level: intermediate
+    level: b1
     description: "A team chooses between two tools. Listen for how people give their opinions."
     transcript_en: |
       Lead: We need to choose a new testing tool. What do you think?
@@ -302,7 +302,7 @@ lessons:
       - { prompt: "What is Trang worried about?", choices: ["The price", "The first tool may not scale.", "The deadline", "Training the team"], correct: 1 }
       - { prompt: "What does the lead suggest?", choices: ["Buy the second tool now", "Keep the old tool", "Try both for a week", "Ask the client"], correct: 2 }
   - title: "Good News and Bad News"
-    level: intermediate
+    level: b1
     description: "Two colleagues share news after a long week. Listen for how they react."
     transcript_en: |
       Ngoc: Guess what? I got a promotion! I am going to be the new team lead.

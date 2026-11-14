@@ -3,7 +3,7 @@ require "csv"
 module Vocabulary
   # Bulk add or update words from CSV. One row per word. Columns (header row required):
   #   term, part_of_speech, meaning_vi, definition_en            required
-  #   ipa, category, example_en, example_vi, collocations, status optional (collocations separated by ";")
+  #   ipa, category, level (A1-B2), example_en, example_vi, collocations, status   optional (collocations separated by ";")
   # A word is identified by term + part_of_speech: an existing one is updated, otherwise it is created as draft.
   # With dry_run the whole file is checked and nothing is saved.
   class CsvImport
@@ -60,6 +60,7 @@ module Vocabulary
       was_new = word.new_record?
       word.assign_attributes(meaning_vi: row["meaning_vi"].to_s.strip, definition_en: row["definition_en"].to_s.strip)
       word.ipa = row["ipa"].strip if row["ipa"].present?
+      word.cefr_level = row["level"] if row["level"].present?
       word.vocabulary_category = category(row["category"]) if row["category"].present?
       word.status = row["status"].presence || (was_new ? "draft" : word.status)
       unless word.valid?

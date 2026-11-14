@@ -12,6 +12,19 @@ RSpec.describe "Seed content" do
   # Examples that use an irregular form the cloze matcher cannot find (the quiz falls back to a definition question).
   cloze_exceptions = %w[commit investigate]
 
+  it "gives every category and every word override a CEFR level" do
+    cats = files.flat_map { |d| d["categories"] }
+    expect(cats.reject { |c| Cefr::LEVELS.include?(c["level"]) }.map { |c| c["slug"] }).to be_empty
+    expect(words.select { |w| w["lv"] && !Cefr::LEVELS.include?(w["lv"]) }.map { |w| w["t"] }).to be_empty
+  end
+
+  it "puts path units, lessons and scenarios on CEFR levels" do
+    units = YAML.load_file(root.join("path.yml"))["units"]
+    scen = YAML.load_file(root.join("scenarios.yml"))["scenarios"]
+    expect((units + scen).reject { |u| Cefr::LEVELS.include?(u["level"]) }.map { |u| u["slug"] }).to be_empty
+    expect(Cefr::LEVELS.map { |l| units.count { |u| u["level"] == l } }).to all(be >= 3)
+  end
+
   it "has no duplicate term and part of speech" do
     dups = words.map { |w| [ w["t"].downcase, w["pos"] ] }.tally.select { |_, n| n > 1 }.keys
     expect(dups).to be_empty
@@ -84,7 +97,7 @@ RSpec.describe "Seed content" do
       expect(lessons.map { |l| l["title"] }.tally.select { |_, n| n > 1 }).to be_empty
       problems = lessons.flat_map do |l|
         issues = []
-        issues << "#{l['title']}: level" unless %w[beginner elementary intermediate].include?(l["level"])
+        issues << "#{l['title']}: level" unless Cefr::LEVELS.include?(l["level"])
         issues << "#{l['title']}: fewer than 3 questions" if l["questions"].size < 3
         l["questions"].each do |q|
           issues << "#{l['title']}: '#{q['prompt']}' correct index out of range" unless q["correct"].is_a?(Integer) && q["correct"].between?(0, q["choices"].size - 1)

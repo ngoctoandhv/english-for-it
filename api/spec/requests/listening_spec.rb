@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Listening", type: :request do
   let(:user) { create(:user, :onboarded) }
   let(:admin) { create(:user, :admin) }
-  let!(:lesson) { create(:listening_lesson, level: "elementary") }
+  let!(:lesson) { create(:listening_lesson, level: "a2") }
 
   it "requires authentication" do
     get "/api/v1/listening_lessons"
@@ -63,7 +63,7 @@ RSpec.describe "Listening", type: :request do
 
   describe "admin" do
     let(:payload) do
-      { listening: { title: "New lesson", level: "intermediate", transcript_en: "Hello there.", status: "draft",
+      { listening: { title: "New lesson", level: "b1", transcript_en: "Hello there.", status: "draft",
                      listening_questions_attributes: [ { prompt: "Greeting?", choices: [ "Hello", "Bye" ], correct_index: 0 } ] } }
     end
 

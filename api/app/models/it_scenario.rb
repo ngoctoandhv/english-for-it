@@ -3,7 +3,8 @@
 class ItScenario < ApplicationRecord
   include Publishable
 
-  LEVELS = User::LEVELS
+  LEVELS = Cefr::LEVELS
+  normalizes :level, with: ->(l) { Cefr.normalize(l) }
 
   has_many :scenario_dialogues, -> { order(:position) }, dependent: :destroy, inverse_of: :it_scenario
   has_many :scenario_progresses, dependent: :destroy
