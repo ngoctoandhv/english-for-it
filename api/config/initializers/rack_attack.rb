@@ -7,7 +7,7 @@ Rack::Attack.throttle("auth/ip", limit: (Rails.env.test? ? 10 : ENV.fetch("AUTH_
 end
 
 # Generic ceiling for the whole API (per IP) to blunt scraping and runaway clients.
-Rack::Attack.throttle("api/ip", limit: 600, period: 5.minutes.to_i) do |req|
+Rack::Attack.throttle("api/ip", limit: (Rails.env.test? ? 600 : ENV.fetch("API_THROTTLE_LIMIT", 600).to_i), period: 5.minutes.to_i) do |req|
   req.ip if req.path.start_with?("/api/")
 end
 

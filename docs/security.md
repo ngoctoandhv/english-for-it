@@ -14,7 +14,7 @@ Scope: the API (`api/`), the web app (`web/`), the Docker/CI setup. Reviewed aga
 | Idempotency | duplicate review submissions return the first result (`client_request_id` unique per user) | `learning_spec` |
 | Immutability | `review_logs` cannot be updated or deleted (Ruby `readonly?` + Postgres trigger) | `learning_spec` |
 | Input | JSON body guard (malformed → 400, > 1 MB → 413), SQL via bound parameters, `ILIKE` input escaped, audio upload limited to `audio/*` ≤ 5 MB | `security_spec`, `admin_vocabulary_spec` |
-| Brute force | rack-attack: 10 auth POSTs/min/IP, 600 API requests/5 min/IP | `rate_limit_spec` |
+| Brute force | rack-attack: 10 auth POSTs/min/IP, 600 API requests/5 min/IP (both configurable: AUTH_THROTTLE_LIMIT, API_THROTTLE_LIMIT; raised only in the local .env) | `rate_limit_spec` |
 | Secrets in logs | `password`, `email`, `token` are filtered | `security_spec` |
 | Transport / hosts | production forces HTTPS (behind a TLS proxy), `ALLOWED_HOSTS` host authorization, CORS from `CORS_ORIGINS` | checked on the production image |
 | Browser hardening | CSP, HSTS (production), `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` | checked on the production image |
