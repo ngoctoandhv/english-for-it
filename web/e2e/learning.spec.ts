@@ -9,7 +9,7 @@ test("a new learner registers, onboards and completes a flashcard session with t
   await page.getByLabel("Password").fill("e2e-password-123");
   await page.getByRole("button", { name: "Create account" }).click();
 
-  await expect(page.getByRole("heading", { name: "Let's set you up" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Set up your plan" })).toBeVisible();
   await page.getByLabel(/^5 minutes/).check({ force: true });
   await page.getByRole("button", { name: "Save and continue" }).click();
 
@@ -134,4 +134,47 @@ test("scripted scenario: step through, reveal the learner's line, complete", asy
   await expect(page.getByText(/Scenario complete/)).toBeVisible();
   await page.goto("/scenarios");
   await expect(page.getByText("Completed")).toBeVisible();
+});
+
+test("language and theme switches work and persist", async ({ page }) => {
+  await page.goto("/register");
+  await page.getByRole("button", { name: "vi", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Tạo tài khoản" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Tạo tài khoản" })).toBeVisible();
+  await page.getByRole("button", { name: "en", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Create account" })).toBeVisible();
+
+  const html = page.locator("html");
+  const before = await html.evaluate((el) => el.classList.contains("dark"));
+  await page.getByRole("button", { name: /^Theme:/ }).click();
+  const after = await html.evaluate((el) => el.classList.contains("dark"));
+  // light -> dark -> system: the first click changes the class unless the system already matches dark
+  expect(typeof after).toBe("boolean");
+  await page.getByRole("button", { name: /^Theme:/ }).click();
+  await page.getByRole("button", { name: /^Theme:/ }).click();
+  expect(await html.evaluate((el) => el.classList.contains("dark"))).toBe(before);
+});
+
+test("on a phone the app shows a bottom tab bar and no horizontal scroll", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const page = await context.newPage();
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Phone User");
+  await page.getByLabel("Email").fill(`phone-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: "Today" })).toBeVisible();
+
+  const tabBar = page.getByRole("navigation", { name: "Main" });
+  await expect(tabBar).toBeVisible();
+  await expect(tabBar.getByRole("link")).toHaveCount(5);
+  for (const path of ["/", "/library", "/listening", "/scenarios", "/progress", "/quiz"]) {
+    await page.goto(path);
+    await expect(page.getByRole("main")).toBeVisible();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `horizontal overflow on ${path}`).toBeLessThanOrEqual(1);
+  }
+  await context.close();
 });

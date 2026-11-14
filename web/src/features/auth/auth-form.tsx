@@ -4,14 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Brand } from "@/components/layout/brand";
+import { Preferences } from "@/components/layout/preferences";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { errorMessage, fieldErrors } from "@/lib/api/errors";
+import { useI18n } from "@/lib/i18n/provider";
 import { useAuth } from "./auth-provider";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const { login, register } = useAuth();
+  const { t } = useI18n();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState<Record<string, string>>({});
@@ -30,7 +33,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const user = isLogin ? await login(email, password) : await register({ email, password, name: String(data.get("name")) });
       router.replace(user.onboarded ? "/" : "/onboarding");
     } catch (err) {
-      setError(errorMessage(err));
+      setError(errorMessage(err, t));
       setFields(fieldErrors(err));
     } finally {
       setBusy(false);
@@ -38,41 +41,46 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-sm flex-col justify-center gap-10 px-6 py-12">
-      <Brand />
-      <div className="space-y-2">
-        <h1 className="text-4xl leading-tight">{isLogin ? "Sign in" : "Create account"}</h1>
-        <p className="text-muted-foreground">
-          {isLogin ? "Pick up where you left off. Missed days never cost you progress." : "Five to ten minutes a day is enough."}
+    <div className="flex min-h-screen flex-col">
+      <header className="border-b">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6 md:h-16">
+          <Brand />
+          <Preferences />
+        </div>
+      </header>
+      <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-8 px-5 py-10">
+        <div className="space-y-2">
+          <h1 className="text-3xl sm:text-4xl">{isLogin ? t("auth.signIn") : t("auth.createAccount")}</h1>
+          <p className="text-muted-foreground">{isLogin ? t("auth.signInSub") : t("auth.registerSub")}</p>
+        </div>
+        <form onSubmit={onSubmit} className="space-y-5" noValidate>
+          {!isLogin && <Field name="name" label={t("auth.name")} autoComplete="name" error={fields.name} />}
+          <Field name="email" label={t("auth.email")} type="email" autoComplete="email" error={fields.email} />
+          <Field
+            name="password"
+            label={t("auth.password")}
+            type="password"
+            autoComplete={isLogin ? "current-password" : "new-password"}
+            hint={isLogin ? undefined : t("auth.passwordHint")}
+            error={fields.password}
+          />
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <Button type="submit" size="lg" className="w-full" disabled={busy}>
+            {busy ? t("auth.pleaseWait") : isLogin ? t("auth.signIn") : t("auth.createAccount")}
+          </Button>
+        </form>
+        <p className="text-sm text-muted-foreground">
+          {isLogin ? t("auth.newHere") : t("auth.haveAccount")}{" "}
+          <Link className="text-primary underline underline-offset-4" href={isLogin ? "/register" : "/login"}>
+            {isLogin ? t("auth.createAccount") : t("auth.signIn")}
+          </Link>
         </p>
-      </div>
-      <form onSubmit={onSubmit} className="space-y-5" noValidate>
-        {!isLogin && <Field name="name" label="Name" autoComplete="name" error={fields.name} />}
-        <Field name="email" label="Email" type="email" autoComplete="email" error={fields.email} />
-        <Field
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete={isLogin ? "current-password" : "new-password"}
-          hint={isLogin ? undefined : "At least 10 characters."}
-          error={fields.password}
-        />
-        {error && (
-          <p role="alert" className="text-sm text-destructive">
-            {error}
-          </p>
-        )}
-        <Button type="submit" size="lg" className="w-full" disabled={busy}>
-          {busy ? "Please wait…" : isLogin ? "Sign in" : "Create account"}
-        </Button>
-      </form>
-      <p className="text-sm text-muted-foreground">
-        {isLogin ? "New here? " : "Already have an account? "}
-        <Link className="text-primary underline underline-offset-4" href={isLogin ? "/register" : "/login"}>
-          {isLogin ? "Create an account" : "Sign in"}
-        </Link>
-      </p>
-    </main>
+      </main>
+    </div>
   );
 }
 

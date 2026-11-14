@@ -32,7 +32,7 @@ bin/rspec [args]     # api specs only
 Auth and onboarding · dashboard with a prominent Start learning · vocabulary library, collections, favorites ·
 one-card-at-a-time flashcards with keyboard shortcuts and spaced repetition (Again/Hard/Good/Easy) · quick quiz ·
 listening lessons with transcript and questions · scripted IT scenarios (Daily Standup, Code Review, Bug Investigation) ·
-progress and history · admin CRUD for all content. No AI chat, exam prep, grammar course or social features.
+progress and history · admin CRUD for all content · English/Vietnamese interface and light/dark theme · responsive layout with a mobile tab bar. No AI chat, exam prep, grammar course or social features.
 
 Dev accounts (development seed only): `learner@example.test` and `admin@example.test`, password `dev-password-123`.
 Run `docker compose exec api bin/rails db:seed` once to load the sample content. The sample content is **draft** and needs human review.

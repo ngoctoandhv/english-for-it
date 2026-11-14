@@ -29,3 +29,14 @@ UserWordProgress, ReviewLog, ListeningLesson, ListeningQuestion, LearningSession
 ## Tests
 RSpec (api): models, services, request specs including authorization, isolation, query counts and security.
 Vitest (web): API client, keyboard mapping, admin payload building, components. Playwright: end-to-end user flows (`bin/e2e`).
+
+## UI system
+- **Look:** developer-tool style. JetBrains Mono for headings, code-like labels, IPA and numbers; Be Vietnam Pro for body text (built for Vietnamese diacritics).
+  Cool slate neutrals with one green accent, `// section` headings, code-window panels, 8px radius, 44px controls.
+- **Tokens:** OKLCH CSS variables in `web/src/app/globals.css` (`:root` = light, `.dark` = dark). Components use semantic roles only (`bg-card`, `text-muted-foreground`, `text-primary`, ...).
+- **Theme:** light / dark / system, stored in `localStorage` (`efit.theme`); an inline script in `<head>` applies it before first paint. Provider: `src/lib/theme`.
+- **Language:** English / Vietnamese UI, stored in `localStorage` (`efit.lang`), default from the browser language. Strings live in `src/lib/i18n/dictionaries.ts`
+  (a Vitest test checks both languages have the same keys and placeholders). Learning content stays English with Vietnamese meanings from the database.
+  The admin screens are English only.
+- **Responsive:** mobile-first. Under 768px the app has a fixed bottom tab bar (safe-area aware) and the flashcard rating buttons are fixed to the bottom for thumb reach;
+  from 768px up it has a top navigation. A Playwright test checks a 375px viewport for the tab bar and horizontal overflow.

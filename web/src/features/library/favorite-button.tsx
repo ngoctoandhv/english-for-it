@@ -3,9 +3,11 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/provider";
 import { addFavorite, removeFavorite } from "@/lib/api/vocabulary";
 
 export function FavoriteButton({ wordId, initial }: { wordId: number; initial: boolean }) {
+  const { t } = useI18n();
   const [on, setOn] = useState(initial);
   const [busy, setBusy] = useState(false);
 
@@ -23,8 +25,8 @@ export function FavoriteButton({ wordId, initial }: { wordId: number; initial: b
   }
 
   return (
-    <Button variant="ghost" size="icon" aria-pressed={on} aria-label={on ? "Remove from favorites" : "Add to favorites"} disabled={busy} onClick={toggle}>
-      <Star className={on ? "fill-current" : ""} />
+    <Button variant="ghost" size="icon" aria-pressed={on} aria-label={on ? t("lib.removeFav") : t("lib.addFav")} disabled={busy} onClick={toggle}>
+      <Star className={on ? "fill-current text-warning" : ""} />
     </Button>
   );
 }
