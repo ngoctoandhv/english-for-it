@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   ROLES = %w[user admin].freeze
-  LEVELS = %w[beginner elementary intermediate].freeze
+  LEVELS = Cefr::LEVELS
   GOALS = [ 5, 10, 15 ].freeze
   # Browsers still report some legacy names (Chrome says Asia/Saigon for Vietnam); map them to the canonical IANA names.
   TIME_ZONE_ALIASES = {
@@ -33,6 +33,7 @@ class User < ApplicationRecord
   before_validation :normalize_time_zone
 
   normalizes :name, with: ->(n) { n.strip }
+  normalizes :level, with: ->(l) { Cefr.normalize(l) }
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP },
                     uniqueness: { case_sensitive: false }

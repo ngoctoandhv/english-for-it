@@ -1,21 +1,21 @@
 # DRAFT content, not yet reviewed by a domain expert. Imported with status "draft" outside development.
-# Fields: t=term, pos, ipa, vi=Vietnamese meaning, def=simple English definition, cat=category slug,
+# Fields: t=term, lv=CEFR level override (otherwise the category level), pos, ipa, vi=Vietnamese meaning, def=simple English definition, cat=category slug,
 # ex=[example EN, translation VI], col=collocations.
 categories:
-  - { slug: version-control, name: Version Control }
-  - { slug: code-review, name: Code Review }
-  - { slug: debugging, name: Debugging }
-  - { slug: agile-standup, name: Agile & Standup }
-  - { slug: deployment, name: Deployment }
-  - { slug: communication, name: Communication }
-  - { slug: hardware-devices, name: Hardware & Devices }
-  - { slug: networking, name: Networking }
-  - { slug: security, name: Security }
-  - { slug: cloud-infrastructure, name: Cloud & Infrastructure }
-  - { slug: data-databases, name: Data & Databases }
-  - { slug: meetings-email, name: Meetings & Email }
-  - { slug: job-interviews, name: Job Interviews }
-  - { slug: describing-comparing, name: Describing & Comparing }
+  - { slug: version-control, name: Version Control, level: a2 }
+  - { slug: code-review, name: Code Review, level: a2 }
+  - { slug: debugging, name: Debugging, level: b1 }
+  - { slug: agile-standup, name: Agile & Standup, level: a2 }
+  - { slug: deployment, name: Deployment, level: b1 }
+  - { slug: communication, name: Communication, level: a2 }
+  - { slug: hardware-devices, name: Hardware & Devices, level: a1 }
+  - { slug: networking, name: Networking, level: b1 }
+  - { slug: security, name: Security, level: b1 }
+  - { slug: cloud-infrastructure, name: Cloud & Infrastructure, level: b2 }
+  - { slug: data-databases, name: Data & Databases, level: b1 }
+  - { slug: meetings-email, name: Meetings & Email, level: a2 }
+  - { slug: job-interviews, name: Job Interviews, level: b1 }
+  - { slug: describing-comparing, name: Describing & Comparing, level: b1 }
 
 words:
   - { t: commit, pos: verb, ipa: "/kəˈmɪt/", vi: "ghi lại (commit) thay đổi", def: "To save a set of changes to a version control repository.", cat: version-control, ex: ["I committed the fix this morning.", "Sáng nay tôi đã commit bản sửa lỗi."], col: ["commit changes", "commit message"] }
@@ -69,9 +69,9 @@ words:
   - { t: monitor, pos: verb, ipa: "/ˈmɑːnɪtər/", vi: "giám sát", def: "To watch something over time to see if there is a problem.", cat: hardware-devices, ex: ["We monitor the system day and night.", "Chúng tôi giám sát hệ thống cả ngày lẫn đêm."], col: ["monitor the system", "monitor performance"] }
   - { t: storage, pos: noun, ipa: "/ˈstɔːrɪdʒ/", vi: "dung lượng lưu trữ", def: "The space where a device or system keeps data.", cat: hardware-devices, ex: ["We are running out of storage.", "Chúng ta sắp hết dung lượng lưu trữ."], col: ["cloud storage", "storage space"] }
   - { t: memory, pos: noun, ipa: "/ˈmeməri/", vi: "bộ nhớ (RAM)", def: "The fast space a computer uses to hold data while programs are running.", cat: hardware-devices, ex: ["The app uses too much memory.", "Ứng dụng dùng quá nhiều bộ nhớ."], col: ["memory usage", "run out of memory"] }
-  - { t: upgrade, pos: verb, ipa: "/ʌpˈɡreɪd/", vi: "nâng cấp", def: "To replace something with a newer or better version.", cat: hardware-devices, ex: ["We need to upgrade the server before the launch.", "Chúng ta cần nâng cấp máy chủ trước khi ra mắt."], col: ["upgrade to a new version"] }
+  - { t: upgrade, lv: a2, pos: verb, ipa: "/ʌpˈɡreɪd/", vi: "nâng cấp", def: "To replace something with a newer or better version.", cat: hardware-devices, ex: ["We need to upgrade the server before the launch.", "Chúng ta cần nâng cấp máy chủ trước khi ra mắt."], col: ["upgrade to a new version"] }
   - { t: device, pos: noun, ipa: "/dɪˈvaɪs/", vi: "thiết bị", def: "A machine made for a particular job, such as a phone or a laptop.", cat: hardware-devices, ex: ["The app works on any device.", "Ứng dụng chạy được trên mọi thiết bị."], col: ["mobile device"] }
-  - { t: compatible, pos: adjective, ipa: "/kəmˈpætəbəl/", vi: "tương thích", def: "Able to work together with another system or device.", cat: hardware-devices, ex: ["This tool is compatible with our system.", "Công cụ này tương thích với hệ thống của chúng ta."], col: ["compatible with"] }
+  - { t: compatible, lv: b1, pos: adjective, ipa: "/kəmˈpætəbəl/", vi: "tương thích", def: "Able to work together with another system or device.", cat: hardware-devices, ex: ["This tool is compatible with our system.", "Công cụ này tương thích với hệ thống của chúng ta."], col: ["compatible with"] }
   - { t: network, pos: noun, ipa: "/ˈnetwɜːrk/", vi: "mạng", def: "A group of computers and devices that are connected so they can share data.", cat: networking, ex: ["The office network is very slow today.", "Mạng văn phòng hôm nay rất chậm."], col: ["network problem", "wireless network"] }
   - { t: connection, pos: noun, ipa: "/kəˈnekʃən/", vi: "kết nối", def: "A link between two devices or systems that lets them share data.", cat: networking, ex: ["I lost my internet connection.", "Tôi bị mất kết nối internet."], col: ["internet connection", "lose the connection"] }
   - { t: bandwidth, pos: noun, ipa: "/ˈbændwɪdθ/", vi: "băng thông", def: "The amount of data that can be sent over a connection in a given time.", cat: networking, ex: ["Video calls need a lot of bandwidth.", "Cuộc gọi video cần nhiều băng thông."], col: ["limited bandwidth"] }

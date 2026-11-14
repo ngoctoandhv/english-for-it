@@ -15,6 +15,8 @@ class VocabularyWord < ApplicationRecord
 
   validates :term, :meaning_vi, :definition_en, presence: true
   validates :part_of_speech, inclusion: { in: PARTS_OF_SPEECH }
+  validates :cefr_level, inclusion: { in: Cefr::LEVELS }, allow_nil: true
+  normalizes :cefr_level, with: ->(l) { Cefr.normalize(l) }
   validates :term, uniqueness: { scope: :part_of_speech, case_sensitive: false }
 
   def self.search(q)

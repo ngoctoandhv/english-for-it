@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "Learning path", type: :request do
-  let(:user) { create(:user, :onboarded, level: "elementary") }
+  let(:user) { create(:user, :onboarded, level: "a2") }
   let(:headers) { auth_headers(user) }
   let!(:first) { create(:path_unit, title: "First", position: 0) }
   let!(:second) { create(:path_unit, title: "Second", position: 1) }
-  let!(:advanced) { create(:path_unit, title: "Advanced", level: "intermediate", position: 2) }
+  let!(:advanced) { create(:path_unit, title: "Advanced", level: "b1", position: 2) }
 
   def overview
     get "/api/v1/path", headers: headers
@@ -36,7 +36,7 @@ RSpec.describe "Learning path", type: :request do
   it "shows only published units and starts with the first unit available and the rest locked" do
     create(:path_unit, title: "Hidden", status: "draft", position: 9)
     data = overview
-    expect(data["start_level"]).to eq("elementary")
+    expect(data["start_level"]).to eq("a2")
     slugs = data["levels"].flat_map { |l| l["units"] }.map { |u| u["slug"] }
     expect(slugs).to eq(%w[first second advanced])
     expect(unit("first")["status"]).to eq("available")
@@ -82,11 +82,11 @@ RSpec.describe "Learning path", type: :request do
   end
 
   it "unlocks lower levels for a learner who starts higher" do
-    user.update!(level: "intermediate")
+    user.update!(level: "b1")
     expect(unit("first")["status"]).to eq("available")
     expect(unit("second")["status"]).to eq("available")
     expect(unit("advanced")["status"]).to eq("available")
-    expect(overview["start_level"]).to eq("intermediate")
+    expect(overview["start_level"]).to eq("b1")
   end
 
   it "drops steps whose content is no longer published" do
@@ -152,5 +152,12 @@ RSpec.describe "Learning path", type: :request do
       expect(terms).to eq(collection.collection_words.order(:position).limit(terms.size).pluck(:vocabulary_word_id))
       expect(terms).not_to include(other.id)
     end
+  end
+
+  it "suggests the first unit at the learner's own level, keeping easier levels open" do
+    create(:path_unit, title: "Hello", level: "a1", position: 0)
+    data = overview
+    expect(data["next_up"]["unit_title"]).to eq("First")
+    expect(unit("hello")["status"]).to eq("available")
   end
 end

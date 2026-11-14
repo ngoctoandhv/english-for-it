@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CEFR_LEVELS } from "@/lib/cefr";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,11 +16,7 @@ import { useRequireAuth } from "./use-require-auth";
 export function OnboardingForm() {
   const { ready } = useRequireAuth({ allowUnonboarded: true });
   const { t } = useI18n();
-  const LEVELS = [
-    { value: "beginner", title: t("level.beginner"), text: t("onboarding.levelBeginner") },
-    { value: "elementary", title: t("level.elementary"), text: t("onboarding.levelElementary") },
-    { value: "intermediate", title: t("level.intermediate"), text: t("onboarding.levelIntermediate") },
-  ];
+  const LEVELS = CEFR_LEVELS.map((l) => ({ value: l, title: t(`level.${l}`), text: t(`onboarding.level.${l}`) }));
   const GOALS = [
     { value: 5, title: t("onboarding.minutes", { count: 5 }), text: t("onboarding.light") },
     { value: 10, title: t("onboarding.minutes", { count: 10 }), text: t("onboarding.steady") },
@@ -29,7 +26,7 @@ export function OnboardingForm() {
   const FOCUS: { value: FocusGoal; title: string; text: string }[] = (["daily_work", "interview", "docs"] as const).map((g) => ({ value: g, title: t(`focus.${g}`), text: "" }));
   const { setUser, user } = useAuth();
   const router = useRouter();
-  const [level, setLevel] = useState<string>(user?.level ?? "elementary");
+  const [level, setLevel] = useState<string>(user?.level ?? "a2");
   const [role, setRole] = useState<FocusRole>(user?.focus_role ?? "developer");
   const [focus, setFocus] = useState<FocusGoal>(user?.focus_goal ?? "daily_work");
   const [goal, setGoal] = useState(10);

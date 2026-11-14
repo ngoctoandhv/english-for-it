@@ -2,7 +2,8 @@
 class PathUnit < ApplicationRecord
   include Publishable
 
-  LEVELS = %w[elementary intermediate].freeze
+  LEVELS = Cefr::LEVELS
+  normalizes :level, with: ->(l) { Cefr.normalize(l) }
 
   has_many :path_steps, -> { order(:position) }, dependent: :destroy, inverse_of: :path_unit
   has_many :unit_completions, dependent: :destroy

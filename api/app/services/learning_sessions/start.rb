@@ -25,13 +25,19 @@ module LearningSessions
 
     private
 
+    # Words above the learner's CEFR level come after the words at or below it (they are never hidden).
+    def level_penalty_sql
+      allowed = Cefr::LEVELS.first(Cefr.rank(@user.level || "a2") + 1).map { |l| ActiveRecord::Base.connection.quote(l) }.join(", ")
+      "CASE WHEN cefr_level IS NULL OR cefr_level IN (#{allowed}) THEN 0 ELSE 1 END"
+    end
+
     # Takes one word from each topic in turn (IT, small talk, polite requests...), so every session mixes work and everyday English.
     def mixed_topics(scope, limit)
       return [] if limit <= 0
 
-      ranked = scope.select("vocabulary_words.id, vocabulary_words.vocabulary_category_id, " \
+      ranked = scope.select("vocabulary_words.id, vocabulary_words.vocabulary_category_id, vocabulary_words.cefr_level, " \
                             "ROW_NUMBER() OVER (PARTITION BY vocabulary_words.vocabulary_category_id ORDER BY vocabulary_words.id) AS topic_rank")
-      VocabularyWord.from(ranked, :vocabulary_words).order(Arel.sql("topic_rank, vocabulary_category_id")).limit(limit).pluck(:id)
+      VocabularyWord.from(ranked, :vocabulary_words).order(Arel.sql("#{level_penalty_sql}, topic_rank, vocabulary_category_id")).limit(limit).pluck(:id)
     end
 
     def build

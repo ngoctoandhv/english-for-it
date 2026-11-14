@@ -64,14 +64,14 @@ RSpec.describe "Admin content tools", type: :request do
     let!(:scenario) { create(:it_scenario, slug: "code-review") }
 
     it "creates a unit with steps written as lines and shows them back" do
-      post "/api/v1/admin/units", params: { unit: { title: "My Unit", level: "elementary", status: "draft", audiences: %w[qa], steps: [ "words:daily-standup", "scenario:code-review", "quiz" ] } }, headers: headers, as: :json
+      post "/api/v1/admin/units", params: { unit: { title: "My Unit", level: "a2", status: "draft", audiences: %w[qa], steps: [ "words:daily-standup", "scenario:code-review", "quiz" ] } }, headers: headers, as: :json
       expect(response).to have_http_status(:created)
       expect(json["data"]).to include("steps" => [ "words:daily-standup", "scenario:code-review", "quiz" ], "audiences" => [ "qa" ])
       expect(PathUnit.find_by!(title: "My Unit").path_steps.map(&:kind)).to eq(%w[words scenario quiz])
     end
 
     it "rejects an unknown reference and saves nothing" do
-      post "/api/v1/admin/units", params: { unit: { title: "Broken", level: "elementary", status: "draft", steps: [ "words:nope" ] } }, headers: headers, as: :json
+      post "/api/v1/admin/units", params: { unit: { title: "Broken", level: "a2", status: "draft", steps: [ "words:nope" ] } }, headers: headers, as: :json
       expect(response).to have_http_status(:unprocessable_content)
       expect(json.dig("error", "details", "steps").first).to include("words:nope")
       expect(PathUnit.find_by(title: "Broken")).to be_nil

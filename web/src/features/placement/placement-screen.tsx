@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CEFR_LEVELS } from "@/lib/cefr";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,14 @@ export function PlacementScreen() {
         <section className="space-y-5" data-testid="placement-result">
           <p className="font-display text-2xl text-primary">{t("placement.result", { level: t(`level.${result.suggested_level}`) })}</p>
           <p className="text-muted-foreground">{t("placement.score", { n: result.score, total: result.total })}</p>
+          <ul className="grid grid-cols-4 gap-2 text-center" aria-label={t("placement.byLevel")}>
+            {CEFR_LEVELS.map((l) => (
+              <li key={l} className={cn("rounded-lg border p-2", l === result.suggested_level && "border-primary bg-primary/5")}>
+                <span className="block font-display text-sm">{l.toUpperCase()}</span>
+                <span className="tnum block text-xs text-muted-foreground">{result.by_level[l]?.correct ?? 0}/{result.by_level[l]?.total ?? 0}</span>
+              </li>
+            ))}
+          </ul>
           <p className="text-sm text-muted-foreground">{t("placement.note")}</p>
           <div className="flex flex-wrap gap-3">
             <Button size="lg" onClick={useLevel}>{t("placement.use")}</Button>

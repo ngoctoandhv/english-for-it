@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CEFR_LEVELS } from "@/lib/cefr";
 import { useState, type FormEvent } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { SectionTitle } from "@/components/layout/section-title";
@@ -14,7 +15,7 @@ import { changePassword, deleteAccount, exportMyData, resendVerification, update
 import { errorMessage } from "@/lib/api/errors";
 import { useI18n } from "@/lib/i18n/provider";
 
-const LEVELS = ["beginner", "elementary", "intermediate"] as const;
+const LEVELS = CEFR_LEVELS;
 const GOALS = [5, 10, 15] as const;
 const ROLES = ["developer", "qa", "devops", "analyst", "manager", "other"] as const;
 const FOCUS = ["daily_work", "interview", "docs"] as const;
@@ -119,7 +120,7 @@ export function SettingsScreen() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="level">{t("settings.level")}</Label>
-              <select id="level" name="level" defaultValue={user.level ?? "elementary"} className="h-11 w-full rounded-lg border bg-background px-3">
+              <select id="level" name="level" defaultValue={user.level ?? "a2"} className="h-11 w-full rounded-lg border bg-background px-3">
                 {LEVELS.map((l) => <option key={l} value={l}>{t(`level.${l}`)}</option>)}
               </select>
             </div>

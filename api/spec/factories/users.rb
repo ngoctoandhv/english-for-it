@@ -5,7 +5,7 @@ FactoryBot.define do
     password { "correct-horse-battery" }
     trait(:admin) { role { "admin" } }
     trait(:onboarded) do
-      level { "elementary" }
+      level { "a2" }
       onboarded_at { Time.current }
     end
   end

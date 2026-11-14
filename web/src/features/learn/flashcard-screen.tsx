@@ -13,6 +13,7 @@ import { errorMessage } from "@/lib/api/errors";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 import { actionForKey, RATINGS } from "./keys";
+import { LevelBadge } from "@/components/ui/level-badge";
 import { EXTRA_SIZES } from "@/lib/api/learning";
 import { useFlashcards } from "./use-flashcards";
 
@@ -118,7 +119,7 @@ function FlashcardSession() {
                     <Volume2 aria-hidden />
                   </Button>
                 </div>
-                <p className="font-display text-base text-muted-foreground">{word.ipa} · {word.part_of_speech}</p>
+                <p className="font-display text-base text-muted-foreground"><LevelBadge level={word.level} className="mr-2 align-middle" />{word.ipa} · {word.part_of_speech}</p>
               </div>
 
               {card.revealed && (

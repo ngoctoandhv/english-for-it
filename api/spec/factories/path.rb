@@ -2,7 +2,7 @@ FactoryBot.define do
   # A complete unit: 5 words in a collection, one listening lesson, one scenario and a quiz.
   factory :path_unit do
     sequence(:title) { |n| "Unit #{n}" }
-    level { "elementary" }
+    level { "a2" }
     status { "published" }
 
     transient { words_count { 5 } }

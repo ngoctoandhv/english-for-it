@@ -1,6 +1,7 @@
 "use client";
 
 import { Volume2 } from "lucide-react";
+import { LevelBadge } from "@/components/ui/level-badge";
 import { Split } from "@/components/layout/split";
 import { ReportIssue } from "@/components/report-issue";
 import Link from "next/link";
@@ -41,7 +42,7 @@ export function WordPage() {
               <FavoriteButton wordId={word.id} initial={word.favorited} />
             </div>
             <p className="font-display text-sm text-muted-foreground">
-              {word.ipa} · {word.part_of_speech}
+              <LevelBadge level={word.level} className="mr-2 align-middle" />{word.ipa} · {word.part_of_speech}
               {word.category && ` · ${word.category.name}`}
             </p>
           </header>

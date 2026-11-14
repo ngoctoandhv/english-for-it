@@ -2,7 +2,7 @@
 scenarios:
   - slug: daily-standup
     title: Daily Standup
-    level: elementary
+    level: a2
     description: "Share what you did, what you will do and what blocks you."
     situation: "It is 9:30. Your team has its daily standup. You go second."
     lines:
@@ -15,7 +15,7 @@ scenarios:
       - { speaker: Manager, role: other, en: "Sure. I will ask IT today.", vi: "Được. Hôm nay tôi sẽ nhờ IT." }
   - slug: code-review
     title: Code Review
-    level: elementary
+    level: a2
     description: "Give and receive feedback on a pull request politely."
     situation: "A colleague asks you to review their pull request."
     lines:
@@ -29,7 +29,7 @@ scenarios:
       - { speaker: You, role: you, en: "Thanks. I will approve it after that.", vi: "Cảm ơn. Mình sẽ phê duyệt sau đó.", tip: "Close the loop: say what you will do next." }
   - slug: bug-investigation
     title: Bug Investigation
-    level: intermediate
+    level: b1
     description: "Describe a problem, ask questions and share what you found."
     situation: "A teammate tells you that the app shows an error after login. You investigate."
     lines:
@@ -43,7 +43,7 @@ scenarios:
       - { speaker: You, role: you, en: "Yes. Please fill in your profile first. I will deploy a fix today.", vi: "Có. Hãy điền hồ sơ trước. Hôm nay mình sẽ triển khai bản sửa.", tip: "A workaround is temporary; a fix solves the problem." }
   - slug: incident-update
     title: Incident Update
-    level: intermediate
+    level: b2
     description: "Tell your team and customers what is wrong, what you know and when you will update again."
     situation: "The payment service has a problem. You are on call and your lead asks for a status update."
     lines:
@@ -56,7 +56,7 @@ scenarios:
       - { speaker: Lead, role: other, en: "Thanks. Please keep me informed.", vi: "Cảm ơn. Hãy tiếp tục báo cho tôi nhé." }
   - slug: asking-for-clarification
     title: Asking for Clarification
-    level: elementary
+    level: a2
     description: "Ask politely when a task or a question is not clear."
     situation: "Your manager gives you a task in a meeting, but you are not sure about the details."
     lines:
@@ -69,7 +69,7 @@ scenarios:
       - { speaker: Manager, role: other, en: "Please include the sales numbers.", vi: "Hãy thêm số liệu bán hàng." }
   - slug: commenting-on-a-ticket
     title: Commenting on a Ticket
-    level: elementary
+    level: a2
     description: "Ask for more details and explain what you will do, politely and clearly."
     situation: "A product manager wrote a ticket for a bug. You need more information."
     lines:
@@ -81,7 +81,7 @@ scenarios:
       - { speaker: You, role: you, en: "Thank you. I will start working on it today and update the ticket tomorrow.", vi: "Cảm ơn. Hôm nay tôi sẽ bắt đầu làm và ngày mai sẽ cập nhật ticket.", tip: "Say what you will do and when." }
   - slug: tell-me-about-yourself
     title: Tell Me About Yourself
-    level: intermediate
+    level: b1
     description: "A simple three-part answer for the first question in a job interview."
     situation: "You are in a job interview for a developer role."
     lines:
@@ -93,7 +93,7 @@ scenarios:
       - { speaker: Interviewer, role: other, en: "Thank you. That is helpful.", vi: "Cảm ơn bạn. Rất hữu ích." }
   - slug: comparing-two-options
     title: Comparing Two Options
-    level: intermediate
+    level: b2
     description: "Compare two solutions, give advantages and drawbacks, and make a suggestion."
     situation: "Your team must choose between a managed cloud service and its own server."
     lines:
@@ -105,7 +105,7 @@ scenarios:
       - { speaker: You, role: you, en: "I recommend the managed service, because we have a small team and reliability is important.", vi: "Tôi đề xuất dịch vụ được quản lý, vì nhóm chúng ta nhỏ và độ ổn định rất quan trọng.", tip: "'I recommend… because…' gives your choice and your reason." }
   - slug: asking-it-support
     title: Asking IT Support for Help
-    level: elementary
+    level: a1
     description: "Describe a problem, say what you tried and ask for what you need."
     situation: "You cannot log in to the staging server. You write to the IT support desk."
     lines:
@@ -119,7 +119,7 @@ scenarios:
   # Everyday English (batch 3). DRAFT.
   - slug: small-talk-at-work
     title: Small Talk at Work
-    level: elementary
+    level: a1
     description: "Chat with a colleague in the kitchen and end the conversation kindly."
     situation: "It is Monday morning. You meet a colleague, Lan, while making coffee."
     lines:
@@ -132,7 +132,7 @@ scenarios:
       - { speaker: Lan, role: other, en: "Sure. See you later!", vi: "Được. Lát gặp nhé!" }
   - slug: asking-for-a-favor
     title: Asking for a Favor
-    level: elementary
+    level: a1
     description: "Ask a busy colleague for help politely and thank them."
     situation: "You need help with a test that keeps failing. Your colleague Nam is at his desk."
     lines:
@@ -144,7 +144,7 @@ scenarios:
       - { speaker: Nam, role: other, en: "You're welcome. Let me know if you find anything else.", vi: "Không có gì. Nếu tìm ra gì thêm thì cho anh biết nhé." }
   - slug: video-call-problems
     title: Video Call Problems
-    level: elementary
+    level: a2
     description: "Handle mute, a bad connection and screen sharing in an online meeting."
     situation: "You join a video call with the team. The connection is not great."
     lines:
@@ -157,7 +157,7 @@ scenarios:
       - { speaker: Anna, role: other, en: "Yes, we can see it. Go ahead.", vi: "Có, mọi người thấy rồi. Bạn trình bày đi." }
   - slug: checking-you-understood
     title: Checking You Understood
-    level: elementary
+    level: a2
     description: "Ask someone to repeat and explain, then confirm the task."
     situation: "Your manager gives you a new task quickly at the end of a meeting."
     lines:
@@ -170,7 +170,7 @@ scenarios:
       - { speaker: Manager, role: other, en: "That's right. Thanks!", vi: "Chính xác. Cảm ơn nhé!" }
   - slug: rescheduling-a-meeting
     title: Rescheduling a Meeting
-    level: elementary
+    level: a1
     description: "Say you are running late and agree on a new time."
     situation: "You are stuck in traffic and will miss a 10:00 meeting with Mai."
     lines:
@@ -182,7 +182,7 @@ scenarios:
       - { speaker: Mai, role: other, en: "Great. See you then.", vi: "Tuyệt. Hẹn gặp lúc đó." }
   - slug: asking-for-a-day-off
     title: Asking for a Day Off
-    level: elementary
+    level: a1
     description: "Ask your manager for a day off and arrange your work."
     situation: "You want to take next Friday off for a family event."
     lines:
@@ -195,7 +195,7 @@ scenarios:
       - { speaker: You, role: you, en: "I will. Thank you!", vi: "Dạ vâng. Cảm ơn anh!" }
   - slug: disagreeing-politely
     title: Disagreeing Politely
-    level: intermediate
+    level: b1
     description: "Give a different opinion in a meeting without sounding rude."
     situation: "Your team wants to release a new feature on Friday. You think it needs more testing."
     lines:
@@ -208,7 +208,7 @@ scenarios:
       - { speaker: Lead, role: other, en: "That makes sense. Let's do that.", vi: "Nghe hợp lý. Làm vậy đi." }
   - slug: reacting-to-news
     title: Reacting to News
-    level: intermediate
+    level: b1
     description: "React kindly to a colleague's good news and bad news."
     situation: "Your colleague Ngoc stops by your desk to share some news."
     lines:

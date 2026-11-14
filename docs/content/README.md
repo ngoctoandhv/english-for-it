@@ -52,3 +52,9 @@ Totals: 16 listening lessons, 17 scenarios. Multi-voice audio generated with Kok
 The seed content spec now also checks listening lessons (unique titles, at least 3 questions, valid answer index, no duplicate choices,
 "Speaker: text" lines with a Vietnamese line for each English line) and scenarios (unique slugs, at least 2 learner lines, translations,
 a tip on every learner line longer than five words).
+
+## CEFR levels (2026-11-14)
+Every category has a level (the level of the situation, for example small talk A1, standups A2, testing B1, APIs B2) and a word inherits it unless it sets
+`lv`. About 23 words have their own level. Path units, lessons and scenarios have a level too (lessons and scenarios take the level of the unit that uses them).
+These levels are an author's estimate, not checked against the English Vocabulary Profile or another CEFR word list; a reviewer should confirm them.
+Current spread of published words: A1 40, A2 106, B1 112, B2 36. A1 and B2 are thin and need more content.

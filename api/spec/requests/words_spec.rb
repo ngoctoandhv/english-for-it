@@ -82,4 +82,11 @@ RSpec.describe "Vocabulary (learner API)", type: :request do
     post "/api/v1/favorites", params: { type: "bogus", id: 1 }, headers: auth_headers(user), as: :json
     expect(response).to have_http_status(:not_found)
   end
+
+  it "filters the library by CEFR level" do
+    create(:vocabulary_word, term: "hello", cefr_level: "a1")
+    create(:vocabulary_word, term: "idempotent", cefr_level: "b2")
+    get "/api/v1/words", params: { level: "A1" }, headers: auth_headers(create(:user, :onboarded))
+    expect(json["data"].map { |w| w["term"] }).to eq([ "hello" ])
+  end
 end

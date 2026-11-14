@@ -14,7 +14,7 @@ module Api
 
         def permitted
           params.expect(word: [
-            :term, :ipa, :part_of_speech, :meaning_vi, :definition_en, :status, :vocabulary_category_id,
+            :term, :ipa, :part_of_speech, :meaning_vi, :definition_en, :status, :vocabulary_category_id, :cefr_level,
             { vocabulary_examples_attributes: [ %i[id sentence_en translation_vi position _destroy] ],
               vocabulary_collocations_attributes: [ %i[id phrase translation_vi _destroy] ] }
           ])

@@ -1,7 +1,7 @@
 class VocabularySerializer
   def self.summary(word, favorite_ids: [])
     {
-      id: word.id, term: word.term, ipa: word.ipa, part_of_speech: word.part_of_speech,
+      id: word.id, term: word.term, ipa: word.ipa, part_of_speech: word.part_of_speech, level: word.cefr_level,
       meaning_vi: word.meaning_vi, definition_en: word.definition_en,
       audio_url: AudioUrl.call(word.audio),
       category: word.vocabulary_category && { id: word.vocabulary_category.id, name: word.vocabulary_category.name, slug: word.vocabulary_category.slug },
@@ -17,6 +17,6 @@ class VocabularySerializer
   end
 
   def self.admin(word)
-    detail(word).merge(status: word.status, vocabulary_category_id: word.vocabulary_category_id)
+    detail(word).merge(status: word.status, vocabulary_category_id: word.vocabulary_category_id, cefr_level: word.cefr_level)
   end
 end

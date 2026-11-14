@@ -49,7 +49,7 @@ RSpec.describe "Scenarios", type: :request do
 
   describe "admin" do
     let(:payload) do
-      { scenario: { title: "Incident Update", level: "intermediate", status: "draft",
+      { scenario: { title: "Incident Update", level: "b1", status: "draft",
                     scenario_dialogues_attributes: [ { position: 0, speaker: "Lead", role: "other", text_en: "What happened?" },
                                                      { position: 1, speaker: "You", role: "you", text_en: "The site was down." } ] } }
     end

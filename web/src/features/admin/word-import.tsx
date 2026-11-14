@@ -9,7 +9,7 @@ import { importWords, type ImportResult } from "@/lib/api/admin";
 import { errorMessage } from "@/lib/api/errors";
 import { useI18n } from "@/lib/i18n/provider";
 
-const TEMPLATE = "term,part_of_speech,ipa,meaning_vi,definition_en,category,example_en,example_vi,collocations\n";
+const TEMPLATE = "term,part_of_speech,ipa,meaning_vi,definition_en,category,level,example_en,example_vi,collocations\n";
 
 export function WordImport() {
   const { t } = useI18n();
