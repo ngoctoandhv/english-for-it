@@ -17,6 +17,12 @@ Rails.application.routes.draw do
       post "favorites", to: "favorites#create"
       delete "favorites/:type/:id", to: "favorites#destroy"
 
+      get "dashboard", to: "dashboard#show"
+      get "progress", to: "progress#show"
+      get "history", to: "progress#history"
+      get "quizzes/quick", to: "quizzes#quick"
+      post "quizzes/quick/answers", to: "quizzes#answers"
+
       resources :learning_sessions, only: %i[create show] do
         post :complete, on: :member
       end
