@@ -1,12 +1,16 @@
 module LearningSessions
   # Returns the user's open session, or builds a new one. Returns nil when there is nothing to study.
   class Start
-    def self.call(user, now: Time.current, collection: nil) = new(user, now, collection).call
+    EXTRA_SIZES = [ 5, 10, 20, 30 ].freeze
 
-    def initialize(user, now, collection = nil)
+    # extra: a session of that many new words only, outside the daily limit (the learner asked for more).
+    def self.call(user, now: Time.current, collection: nil, extra: nil) = new(user, now, collection, extra).call
+
+    def initialize(user, now, collection = nil, extra = nil)
       @user = user
       @now = now
       @collection = collection
+      @extra = EXTRA_SIZES.include?(extra.to_i) ? extra.to_i : nil
       @plan = Plan.new(user, now: now)
     end
 
@@ -21,12 +25,22 @@ module LearningSessions
 
     private
 
+    # Takes one word from each topic in turn (IT, small talk, polite requests...), so every session mixes work and everyday English.
+    def mixed_topics(scope, limit)
+      return [] if limit <= 0
+
+      ranked = scope.select("vocabulary_words.id, vocabulary_words.vocabulary_category_id, " \
+                            "ROW_NUMBER() OVER (PARTITION BY vocabulary_words.vocabulary_category_id ORDER BY vocabulary_words.id) AS topic_rank")
+      VocabularyWord.from(ranked, :vocabulary_words).order(Arel.sql("topic_rank, vocabulary_category_id")).limit(limit).pluck(:id)
+    end
+
     def build
-      reviews = @plan.due_scope.order(:due_at).limit(@plan.goal_cards).pluck(:vocabulary_word_id)
+      reviews = @extra ? [] : @plan.due_scope.order(:due_at).limit(@plan.goal_cards).pluck(:vocabulary_word_id)
       fresh = VocabularyWord.published.where.not(id: @user.user_word_progresses.select(:vocabulary_word_id))
       # Focus on one collection (from the learning path): its words first, in the collection's own order.
       fresh = fresh.joins(:collection_words).where(collection_words: { learning_collection_id: @collection.id }).reorder("collection_words.position") if @collection
-      new_ids = (@collection ? fresh : fresh.order(:id)).limit(@plan.new_slots(reviews.size)).pluck(:id)
+      limit = @extra || @plan.new_slots(reviews.size)
+      new_ids = @collection ? fresh.limit(limit).pluck(:id) : mixed_topics(fresh, limit)
       return nil if reviews.empty? && new_ids.empty?
 
       LearningSession.transaction do

@@ -12,8 +12,15 @@ export type LearningSession = {
   items: SessionItem[];
 };
 
-export const startSession = (collection?: string) =>
-  apiFetch<{ data: LearningSession | null; reason?: string }>(`/learning_sessions${collection ? `?collection=${encodeURIComponent(collection)}` : ""}`, { method: "POST" }).then((r) => r.data);
+/** extra: a session of that many new words only, on top of the daily plan (5, 10, 20 or 30). */
+export const startSession = (collection?: string, extra?: number) => {
+  const qs = new URLSearchParams();
+  if (collection) qs.set("collection", collection);
+  if (extra) qs.set("extra", String(extra));
+  const q = qs.toString();
+  return apiFetch<{ data: LearningSession | null; reason?: string }>(`/learning_sessions${q ? `?${q}` : ""}`, { method: "POST" }).then((r) => r.data);
+};
+export const EXTRA_SIZES = [5, 10, 20, 30] as const;
 
 export const completeSession = (id: number) => apiFetch<unknown>(`/learning_sessions/${id}/complete`, { method: "POST" });
 

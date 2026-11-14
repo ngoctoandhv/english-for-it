@@ -11,6 +11,7 @@ import { RankCard, WeekDots } from "@/features/growth/rank-card";
 import { errorMessage } from "@/lib/api/errors";
 import { getGrowth, type Growth } from "@/lib/api/growth";
 import { getPath, stepHref, type PathOverview } from "@/lib/api/path";
+import { EXTRA_SIZES } from "@/lib/api/learning";
 import { getDashboard, type Dashboard as DashboardData } from "@/lib/api/stats";
 import { useI18n } from "@/lib/i18n/provider";
 
@@ -64,7 +65,7 @@ export function Dashboard() {
                   <li className="text-muted-foreground"><span className="text-primary">› </span>{t("home.planMinutes", { n: minutes })}</li>
                 </ul>
               ) : (
-                <p className="text-lg text-muted-foreground">{t("dash.caughtUp")} {t("home.planNone")}</p>
+                <p className="text-lg text-muted-foreground">{t("dash.caughtUp")}</p>
               )}
               {data.backlog && <p className="max-w-prose text-sm text-muted-foreground">{t("dash.backlog")}</p>}
               {data.can_start ? (
@@ -72,6 +73,16 @@ export function Dashboard() {
                   {open ? t("dash.continue") : t("dash.start")}
                 </Link>
               ) : null}
+              {data.new_words_left > 0 && (
+                <div className="space-y-2 border-t pt-4" data-testid="learn-more">
+                  <p className="text-sm text-muted-foreground">{t("dash.moreText", { n: data.new_words_left })}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {EXTRA_SIZES.map((n) => (
+                      <Link key={n} href={`/learn?extra=${n}`} className={buttonVariants({ variant: !data.can_start && n === 10 ? "default" : "outline", size: "sm" })}>{t("learn.moreN", { n })}</Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 

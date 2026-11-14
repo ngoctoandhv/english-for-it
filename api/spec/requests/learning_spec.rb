@@ -57,6 +57,60 @@ RSpec.describe "Learning sessions and reviews", type: :request do
       expect(json).to include("data" => nil, "reason" => "all_caught_up")
     end
 
+    describe "learning more than the daily limit" do
+      def finish_open_session
+        LearningSession.where(user: user, status: "in_progress").find_each(&:complete!)
+      end
+
+      it "starts an extra session of only new words after the daily ones, as many times as the learner wants" do
+        start
+        daily = json["data"]["items"]
+        finish_open_session
+        daily.each { |i| UserWordProgress.create!(user: user, vocabulary_word_id: i["word"]["id"], due_at: 1.day.from_now) }
+        post "/api/v1/learning_sessions", params: { extra: 5 }, headers: headers, as: :json
+        expect(response).to have_http_status(:created)
+        items = json["data"]["items"]
+        expect(items.size).to eq(5)
+        expect(items.map { |i| i["kind"] }.uniq).to eq(%w[new])
+
+        finish_open_session
+        items.each { |i| UserWordProgress.create!(user: user, vocabulary_word_id: i["word"]["id"], due_at: 1.day.from_now) }
+        post "/api/v1/learning_sessions", params: { extra: 5 }, headers: headers, as: :json
+        expect(json["data"]["items"].size).to eq(4) # 12 words - 3 daily - 5 extra
+      end
+
+      it "offers extra new words even while reviews are waiting (the learner chose to)" do
+        words.first(10).each { |w| UserWordProgress.create!(user: user, vocabulary_word: w, due_at: 2.days.ago, interval_days: 1, state: "review") }
+        post "/api/v1/learning_sessions", params: { extra: 10 }, headers: headers, as: :json
+        expect(json["data"]["items"].map { |i| i["kind"] }.uniq).to eq(%w[new])
+        expect(json["data"]["items"].size).to eq(2)
+      end
+
+      it "ignores unsupported extra sizes and builds the normal session" do
+        post "/api/v1/learning_sessions", params: { extra: 999 }, headers: headers, as: :json
+        expect(json["data"]["total_items"]).to eq(3)
+      end
+
+      it "uses the learner's own new-words-per-day setting" do
+        user.update!(daily_goal_minutes: 15, new_words_per_day: 20)
+        start
+        expect(json["data"]["total_items"]).to eq(12) # all 12 words fit in 15 min * 2 = 30 cards
+        patch "/api/v1/me", params: { user: { new_words_per_day: 500 } }, headers: headers, as: :json
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+
+    it "mixes topics in a session instead of taking one topic first" do
+      VocabularyWord.delete_all
+      it_words = create(:vocabulary_category, name: "IT", slug: "it-words")
+      daily = create(:vocabulary_category, name: "Daily", slug: "daily-words")
+      3.times { |i| create(:vocabulary_word, term: "it#{i}", vocabulary_category: it_words) }
+      3.times { |i| create(:vocabulary_word, term: "daily#{i}", vocabulary_category: daily) }
+      post "/api/v1/learning_sessions", params: { extra: 5 }, headers: headers, as: :json
+      cats = json["data"]["items"].map { |i| i["word"]["term"].start_with?("it") ? "it" : "daily" }
+      expect(cats.first(4).tally).to eq("it" => 2, "daily" => 2)
+    end
+
     it "never offers draft words" do
       VocabularyWord.update_all(status: "draft")
       start

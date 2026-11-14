@@ -26,7 +26,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Tells the server the app was opened today (one event per user per day). Failures are ignored.
   useEffect(() => {
-    if (userId) pingAppOpen().catch(() => undefined);
+    if (!userId) return;
+    const key = `efit.open.${userId}`;
+    const today = new Date().toISOString().slice(0, 10);
+    try {
+      if (localStorage.getItem(key) === today) return;
+      localStorage.setItem(key, today);
+    } catch {
+      // storage unavailable: the server still records at most one event per day
+    }
+    pingAppOpen().catch(() => undefined);
   }, [userId]);
 
   useEffect(() => {

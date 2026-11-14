@@ -6,7 +6,7 @@ module Api
       # POST: returns the open session or builds one; 200 with `data: null` when there is nothing to study.
       def create
         collection = LearningCollection.published.find_by(slug: params[:collection]) if params[:collection].present?
-        session = LearningSessions::Start.call(current_user, collection: collection)
+        session = LearningSessions::Start.call(current_user, collection: collection, extra: params[:extra])
         if session
           Event.record(current_user, "session_started", { session_id: session.id }) if session.previously_new_record?
           render json: { data: LearningSessionSerializer.call(session) }, status: session.previously_new_record? ? :created : :ok

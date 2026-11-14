@@ -22,6 +22,8 @@ module Stats
         days_studied_this_week: week.count { |d| d[:reviews].positive? },
         vocabulary: Vocabulary.new(@user).call,
         days_away: days_away,
+        new_words_per_day: @plan.new_words_per_day,
+        new_words_left: @plan.new_available_count,
         words_started: @user.user_word_progresses.count,
         favorites_count: @user.user_favorites.count
       }

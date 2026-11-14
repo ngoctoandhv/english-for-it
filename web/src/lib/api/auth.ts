@@ -17,7 +17,7 @@ export const getMe = () => apiFetch<{ user: User }>("/me");
 export const completeOnboarding = (input: { level: string; daily_goal_minutes: number; time_zone: string; focus_role?: FocusRole; focus_goal?: FocusGoal; reminder_hour?: number }) =>
   apiFetch<{ user: User }>("/me/onboarding", { method: "POST", body: { user: input } });
 
-export const updateMe = (input: { name?: string; level?: string; daily_goal_minutes?: number; focus_role?: FocusRole; focus_goal?: FocusGoal; reminder_hour?: number }) =>
+export const updateMe = (input: { name?: string; level?: string; daily_goal_minutes?: number; focus_role?: FocusRole; focus_goal?: FocusGoal; reminder_hour?: number; new_words_per_day?: number | null }) =>
   apiFetch<{ user: User }>("/me", { method: "PATCH", body: { user: input } });
 export const forgotPassword = (email: string) => apiFetch<void>("/auth/password/forgot", { method: "POST", auth: false, body: { email } });
 export const resetPassword = (token: string, password: string) =>

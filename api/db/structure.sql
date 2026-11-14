@@ -964,7 +964,9 @@ CREATE TABLE public.users (
     reminder_hour integer,
     reminder_last_sent_on date,
     recap_last_sent_on date,
+    new_words_per_day integer,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
+    CONSTRAINT users_new_words_per_day_check CHECK (((new_words_per_day IS NULL) OR ((new_words_per_day >= 1) AND (new_words_per_day <= 100)))),
     CONSTRAINT users_reminder_hour_check CHECK (((reminder_hour IS NULL) OR ((reminder_hour >= 0) AND (reminder_hour <= 23)))),
     CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
 );
@@ -2343,6 +2345,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114210001'),
 ('20261114200001'),
 ('20261114190001'),
 ('20261114180001'),

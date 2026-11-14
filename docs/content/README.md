@@ -34,3 +34,13 @@ The path units for the new collections use words and a unit quiz only (no listen
 ## Adding content without code
 Admin → Vocabulary → **Import CSV** adds or updates words in bulk (dry-run check first). Admin → **Path units** edits units, their audiences and steps
 (`words:slug`, `listening:id`, `scenario:slug`, `quiz`, one per line).
+
+## Batch 3 (2026-11-14): everyday English, 97 entries
+`api/db/seeds/it_vocabulary_3.yml`: small talk, polite requests, opinions and agreeing, time and plans, feelings and reactions, calls and video meetings,
+office life, clarifying and checking. Many entries are phrases (part of speech "phrase", stored without final punctuation, for example
+"could you repeat that"). 8 new path units use them. Library total: about 294 words and phrases. Still DRAFT and needs a native speaker's review.
+
+## Automatic content checks
+`api/spec/content/seed_content_spec.rb` runs with RSpec and fails on: duplicate term + part of speech, missing fields, unknown category or part of speech,
+IPA not written as `/.../`, an example that does not contain its word (fill-the-gap needs it), missing final punctuation, collections or path steps
+that point to missing content, unknown audiences. It cannot judge whether the English or the Vietnamese is right; that still needs a person.

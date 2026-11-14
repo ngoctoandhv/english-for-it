@@ -34,8 +34,11 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const user = isLogin ? await login(email, password) : await register({ email, password, name: String(data.get("name")) });
       router.replace(user.onboarded ? "/" : "/onboarding");
     } catch (err) {
-      setError(errorMessage(err, t));
-      setFields(fieldErrors(err));
+      const fields = fieldErrors(err);
+      // Errors on fields the form does not show (for example the time zone) are spelled out instead of a vague "check the fields".
+      const hidden = Object.entries(fields).filter(([k]) => !["name", "email", "password"].includes(k));
+      setError(hidden.length ? hidden.map(([k, v]) => `${k.replaceAll("_", " ")}: ${v}`).join("; ") : errorMessage(err, t));
+      setFields(fields);
     } finally {
       setBusy(false);
     }

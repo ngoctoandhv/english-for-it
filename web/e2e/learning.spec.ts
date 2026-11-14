@@ -486,3 +486,25 @@ test("sign-up works for a browser that reports the legacy time zone Asia/Saigon"
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
   await context.close();
 });
+
+test("learn more: extra new-word sessions beyond the daily plan, from home and after a session", async ({ page }) => {
+  await page.goto("/register");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Name").fill("Eager");
+  await page.getByLabel("Email").fill(`eager-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByTestId("learn-more")).toBeVisible();
+
+  await page.getByTestId("learn-more").getByRole("link", { name: "+5 new words" }).click();
+  await expect(page.getByTestId("card-term")).toBeVisible();
+  await expect(page.getByText("01/05")).toBeVisible();
+  for (let i = 0; i < 5; i++) {
+    await page.getByRole("button", { name: /Show answer/ }).click();
+    await page.getByRole("button", { name: /^Good/ }).click();
+  }
+  await expect(page.getByTestId("more-words")).toBeVisible();
+  await page.getByTestId("more-words").getByRole("link", { name: "+5 new words" }).click();
+  await expect(page.getByText("01/05")).toBeVisible();
+});

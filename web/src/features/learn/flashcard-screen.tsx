@@ -13,6 +13,7 @@ import { errorMessage } from "@/lib/api/errors";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 import { actionForKey, RATINGS } from "./keys";
+import { EXTRA_SIZES } from "@/lib/api/learning";
 import { useFlashcards } from "./use-flashcards";
 
 const RATING_STYLE: Record<string, string> = {
@@ -22,11 +23,20 @@ const RATING_STYLE: Record<string, string> = {
   easy: "text-success",
 };
 
+/** Each URL (including "learn more" rounds) gets a fresh session view, so state never leaks between sessions. */
 export function FlashcardScreen() {
+  const params = useSearchParams();
+  return <FlashcardSession key={params.toString()} />;
+}
+
+function FlashcardSession() {
   const { ready } = useRequireAuth();
   const { t } = useI18n();
-  const collection = useSearchParams().get("collection") ?? undefined;
-  const { state, reveal, rate } = useFlashcards(collection);
+  const params = useSearchParams();
+  const collection = params.get("collection") ?? undefined;
+  const extra = Number(params.get("extra")) || undefined;
+  const round = Number(params.get("r") ?? 0) + 1;
+  const { state, reveal, rate } = useFlashcards(collection, extra);
 
   const card = state.phase === "card" ? state : null;
   const word = card ? card.session.items[card.index].word : null;
@@ -72,7 +82,8 @@ export function FlashcardScreen() {
         {state.phase === "error" && <p role="alert" className="text-center text-destructive">{errorMessage(state.error, t)}</p>}
         {state.phase === "caught_up" && (
           <Message title={t("learn.caughtUp")} text={collection ? t("path.moreWordsTomorrow") : t("learn.caughtUpText")}>
-            <Link href="/" className={buttonVariants({ size: "lg" })}>{t("learn.backToday")}</Link>
+            <MoreWords collection={collection} round={round} />
+            <Link href="/" className={buttonVariants({ size: "lg", variant: "outline" })}>{t("learn.backToday")}</Link>
           </Message>
         )}
         {state.phase === "done" && (
@@ -85,7 +96,8 @@ export function FlashcardScreen() {
                 </div>
               ))}
             </dl>
-            <Link href="/" className={buttonVariants({ size: "lg" })}>{t("learn.backToday")}</Link>
+            <MoreWords collection={collection} round={round} />
+            <Link href="/" className={buttonVariants({ size: "lg", variant: "outline" })}>{t("learn.backToday")}</Link>
           </Message>
         )}
 
@@ -179,6 +191,22 @@ export function FlashcardScreen() {
         {card && <p className="tnum font-display text-sm text-muted-foreground">{t("learn.cardOf", { n: card.index + 1, total })}</p>}
       </aside>
       </main>
+    </div>
+  );
+}
+
+/** "Learn more": start another session of new words right away, as many times as the learner likes. */
+function MoreWords({ collection, round }: { collection?: string; round: number }) {
+  const { t } = useI18n();
+  const base = collection ? `/learn?collection=${encodeURIComponent(collection)}&` : "/learn?";
+  return (
+    <div className="space-y-2" data-testid="more-words">
+      <p className="text-sm text-muted-foreground">{t("learn.moreTitle")}</p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {EXTRA_SIZES.map((n) => (
+          <Link key={n} href={`${base}extra=${n}&r=${round}`} className={buttonVariants({ variant: n === 10 ? "default" : "outline" })}>{t("learn.moreN", { n })}</Link>
+        ))}
+      </div>
     </div>
   );
 }
