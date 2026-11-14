@@ -27,6 +27,10 @@ Rails.application.routes.draw do
         post :attempts, on: :member, action: :attempt
       end
 
+      resources :scenarios, only: %i[index show] do
+        post :progress, on: :member
+      end
+
       resources :learning_sessions, only: %i[create show] do
         post :complete, on: :member
       end
@@ -43,6 +47,7 @@ Rails.application.routes.draw do
           end
         end
         resources :collections, controller: "learning_collections", except: %i[new edit]
+        resources :scenarios, controller: "it_scenarios", except: %i[new edit]
         resources :listening, controller: "listening_lessons", except: %i[new edit] do
           member do
             post :audio

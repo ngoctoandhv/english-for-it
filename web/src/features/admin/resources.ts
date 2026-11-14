@@ -6,7 +6,7 @@ export type FieldDef =
   | { kind: "select"; name: string; label: string; options: Option[]; required?: boolean }
   | { kind: "remote-select"; name: string; label: string; source: string; labelKey: string }
   | { kind: "id-picker"; name: string; label: string; source: string; labelKey: string }
-  | { kind: "list"; name: string; responseKey: string; label: string; itemLabel: string; fields: FieldDef[] };
+  | { kind: "list"; name: string; responseKey: string; label: string; itemLabel: string; fields: FieldDef[]; indexAs?: string };
 
 export type ResourceConfig = {
   key: string;
@@ -126,6 +126,38 @@ RESOURCES.push({
         { kind: "lines", name: "choices", label: "Choices (one per line)", hint: "At least two" },
         { kind: "number", name: "correct_index", label: "Correct choice number (0 = first line)" },
         { kind: "text", name: "explanation", label: "Explanation (optional)" },
+      ],
+    },
+  ],
+});
+
+RESOURCES.push({
+  key: "scenarios",
+  label: "Scenarios",
+  path: "scenarios",
+  paramKey: "scenario",
+  columns: [
+    { label: "Title", value: (r) => str(r.title) },
+    { label: "Level", value: (r) => str(r.level) },
+    { label: "Lines", value: (r) => str(r.lines_count) },
+    { label: "Status", value: (r) => str(r.status) },
+  ],
+  fields: [
+    { kind: "text", name: "title", label: "Title", required: true },
+    { kind: "text", name: "slug", label: "Slug" },
+    { kind: "textarea", name: "description", label: "Description" },
+    { kind: "textarea", name: "situation", label: "Situation (shown before the dialogue)" },
+    { kind: "select", name: "level", label: "Level", required: true, options: ["beginner", "elementary", "intermediate"].map((v) => ({ value: v, label: v })) },
+    { kind: "select", name: "status", label: "Status", options: STATUS, required: true },
+    { kind: "number", name: "position", label: "Position" },
+    {
+      kind: "list", name: "scenario_dialogues", responseKey: "dialogues", label: "Dialogue lines (in order)", itemLabel: "line", indexAs: "position",
+      fields: [
+        { kind: "text", name: "speaker", label: "Speaker", required: true },
+        { kind: "select", name: "role", label: "Who says it", options: [{ value: "other", label: "Other person" }, { value: "you", label: "The learner (you)" }] },
+        { kind: "textarea", name: "text_en", label: "English", required: true },
+        { kind: "textarea", name: "text_vi", label: "Vietnamese" },
+        { kind: "text", name: "tip", label: "Tip (shown for learner lines)" },
       ],
     },
   ],

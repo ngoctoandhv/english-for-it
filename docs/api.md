@@ -61,3 +61,12 @@ Deleting a category that still has words returns 409.
 | GET | /api/v1/listening_lessons/:id | transcript EN/VI, `audio_url`, questions (`id, prompt, choices`); the answer key is never sent |
 | POST | /api/v1/listening_lessons/:id/attempts | `{answers:[{question_id, choice_index}]}` → 201 `{score,total,results[{correct,correct_index,explanation}]}`; unanswered = wrong |
 | * | /api/v1/admin/listening | CRUD, nested `listening_questions_attributes` (`choices` array, `correct_index`); `POST/DELETE /:id/audio` |
+
+## Scenarios (M6)
+Scripted lessons, not AI chat: a fixed dialogue the learner steps through; lines with `role: "you"` are the learner's own lines.
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/scenarios | published; `lines_count`, `last_position`, `completed` |
+| GET | /api/v1/scenarios/:slug | `situation`, ordered `dialogues` (`speaker, role, text_en, text_vi, tip`) |
+| POST | /api/v1/scenarios/:slug/progress | `{progress:{last_position, completed}}`; position never goes back, completion is permanent |
+| * | /api/v1/admin/scenarios | CRUD with nested `scenario_dialogues_attributes` (positions must be unique) |

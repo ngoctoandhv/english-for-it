@@ -172,6 +172,45 @@ ALTER SEQUENCE public.collection_words_id_seq OWNED BY public.collection_words.i
 
 
 --
+-- Name: it_scenarios; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.it_scenarios (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    slug character varying NOT NULL,
+    description text,
+    situation text,
+    level character varying DEFAULT 'elementary'::character varying NOT NULL,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT it_scenarios_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT it_scenarios_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+);
+
+
+--
+-- Name: it_scenarios_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.it_scenarios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: it_scenarios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.it_scenarios_id_seq OWNED BY public.it_scenarios.id;
+
+
+--
 -- Name: learning_collections; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -184,7 +223,7 @@ CREATE TABLE public.learning_collections (
     "position" integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -220,7 +259,7 @@ CREATE TABLE public.learning_session_items (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY (ARRAY[('new'::character varying)::text, ('review'::character varying)::text])))
+    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY ((ARRAY['new'::character varying, 'review'::character varying])::text[])))
 );
 
 
@@ -255,7 +294,7 @@ CREATE TABLE public.learning_sessions (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY (ARRAY[('in_progress'::character varying)::text, ('completed'::character varying)::text])))
+    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY ((ARRAY['in_progress'::character varying, 'completed'::character varying])::text[])))
 );
 
 
@@ -440,7 +479,7 @@ CREATE TABLE public.review_logs (
     state_before jsonb DEFAULT '{}'::jsonb NOT NULL,
     state_after jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY (ARRAY[('again'::character varying)::text, ('hard'::character varying)::text, ('good'::character varying)::text, ('easy'::character varying)::text])))
+    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY ((ARRAY['again'::character varying, 'hard'::character varying, 'good'::character varying, 'easy'::character varying])::text[])))
 );
 
 
@@ -461,6 +500,78 @@ CREATE SEQUENCE public.review_logs_id_seq
 --
 
 ALTER SEQUENCE public.review_logs_id_seq OWNED BY public.review_logs.id;
+
+
+--
+-- Name: scenario_dialogues; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scenario_dialogues (
+    id bigint NOT NULL,
+    it_scenario_id bigint NOT NULL,
+    "position" integer NOT NULL,
+    speaker character varying NOT NULL,
+    role character varying DEFAULT 'other'::character varying NOT NULL,
+    text_en text NOT NULL,
+    text_vi text,
+    tip text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT scenario_dialogues_role_check CHECK (((role)::text = ANY ((ARRAY['other'::character varying, 'you'::character varying])::text[])))
+);
+
+
+--
+-- Name: scenario_dialogues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scenario_dialogues_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scenario_dialogues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scenario_dialogues_id_seq OWNED BY public.scenario_dialogues.id;
+
+
+--
+-- Name: scenario_progresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scenario_progresses (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    it_scenario_id bigint NOT NULL,
+    last_position integer DEFAULT 0 NOT NULL,
+    completed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scenario_progresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scenario_progresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scenario_progresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scenario_progresses_id_seq OWNED BY public.scenario_progresses.id;
 
 
 --
@@ -522,7 +633,7 @@ CREATE TABLE public.user_word_progresses (
     last_reviewed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT progress_state_check CHECK (((state)::text = ANY (ARRAY[('learning'::character varying)::text, ('review'::character varying)::text])))
+    CONSTRAINT progress_state_check CHECK (((state)::text = ANY ((ARRAY['learning'::character varying, 'review'::character varying])::text[])))
 );
 
 
@@ -562,7 +673,7 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
-    CONSTRAINT users_role_check CHECK (((role)::text = ANY (ARRAY[('user'::character varying)::text, ('admin'::character varying)::text])))
+    CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
 );
 
 
@@ -700,7 +811,7 @@ CREATE TABLE public.vocabulary_words (
     vocabulary_category_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -749,6 +860,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 --
 
 ALTER TABLE ONLY public.collection_words ALTER COLUMN id SET DEFAULT nextval('public.collection_words_id_seq'::regclass);
+
+
+--
+-- Name: it_scenarios id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.it_scenarios ALTER COLUMN id SET DEFAULT nextval('public.it_scenarios_id_seq'::regclass);
 
 
 --
@@ -805,6 +923,20 @@ ALTER TABLE ONLY public.refresh_tokens ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.review_logs ALTER COLUMN id SET DEFAULT nextval('public.review_logs_id_seq'::regclass);
+
+
+--
+-- Name: scenario_dialogues id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_dialogues ALTER COLUMN id SET DEFAULT nextval('public.scenario_dialogues_id_seq'::regclass);
+
+
+--
+-- Name: scenario_progresses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_progresses ALTER COLUMN id SET DEFAULT nextval('public.scenario_progresses_id_seq'::regclass);
 
 
 --
@@ -897,6 +1029,14 @@ ALTER TABLE ONLY public.collection_words
 
 
 --
+-- Name: it_scenarios it_scenarios_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.it_scenarios
+    ADD CONSTRAINT it_scenarios_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: learning_collections learning_collections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -958,6 +1098,30 @@ ALTER TABLE ONLY public.refresh_tokens
 
 ALTER TABLE ONLY public.review_logs
     ADD CONSTRAINT review_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scenario_dialogues scenario_dialogues_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_dialogues
+    ADD CONSTRAINT scenario_dialogues_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scenario_dialogues scenario_dialogues_position_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_dialogues
+    ADD CONSTRAINT scenario_dialogues_position_unique UNIQUE (it_scenario_id, "position") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: scenario_progresses scenario_progresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_progresses
+    ADD CONSTRAINT scenario_progresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1071,6 +1235,13 @@ CREATE INDEX index_collection_words_on_vocabulary_word_id ON public.collection_w
 --
 
 CREATE UNIQUE INDEX index_collection_words_unique ON public.collection_words USING btree (learning_collection_id, vocabulary_word_id);
+
+
+--
+-- Name: index_it_scenarios_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_it_scenarios_on_slug ON public.it_scenarios USING btree (slug);
 
 
 --
@@ -1207,6 +1378,34 @@ CREATE INDEX index_review_logs_on_vocabulary_word_id ON public.review_logs USING
 
 
 --
+-- Name: index_scenario_dialogues_on_it_scenario_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scenario_dialogues_on_it_scenario_id ON public.scenario_dialogues USING btree (it_scenario_id);
+
+
+--
+-- Name: index_scenario_progress_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_scenario_progress_unique ON public.scenario_progresses USING btree (user_id, it_scenario_id);
+
+
+--
+-- Name: index_scenario_progresses_on_it_scenario_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scenario_progresses_on_it_scenario_id ON public.scenario_progresses USING btree (it_scenario_id);
+
+
+--
+-- Name: index_scenario_progresses_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scenario_progresses_on_user_id ON public.scenario_progresses USING btree (user_id);
+
+
+--
 -- Name: index_sessions_one_open_per_user; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1321,6 +1520,14 @@ ALTER TABLE ONLY public.listening_questions
 
 
 --
+-- Name: scenario_progresses fk_rails_172200a183; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_progresses
+    ADD CONSTRAINT fk_rails_172200a183 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_favorites fk_rails_25ed4cb388; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1425,6 +1632,14 @@ ALTER TABLE ONLY public.vocabulary_examples
 
 
 --
+-- Name: scenario_progresses fk_rails_cd24d3e3ab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_progresses
+    ADD CONSTRAINT fk_rails_cd24d3e3ab FOREIGN KEY (it_scenario_id) REFERENCES public.it_scenarios(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_word_progresses fk_rails_cdac90163a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1457,6 +1672,14 @@ ALTER TABLE ONLY public.learning_sessions
 
 
 --
+-- Name: scenario_dialogues fk_rails_eb47113a4f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenario_dialogues
+    ADD CONSTRAINT fk_rails_eb47113a4f FOREIGN KEY (it_scenario_id) REFERENCES public.it_scenarios(id) ON DELETE CASCADE;
+
+
+--
 -- Name: vocabulary_collocations fk_rails_ee0e991115; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1471,6 +1694,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114140001'),
 ('20261114130001'),
 ('20261114120001'),
 ('20261114110001'),

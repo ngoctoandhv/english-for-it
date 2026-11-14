@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :user_word_progresses, dependent: :destroy
   has_many :learning_sessions, dependent: :destroy
   has_many :listening_attempts, dependent: :destroy
+  has_many :scenario_progresses, dependent: :destroy
   has_many :review_logs, dependent: :restrict_with_error
 
   normalizes :email, with: ->(e) { e.strip.downcase }

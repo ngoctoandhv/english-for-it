@@ -22,6 +22,7 @@ function itemToForm(fields: FieldDef[], item: Item): Item {
 
 function subValue(sub: FieldDef, raw: unknown): unknown {
   if (sub.kind === "lines") return String(raw ?? "").split("\n").map((l) => l.trim()).filter(Boolean);
+  if (sub.kind === "select") return raw || sub.options[0]?.value || "";
   if (sub.kind === "number") return raw === "" || raw == null ? undefined : Number(raw);
   return raw ?? "";
 }
@@ -32,9 +33,11 @@ export function buildPayload(config: ResourceConfig, values: Values): Values {
   for (const f of config.fields) {
     const v = values[f.name];
     if (f.kind === "list") {
+      let live = 0;
       body[`${f.name}_attributes`] = (v as Item[]).map((item) => {
         if (item._destroy) return { id: item.id, _destroy: true };
         const attrs: Values = Object.fromEntries(f.fields.map((sub) => [sub.name, subValue(sub, item[sub.name])]));
+        if (f.indexAs) attrs[f.indexAs] = live++;
         return item.id ? { id: item.id, ...attrs } : attrs;
       }).filter((a) => !(a._destroy && a.id === undefined));
     } else if (f.kind === "lines") {

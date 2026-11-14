@@ -45,4 +45,18 @@ describe("admin payload", () => {
     expect(attrs[0]).toMatchObject({ id: 3, choices: ["a", "b"], correct_index: 1 });
     expect(attrs[1]).toMatchObject({ choices: ["x", "y"], correct_index: 0 });
   });
+
+  it("numbers scenario lines by their order and defaults select fields", () => {
+    const scenarios = findResource("scenarios")!;
+    const values = toFormValues(scenarios.fields, null);
+    values.title = "T";
+    values.scenario_dialogues = [
+      { id: 1, speaker: "A", role: "other", text_en: "x" },
+      { id: 2, _destroy: true },
+      { speaker: "B", text_en: "y" },
+    ];
+    const attrs = (buildPayload(scenarios, values).scenario as Record<string, unknown>).scenario_dialogues_attributes as Record<string, unknown>[];
+    expect(attrs.map((a) => a.position)).toEqual([0, undefined, 1]);
+    expect(attrs[2].role).toBe("other");
+  });
 });
