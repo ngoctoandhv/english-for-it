@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare env
+        run: cp .env.example .env
+      - name: Build images
+        run: docker compose build
+      - name: Run all checks (rspec, rubocop, brakeman, bundler-audit, tsc, eslint, vitest, next build)
+        run: bin/check --build
+      - name: End-to-end tests
+        run: |
+          docker compose up -d
+          docker compose exec -T api bin/rails db:seed
+          bin/e2e

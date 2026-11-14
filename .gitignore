@@ -15,3 +15,4 @@ playwright-report/
 test-results/
 /api/config/master.key
 /api/config/credentials/*.key
+.env.production
