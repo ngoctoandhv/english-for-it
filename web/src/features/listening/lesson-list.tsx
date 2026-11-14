@@ -16,11 +16,11 @@ export function LessonList() {
 
   return (
     <AppShell>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">Listening</h1>
+      <h1 className="mb-2 text-4xl leading-tight">Listening</h1>
       <p className="mb-6 text-muted-foreground">Short workplace dialogues. Listen first, answer, then read the transcript.</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {lessons?.length === 0 && <p className="text-muted-foreground">No lessons yet.</p>}
-      <ul className="divide-y overflow-hidden rounded-xl border bg-card shadow-sm">
+      <ul className="divide-y border-y">
         {lessons?.map((l) => (
           <li key={l.id}>
             <Link href={`/listening/${l.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50 outline-none">

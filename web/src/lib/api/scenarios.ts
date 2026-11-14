@@ -18,6 +18,7 @@ export type DialogueLine = {
   text_en: string;
   text_vi: string | null;
   tip: string | null;
+  audio_url: string | null;
 };
 export type ScenarioDetail = ScenarioSummary & { situation: string | null; dialogues: DialogueLine[] };
 

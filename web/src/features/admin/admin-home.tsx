@@ -7,7 +7,7 @@ import { RESOURCES } from "./resources";
 export function AdminHome() {
   return (
     <AppShell admin>
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Content admin</h1>
+      <h1 className="mb-6 text-4xl leading-tight">Content admin</h1>
       <ul className="grid gap-3 sm:grid-cols-2">
         {RESOURCES.map((r) => (
           <li key={r.key}>

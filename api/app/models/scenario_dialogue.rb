@@ -1,4 +1,6 @@
 class ScenarioDialogue < ApplicationRecord
+  include AudioAttachable
+
   ROLES = %w[other you].freeze
 
   belongs_to :it_scenario, inverse_of: :scenario_dialogues

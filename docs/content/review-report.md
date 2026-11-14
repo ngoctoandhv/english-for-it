@@ -25,3 +25,12 @@ speaker and a working software engineer.** IPA was checked against general knowl
 
 ## Publishing
 Content stays `draft` outside development. After the human check, set each item to `reviewed` and then `published` in the admin.
+
+## Second pass: expansion (same day)
+Added 60 words, 5 listening lessons and 6 scenarios (see `docs/content/README.md`). Checks done:
+- Every new word has a one-sentence A2–B1 definition, a Vietnamese meaning, IPA (General American), an original workplace example with a translation and 1–2 collocations.
+- Words with two valid parts of speech are entered once with the sense used at work (`monitor` as a verb, `upgrade` as a verb, `record` as a noun, `duplicate` as a noun, `update` as a noun).
+- Listening: one correct answer per question that is stated in the transcript; no distractor is also true. One distractor ("heavier than a phone") was replaced because it was true of any laptop.
+- Security content stays general and uncontroversial (long unique passwords, two-factor authentication, report suspicious email). It does not recommend forced periodic password changes.
+- Scenario tips teach one functional pattern each: polite requests, 'just to confirm', comparatives with 'but', 'we think' for uncertainty, the three-part interview answer.
+Limits are unchanged: not signed off by a native speaker or an engineer, IPA not checked against a dictionary.

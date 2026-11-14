@@ -11,7 +11,7 @@ import { getCategories, getCollections, getWords, type Category, type Collection
 import { FavoriteButton } from "./favorite-button";
 import { PlayButton } from "./play-button";
 
-const selectClass = "h-8 rounded-lg border border-input bg-transparent px-2 text-sm focus-visible:ring-3 focus-visible:ring-ring/50 outline-none";
+const selectClass = "h-11 w-full sm:w-auto rounded-lg border border-input bg-card px-3 text-base focus-visible:ring-3 focus-visible:ring-ring/50 outline-none";
 
 export function LibraryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -44,16 +44,16 @@ export function LibraryPage() {
 
   return (
     <AppShell>
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Vocabulary</h1>
+      <h1 className="mb-6 text-4xl leading-tight">Vocabulary</h1>
       <form
-        className="mb-6 flex flex-wrap items-center gap-2"
+        className="mb-8 grid gap-2 sm:flex sm:flex-wrap sm:items-center"
         onSubmit={(e) => {
           e.preventDefault();
           update({ q: query });
         }}
         role="search"
       >
-        <Input className="max-w-56" placeholder="Search words…" aria-label="Search words" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <Input className="sm:max-w-56" placeholder="Search words…" aria-label="Search words" value={query} onChange={(e) => setQuery(e.target.value)} />
         <select className={selectClass} aria-label="Category" value={filters.category} onChange={(e) => update({ category: e.target.value, collection: "" })}>
           <option value="">All topics</option>
           {categories.map((c) => (
@@ -77,12 +77,12 @@ export function LibraryPage() {
 
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {!error && words.length === 0 && <p className="text-muted-foreground">No words found.</p>}
-      <ul className="divide-y overflow-hidden rounded-xl border bg-card shadow-sm">
+      <ul className="divide-y border-y">
         {words.map((w) => (
           <li key={w.id} className="flex items-center gap-2 px-3 py-2.5">
             <PlayButton term={w.term} audioUrl={w.audio_url} />
             <Link href={`/library/${w.id}`} className="min-w-0 flex-1 rounded-md hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50 outline-none">
-              <span className="font-medium">{w.term}</span>{" "}
+              <span className="text-lg font-medium">{w.term}</span>{" "}
               <span className="text-sm text-muted-foreground">{w.ipa} · {w.part_of_speech}</span>
               <span className="block truncate text-sm text-muted-foreground">{w.meaning_vi}</span>
             </Link>

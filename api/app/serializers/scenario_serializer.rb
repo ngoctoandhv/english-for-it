@@ -8,7 +8,7 @@ class ScenarioSerializer
     summary(scenario, progress: progress).merge(
       situation: scenario.situation,
       dialogues: scenario.scenario_dialogues.map do |d|
-        { id: d.id, position: d.position, speaker: d.speaker, role: d.role, text_en: d.text_en, text_vi: d.text_vi, tip: d.tip }
+        { id: d.id, position: d.position, speaker: d.speaker, role: d.role, text_en: d.text_en, text_vi: d.text_vi, tip: d.tip, audio_url: AudioUrl.call(d.audio) }
       end
     )
   end

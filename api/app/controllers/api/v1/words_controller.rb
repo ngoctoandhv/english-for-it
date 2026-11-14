@@ -21,7 +21,7 @@ module Api
       end
 
       def show
-        word = VocabularyWord.published.includes(:vocabulary_category, :vocabulary_examples, :vocabulary_collocations, audio_attachment: :blob).find(params[:id])
+        word = VocabularyWord.published.includes(:vocabulary_category, :vocabulary_collocations, vocabulary_examples: { audio_attachment: :blob }, audio_attachment: :blob).find(params[:id])
         render json: { data: VocabularySerializer.detail(word, favorite_ids: favorite_ids([ word ])) }
       end
 

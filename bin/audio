@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Make natural voice files with Kokoro, then attach them to the content in the database.
+#   bin/audio              make every missing file, then attach
+#   bin/audio --limit 20   make at most 20 clips (to try the voices first)
+# Safe to stop and run again: existing files are skipped. Runs on this machine (CPU); the server only serves the files.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+docker compose up -d api >/dev/null
+docker compose exec -T api bin/rails audio:manifest
+docker compose --profile tools run --rm tts python generate.py /manifest/audio-manifest.json /out "$@"
+docker compose exec -T api bin/rails audio:attach

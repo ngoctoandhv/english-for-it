@@ -16,3 +16,5 @@ test-results/
 /api/config/master.key
 /api/config/credentials/*.key
 .env.production
+tools/tts/models/
+api/tmp/audio/

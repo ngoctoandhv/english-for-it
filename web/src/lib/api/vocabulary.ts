@@ -15,7 +15,7 @@ export type WordSummary = {
   favorited: boolean;
 };
 export type WordDetail = WordSummary & {
-  examples: { id: number; sentence_en: string; translation_vi: string }[];
+  examples: { id: number; sentence_en: string; translation_vi: string; audio_url: string | null }[];
   collocations: { id: number; phrase: string; translation_vi: string | null }[];
 };
 

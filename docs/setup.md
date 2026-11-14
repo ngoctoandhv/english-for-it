@@ -33,3 +33,15 @@ After adding a gem or npm package, rebuild the images (`docker compose build`) s
 | S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_REGION, S3_BUCKET, S3_ENDPOINT | api | S3-compatible storage |
 
 Secrets are never committed: `.env` is git-ignored; production secrets come from the host environment.
+
+## Natural voices (`bin/audio`)
+The app plays recorded audio when an item has it, and falls back to the best English voice in the browser otherwise.
+Recordings are made locally with [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) (open model, CPU, no cloud service):
+```bash
+bin/audio              # list every word, example sentence, lesson and dialogue line; make the missing files; attach them
+bin/audio --limit 20   # try the voices first
+```
+- Output goes to `api/tmp/audio/` (git-ignored); `rails audio:attach` stores each file in Active Storage on the right record.
+- Dialogues use one voice per speaker; lessons are joined from per-line clips with short pauses.
+- The model files (~340 MB) live in `tools/tts/models/` (git-ignored) and are downloaded on first run.
+- Re-running only makes what is missing. After adding or editing content, run `bin/audio` again.

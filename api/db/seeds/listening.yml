@@ -58,3 +58,96 @@ lessons:
       - { prompt: "When does the error happen?", choices: ["When the customer logs in", "With files larger than ten megabytes", "Only on Mondays", "After a deploy"], correct: 1 }
       - { prompt: "What does the developer check first?", choices: ["The logs", "The database backup", "The customer's email", "The sprint backlog"], correct: 0 }
       - { prompt: "What is the temporary solution?", choices: ["Restart the server.", "Roll back the release.", "Use a smaller file.", "Wait one week."], correct: 2 }
+  - title: "Describing and Comparing Two Laptops"
+    level: elementary
+    description: "Two colleagues compare laptops. Listen for comparatives such as lighter, faster and more expensive."
+    transcript_en: |
+      Anna: I need a new laptop for work. Can you help me choose?
+      Ben: Sure. Look at these two. This one is lighter, but that one has more memory.
+      Anna: Which one is faster?
+      Ben: The second one is faster, and its battery lasts longer. But it is more expensive.
+      Anna: I think I will take the faster one. Speed is more important for me.
+    transcript_vi: |
+      Anna: Mình cần một chiếc laptop mới để làm việc. Bạn giúp mình chọn được không?
+      Ben: Được. Xem hai chiếc này nhé. Chiếc này nhẹ hơn, nhưng chiếc kia có nhiều bộ nhớ hơn.
+      Anna: Chiếc nào nhanh hơn?
+      Ben: Chiếc thứ hai nhanh hơn và pin của nó dùng lâu hơn. Nhưng nó đắt hơn.
+      Anna: Mình nghĩ mình sẽ lấy chiếc nhanh hơn. Tốc độ quan trọng hơn với mình.
+    questions:
+      - { prompt: "Which laptop is lighter?", choices: ["The first one", "The second one", "Both of them", "Neither of them"], correct: 0, explanation: "Ben says: This one is lighter. He is talking about the first laptop." }
+      - { prompt: "What is the disadvantage of the second laptop?", choices: ["It is slower.", "Its battery is shorter.", "It is more expensive.", "It has less memory."], correct: 2 }
+      - { prompt: "Why does Anna choose the faster laptop?", choices: ["It is cheaper.", "Speed is important for her.", "It is lighter.", "Ben tells her to."], correct: 1 }
+  - title: "Server Outage Update"
+    level: intermediate
+    description: "A team talks about a website outage and what to tell customers."
+    transcript_en: |
+      Lead: Team, we have a problem. The website has been down since eight o'clock.
+      Dev: We think the database server ran out of storage.
+      Lead: How long will it take to fix?
+      Dev: We are adding more storage now. It should take about thirty minutes.
+      Lead: Please send an update to the customers.
+      Support: Yes, I will tell them that the site is down and that we expect it to be back by nine.
+    transcript_vi: |
+      Trưởng nhóm: Cả nhóm, chúng ta có vấn đề. Trang web đã ngừng hoạt động từ tám giờ.
+      Dev: Chúng tôi nghĩ máy chủ cơ sở dữ liệu đã hết dung lượng lưu trữ.
+      Trưởng nhóm: Mất bao lâu để khắc phục?
+      Dev: Chúng tôi đang thêm dung lượng. Có thể mất khoảng ba mươi phút.
+      Trưởng nhóm: Hãy gửi cập nhật cho khách hàng.
+      Hỗ trợ: Vâng, tôi sẽ báo họ rằng trang web đang ngừng hoạt động và chúng ta dự kiến sẽ hoạt động lại trước chín giờ.
+    questions:
+      - { prompt: "Since when has the website been down?", choices: ["Since seven o'clock", "Since eight o'clock", "Since nine o'clock", "Since yesterday"], correct: 1 }
+      - { prompt: "What does the developer think is the cause?", choices: ["A firewall rule", "A bad password", "The database server ran out of storage", "A slow network"], correct: 2 }
+      - { prompt: "What will Support do?", choices: ["Add more storage", "Send an update to customers", "Restart the website", "Write a postmortem"], correct: 1 }
+  - title: "Setting Up a Meeting"
+    level: elementary
+    description: "Two colleagues find a time and decide what to discuss."
+    transcript_en: |
+      Sara: Hi Tom, can we schedule a meeting about the new feature?
+      Tom: Sure. I'm available on Tuesday afternoon or Wednesday morning.
+      Sara: Tuesday afternoon works for me. How about two o'clock?
+      Tom: Two is fine. I'll send an invitation with the agenda.
+      Sara: Great. Please add the design review as the first topic.
+    transcript_vi: |
+      Sara: Chào Tom, chúng ta có thể lên lịch một cuộc họp về tính năng mới không?
+      Tom: Được. Mình rảnh chiều thứ Ba hoặc sáng thứ Tư.
+      Sara: Chiều thứ Ba thì ổn với mình. Hai giờ được không?
+      Tom: Hai giờ được. Mình sẽ gửi thư mời kèm chương trình họp.
+      Sara: Tuyệt. Hãy thêm buổi review thiết kế làm chủ đề đầu tiên nhé.
+    questions:
+      - { prompt: "When will they meet?", choices: ["Tuesday at two o'clock", "Wednesday morning", "Tuesday morning", "Friday at two o'clock"], correct: 0 }
+      - { prompt: "What will Tom send?", choices: ["A report", "An invitation with the agenda", "A design file", "A reminder about Friday"], correct: 1 }
+      - { prompt: "What is the first topic?", choices: ["The deadline", "The backlog", "The design review", "The release"], correct: 2 }
+  - title: "Tell Me About Yourself"
+    level: intermediate
+    description: "The start of a job interview for a developer."
+    transcript_en: |
+      Interviewer: Can you tell me about yourself?
+      Candidate: Of course. I'm a backend developer with four years of experience. I mainly work with Ruby on Rails and PostgreSQL.
+      Candidate: In my last job, I helped to reduce the page load time by forty percent.
+      Interviewer: That's impressive. What is your biggest strength?
+      Candidate: I think it's teamwork. I like to explain my ideas clearly and listen to other people.
+    transcript_vi: |
+      Người phỏng vấn: Bạn có thể giới thiệu về bản thân không?
+      Ứng viên: Vâng. Tôi là lập trình viên backend với bốn năm kinh nghiệm. Tôi chủ yếu làm việc với Ruby on Rails và PostgreSQL.
+      Ứng viên: Ở công việc trước, tôi đã giúp giảm thời gian tải trang bốn mươi phần trăm.
+      Người phỏng vấn: Ấn tượng đấy. Điểm mạnh lớn nhất của bạn là gì?
+      Ứng viên: Tôi nghĩ là làm việc nhóm. Tôi thích giải thích ý tưởng rõ ràng và lắng nghe người khác.
+    questions:
+      - { prompt: "How many years of experience does the candidate have?", choices: ["Two", "Three", "Four", "Forty"], correct: 2 }
+      - { prompt: "What did the candidate help to reduce?", choices: ["The server cost", "The page load time", "The number of bugs", "The team size"], correct: 1 }
+      - { prompt: "What is the candidate's biggest strength?", choices: ["Teamwork", "Speed", "Design", "Testing"], correct: 0 }
+  - title: "A Security Reminder"
+    level: elementary
+    description: "An administrator reminds the team about passwords and suspicious emails."
+    transcript_en: |
+      Admin: Hi everyone, here is a quick security reminder.
+      Admin: Please use a long, unique password for each account. Also, turn on two-factor authentication.
+      Admin: IT will never ask for your password by email. If you get a strange email, do not click the link. Send it to the security team.
+    transcript_vi: |
+      Quản trị viên: Chào mọi người, đây là một lời nhắc nhanh về bảo mật.
+      Quản trị viên: Hãy dùng mật khẩu dài và không trùng cho mỗi tài khoản. Ngoài ra, hãy bật xác thực hai yếu tố.
+      Quản trị viên: IT sẽ không bao giờ hỏi mật khẩu của bạn qua email. Nếu nhận được email lạ, đừng bấm vào liên kết. Hãy chuyển nó cho nhóm bảo mật.
+    questions:
+      - { prompt: "What kind of password should you use?", choices: ["A short one", "A long and unique one", "The same one everywhere", "One that IT sends you"], correct: 1 }
+      - { prompt: "What should you turn on?", choices: ["The firewall", "Two-factor authentication", "A backup", "The monitor"], correct: 1 }
+      - { prompt: "What should you do with a strange email?", choices: ["Click the link to check it", "Reply with your password", "Send it to the security team", "Delete your account"], correct: 2 }

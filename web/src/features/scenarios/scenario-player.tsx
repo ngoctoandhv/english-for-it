@@ -1,5 +1,6 @@
 "use client";
 
+import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -60,13 +61,13 @@ export function ScenarioPlayer() {
       <Link href="/scenarios" className="text-sm text-muted-foreground underline underline-offset-4">← Scenarios</Link>
       <div className="mt-4 max-w-2xl space-y-6">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">{scenario.title}</h1>
+          <h1 className="text-4xl leading-tight">{scenario.title}</h1>
           {scenario.situation && <p className="text-muted-foreground">{scenario.situation}</p>}
         </header>
 
         {finished ? (
           <section className="space-y-4">
-            <p className="text-xl font-semibold">Nice work. Scenario complete.</p>
+            <p className="text-xl font-medium">Nice work. Scenario complete.</p>
             <div className="flex gap-3">
               <Button variant="outline" onClick={() => { setFinished(false); setStep(0); setRevealed({}); }}>Practise again</Button>
               <Link href="/scenarios" className={buttonVariants()}>More scenarios</Link>
@@ -89,7 +90,7 @@ export function ScenarioPlayer() {
                       <>
                         <p className="flex items-start gap-2">
                           <span className="flex-1">{l.text_en}</span>
-                          <Button variant="ghost" size="xs" aria-label="Play line" onClick={() => playWord(l.text_en, null)}>▶</Button>
+                          <Button variant="ghost" size="xs" aria-label="Play line" onClick={() => playWord(l.text_en, l.audio_url)}><Play aria-hidden /></Button>
                         </p>
                         {showVi && l.text_vi && <p className="mt-1 text-sm text-muted-foreground">{l.text_vi}</p>}
                         {mine && l.tip && <p className="mt-2 border-t pt-2 text-sm">Tip: {l.tip}</p>}

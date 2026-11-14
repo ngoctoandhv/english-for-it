@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { completeOnboarding } from "@/lib/api/auth";
 import { errorMessage } from "@/lib/api/errors";
-import { cn } from "@/lib/utils";
 import { useAuth } from "./auth-provider";
 import { useRequireAuth } from "./use-require-auth";
 
@@ -49,10 +48,10 @@ export function OnboardingForm() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-8 px-4 py-10">
+    <main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-10 px-6 py-12">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Let&apos;s set you up</h1>
-        <p className="text-sm text-muted-foreground">Two questions. You can change them later.</p>
+        <h1 className="text-4xl leading-tight">Let&apos;s set you up</h1>
+        <p className="text-muted-foreground">Two questions. You can change them later.</p>
       </div>
       <Choice legend="Your English level" options={LEVELS} value={level} onChange={(v) => setLevel(String(v))} />
       <Choice legend="Daily time" options={GOALS} value={goal} onChange={(v) => setGoal(Number(v))} />
@@ -62,7 +61,7 @@ export function OnboardingForm() {
         </p>
       )}
       <Button size="lg" onClick={submit} disabled={busy} className="w-full sm:w-auto">
-        {busy ? "Saving…" : "Start learning"}
+        {busy ? "Saving…" : "Save and continue"}
       </Button>
     </main>
   );
@@ -72,20 +71,16 @@ function Choice<T extends string | number>({ legend, options, value, onChange }:
   legend: string; options: { value: T; title: string; text: string }[]; value: T; onChange: (v: T) => void;
 }) {
   return (
-    <fieldset className="space-y-2">
-      <legend className="mb-2 text-sm font-medium">{legend}</legend>
-      <div className="grid gap-2 sm:grid-cols-3">
+    <fieldset>
+      <legend className="mb-3 text-2xl font-medium">{legend}</legend>
+      <div className="divide-y border-y">
         {options.map((o) => (
-          <label
-            key={String(o.value)}
-            className={cn(
-              "cursor-pointer rounded-lg border p-3 text-sm transition-colors has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50",
-              value === o.value ? "border-primary bg-muted" : "hover:bg-muted/50",
-            )}
-          >
-            <input type="radio" className="sr-only" name={legend} checked={value === o.value} onChange={() => onChange(o.value)} />
-            <span className="block font-medium">{o.title}</span>
-            <span className="block text-muted-foreground">{o.text}</span>
+          <label key={String(o.value)} className="flex cursor-pointer items-center gap-4 py-4 hover:bg-muted/50 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ring">
+            <input type="radio" className="size-5 accent-primary" name={legend} checked={value === o.value} onChange={() => onChange(o.value)} />
+            <span className="grid flex-1 gap-0.5 sm:grid-cols-[10rem_1fr] sm:gap-6">
+              <span className="font-medium">{o.title}</span>
+              <span className="text-muted-foreground">{o.text}</span>
+            </span>
           </label>
         ))}
       </div>

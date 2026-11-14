@@ -11,7 +11,7 @@ class VocabularySerializer
 
   def self.detail(word, favorite_ids: [])
     summary(word, favorite_ids: favorite_ids).merge(
-      examples: word.vocabulary_examples.map { |e| { id: e.id, sentence_en: e.sentence_en, translation_vi: e.translation_vi } },
+      examples: word.vocabulary_examples.map { |e| { id: e.id, sentence_en: e.sentence_en, translation_vi: e.translation_vi, audio_url: AudioUrl.call(e.audio) } },
       collocations: word.vocabulary_collocations.map { |c| { id: c.id, phrase: c.phrase, translation_vi: c.translation_vi } }
     )
   end
