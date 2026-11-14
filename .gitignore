@@ -1,0 +1,17 @@
+.env
+.DS_Store
+node_modules/
+.next/
+api/log/*
+api/tmp/*
+api/storage/*
+api/vendor/bundle
+!api/log/.keep
+!api/tmp/.keep
+!api/storage/.keep
+*.log
+coverage/
+playwright-report/
+test-results/
+/api/config/master.key
+/api/config/credentials/*.key

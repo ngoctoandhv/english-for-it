@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Run every check inside Docker and print a short summary. Usage: bin/check [--build]
+set -uo pipefail
+cd "$(dirname "$0")/.."
+
+TEST_ENV=(-e RAILS_ENV=test -e DATABASE_URL=postgres://postgres:postgres@db:5432 -e REDIS_URL=redis://redis:6379/0)
+failed=0
+
+run() {
+  local name="$1"; shift
+  local out
+  if out=$("$@" 2>&1); then
+    echo "PASS  $name"
+  else
+    echo "FAIL  $name"; echo "$out" | tail -40; failed=1
+  fi
+}
+
+docker compose up -d db redis >/dev/null 2>&1
+run "api: db:prepare" docker compose run --rm --no-deps "${TEST_ENV[@]}" api bin/rails db:prepare
+run "api: rspec"      docker compose run --rm --no-deps "${TEST_ENV[@]}" api bundle exec rspec
+run "api: rubocop"    docker compose run --rm --no-deps api bundle exec rubocop
+run "api: brakeman"   docker compose run --rm --no-deps api bundle exec brakeman -q --no-pager
+run "api: bundler-audit" docker compose run --rm --no-deps api bundle exec bundler-audit check --update
+run "web: typecheck"  docker compose run --rm --no-deps web npm run typecheck
+run "web: eslint"     docker compose run --rm --no-deps web npm run lint
+run "web: vitest"     docker compose run --rm --no-deps web npm test
+if [ "${1:-}" = "--build" ]; then
+  run "web: next build" docker compose run --rm --no-deps web npm run build
+fi
+
+[ $failed -eq 0 ] && echo "ALL GREEN" || { echo "SOME CHECKS FAILED"; exit 1; }
