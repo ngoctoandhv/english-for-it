@@ -122,3 +122,7 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 
 ## Public content (no sign-in)
 `GET /api/v1/public/sample` (5 random published words) and `GET /api/v1/public/words` (up to 500, cached for 1 hour). Fields: id, term, ipa, part_of_speech, meaning_vi, definition_en, first example. Drafts are never returned. Used by the landing page "Try five words", the `/glossary` page (rendered on the server for search engines) and nothing else.
+
+## Admin content tools
+- `POST /api/v1/admin/words/import` `{ csv, dry_run }`: bulk add or update words (max 500 rows, 1 MB). Returns `{ created, updated, errors: [{ row, message }], dry_run }`; a file with any error saves nothing.
+- `/api/v1/admin/units` (CRUD): path units. `steps` is an array of lines (`words:slug`, `listening:id-or-title`, `scenario:slug`, `quiz`) that replaces all steps on save; `audiences` lists roles and goals.

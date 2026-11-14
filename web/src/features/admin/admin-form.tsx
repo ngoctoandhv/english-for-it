@@ -199,7 +199,7 @@ function FieldInput({ field, values, set }: { field: FieldDef; values: Values; s
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id}>{label}{"required" in field && field.required ? " *" : ""}</Label>
-      {field.kind === "textarea" ? (
+      {field.kind === "textarea" || field.kind === "lines" ? (
         <Textarea id={id} value={String(value ?? "")} onChange={(e) => set(field.name, e.target.value)} />
       ) : field.kind === "select" ? (
         <select id={id} className={selectClass} value={String(value ?? "")} onChange={(e) => set(field.name, e.target.value)}>

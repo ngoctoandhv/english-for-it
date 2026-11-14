@@ -18,3 +18,7 @@ export const adminUploadAudio = (path: string, id: string | number, file: File) 
 };
 export const adminRemoveAudio = (path: string, id: string | number) =>
   apiFetch<{ data: AdminRecord }>(`/admin/${path}/${id}/audio`, { method: "DELETE" }).then((r) => r.data);
+
+export type ImportResult = { created: number; updated: number; errors: { row: number; message: string }[]; dry_run: boolean };
+export const importWords = (csv: string, dryRun: boolean) =>
+  apiFetch<{ data: ImportResult }>("/admin/words/import", { method: "POST", body: { csv, dry_run: dryRun } }).then((r) => r.data);

@@ -204,7 +204,7 @@ test("admin screens fit a phone and are translated", async ({ browser }) => {
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Admin" })).toBeVisible();
 
-  for (const path of ["/admin", "/admin/words", "/admin/words/new", "/admin/listening", "/admin/scenarios", "/admin/collections", "/admin/reports"]) {
+  for (const path of ["/admin", "/admin/words", "/admin/words/new", "/admin/listening", "/admin/scenarios", "/admin/collections", "/admin/reports", "/admin/units", "/admin/words/import"]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -450,4 +450,25 @@ test("installable app and reminders: manifest, service worker, icons and the Set
   await expect(page.getByRole("heading", { name: "Daily reminder" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Turn on reminders" })).toBeVisible();
   await expect(page.getByText(/never send streak or guilt/)).toBeVisible();
+});
+
+test("admin imports words from CSV and sees path units", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByLabel("Email").fill("admin@example.test");
+  await page.getByLabel("Password").fill("dev-password-123");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.goto("/admin/words/import");
+  const term = `importword${stamp}`;
+  await page.getByLabel("Or paste CSV text").fill(
+    `term,part_of_speech,meaning_vi,definition_en,category,example_en,example_vi\n${term},noun,từ thử nghiệm,A word added by the importer test.,Testing & QA,This ${term} is only a test.,Đây chỉ là một thử nghiệm.\n`,
+  );
+  await page.getByRole("button", { name: "Check file" }).click();
+  await expect(page.getByRole("status")).toContainText("File is valid: 1 new");
+  await page.getByRole("button", { name: "Import", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("1 new, 0 updated.");
+
+  await page.goto("/admin/units");
+  await expect(page.getByText("Say It Right").first()).toBeVisible();
 });

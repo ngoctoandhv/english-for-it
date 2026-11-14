@@ -62,6 +62,8 @@ Rails.application.routes.draw do
         get "metrics", to: "metrics#show"
         resources :reports, controller: "content_reports", only: %i[index show update destroy]
         resources :categories, controller: "vocabulary_categories", except: %i[new edit]
+        post "words/import", to: "word_imports#create"
+        resources :units, controller: "path_units", except: %i[new edit]
         resources :words, controller: "vocabulary_words", except: %i[new edit] do
           member do
             post :audio

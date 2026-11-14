@@ -53,6 +53,9 @@ export function AdminList() {
       <Link href="/admin" className="text-sm text-muted-foreground underline underline-offset-4">← {t("nav.admin")}</Link>
       <div className="mb-8 mt-3 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl sm:text-4xl">{name}</h1>
+        {config.key === "words" && (
+          <Link href="/admin/words/import" className={buttonVariants({ variant: "outline", className: "w-full sm:w-auto" })}>{t("admin.import")}</Link>
+        )}
         {!config.noCreate && (
           <Link href={`/admin/${config.key}/new`} className={buttonVariants({ className: "w-full sm:w-auto" })}>
             {t("admin.new")}
