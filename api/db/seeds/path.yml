@@ -3,19 +3,19 @@
 units:
   - { slug: daily-standup, title: Daily Standup, level: elementary, description: "Share what you did, what you will do and what blocks you.",
       steps: [ { words: daily-standup }, { listening: "Daily Standup: Yesterday, Today, Blockers" }, { scenario: daily-standup }, quiz ] }
-  - { slug: meetings-and-email, title: Meetings & Email, level: elementary, description: "Plan meetings, ask for clarification and write clear work emails.",
+  - { slug: meetings-and-email, audiences: [analyst, manager, daily_work], title: Meetings & Email, level: elementary, description: "Plan meetings, ask for clarification and write clear work emails.",
       steps: [ { words: meetings-and-email }, { listening: "Setting Up a Meeting" }, { scenario: asking-for-clarification }, quiz ] }
   - { slug: devices-and-support, title: Devices & IT Support, level: elementary, description: "Talk about equipment and ask IT support for help.",
       steps: [ { words: devices-and-hardware }, { listening: "Describing and Comparing Two Laptops" }, { scenario: asking-it-support }, quiz ] }
-  - { slug: code-review, title: Code Review, level: elementary, description: "Give and receive feedback on pull requests politely.",
+  - { slug: code-review, audiences: [developer, qa, devops], title: Code Review, level: elementary, description: "Give and receive feedback on pull requests politely.",
       steps: [ { words: code-review }, { listening: "Code Review Feedback" }, { scenario: code-review }, { scenario: commenting-on-a-ticket }, quiz ] }
-  - { slug: bug-investigation, title: Bug Investigation, level: intermediate, description: "Describe a problem, ask questions and share what you found.",
+  - { slug: bug-investigation, audiences: [developer, qa], title: Bug Investigation, level: intermediate, description: "Describe a problem, ask questions and share what you found.",
       steps: [ { words: bug-investigation }, { listening: "Reporting a Bug" }, { scenario: bug-investigation }, quiz ] }
-  - { slug: incident-update, title: Incident Update, level: intermediate, description: "Tell your team and customers what is wrong and when you will update again.",
+  - { slug: incident-update, audiences: [devops, developer, manager], title: Incident Update, level: intermediate, description: "Tell your team and customers what is wrong and when you will update again.",
       steps: [ { words: cloud-and-data }, { words: deploy-and-release }, { listening: "Server Outage Update" }, { scenario: incident-update }, quiz ] }
-  - { slug: security-basics, title: Networks & Security, level: intermediate, description: "Words and phrases for connections, requests and keeping systems safe.",
+  - { slug: security-basics, audiences: [devops, developer], title: Networks & Security, level: intermediate, description: "Words and phrases for connections, requests and keeping systems safe.",
       steps: [ { words: networking-and-security }, { listening: "A Security Reminder" }, quiz ] }
-  - { slug: compare-and-decide, title: Compare & Decide, level: intermediate, description: "Compare two solutions and recommend one.",
+  - { slug: compare-and-decide, audiences: [analyst, manager, developer], title: Compare & Decide, level: intermediate, description: "Compare two solutions and recommend one.",
       steps: [ { words: describing-and-comparing }, { scenario: comparing-two-options }, quiz ] }
-  - { slug: job-interview, title: Job Interview, level: intermediate, description: "Introduce yourself and talk about your experience and strengths.",
+  - { slug: job-interview, audiences: [interview], title: Job Interview, level: intermediate, description: "Introduce yourself and talk about your experience and strengths.",
       steps: [ { words: job-interview }, { listening: "Tell Me About Yourself" }, { scenario: tell-me-about-yourself }, quiz ] }

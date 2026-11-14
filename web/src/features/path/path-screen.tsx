@@ -57,7 +57,7 @@ function UnitRow({ unit, index, next }: { unit: PathUnit; index: number; next: b
           {unit.status === "completed" ? <Check className="size-4 text-primary" aria-hidden /> : locked ? <Lock className="size-3.5" aria-hidden /> : index}
         </ProgressRing>
         <span className="min-w-0 flex-1">
-          <span className="block font-display text-base">{unit.title}</span>
+          <span className="block font-display text-base">{unit.title}{unit.recommended && <span className="ml-2 rounded border border-primary/40 px-1.5 py-0.5 align-middle text-[11px] text-primary">{t("path.forYou")}</span>}</span>
           <span className="block truncate text-sm text-muted-foreground">{unit.description}</span>
         </span>
         <span className="shrink-0 text-right">

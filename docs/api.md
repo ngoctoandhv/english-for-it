@@ -108,3 +108,8 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 | DELETE | /api/v1/me | user | `{ password }`. Permanently deletes the account, including the immutable review log (see `docs/security.md`). |
 
 `email_verified` is part of the user payload. Verification is not required to use the app; it exists so password recovery works.
+
+## Personalization
+- User fields `focus_role` (developer, qa, devops, analyst, manager, other) and `focus_goal` (daily_work, interview, docs) are set in onboarding or `PATCH /me`.
+- `path_units.audiences` lists the roles/goals a unit is aimed at (empty = everyone). `GET /path` moves units aimed at someone else to the end of their level and sets `recommended: true` on units that match the learner. Nothing is hidden and unlock rules are unchanged.
+- `GET /placement` returns 10 choice questions; `POST /placement/answers` `{ answers: [{ word_id, choice_word_id }] }` returns `{ score, total, results, suggested_level }` (8+ intermediate, 5+ elementary, else beginner). It does not change the profile; the client saves the level with `PATCH /me`.

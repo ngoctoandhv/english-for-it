@@ -70,7 +70,7 @@ puts "Seeded #{ItScenario.count} scenarios"
 path = YAML.load_file(Rails.root.join("db/seeds/path.yml"))
 path["units"].each_with_index do |u, i|
   unit = PathUnit.find_or_initialize_by(slug: u["slug"])
-  unit.assign_attributes(title: u["title"], description: u["description"], level: u["level"], position: i)
+  unit.assign_attributes(title: u["title"], description: u["description"], level: u["level"], position: i, audiences: u["audiences"] || [])
   unit.status = status if unit.new_record?
   unit.save!
   unit.path_steps.destroy_all

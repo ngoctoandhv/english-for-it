@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { SectionTitle } from "@/components/layout/section-title";
@@ -14,6 +15,8 @@ import { useI18n } from "@/lib/i18n/provider";
 
 const LEVELS = ["beginner", "elementary", "intermediate"] as const;
 const GOALS = [5, 10, 15] as const;
+const ROLES = ["developer", "qa", "devops", "analyst", "manager", "other"] as const;
+const FOCUS = ["daily_work", "interview", "docs"] as const;
 
 function Message({ text, error }: { text: string | null; error?: boolean }) {
   if (!text) return null;
@@ -35,7 +38,7 @@ export function SettingsScreen() {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
     try {
-      const res = await updateMe({ name: String(d.get("name")), level: String(d.get("level")), daily_goal_minutes: Number(d.get("goal")) });
+      const res = await updateMe({ name: String(d.get("name")), level: String(d.get("level")), daily_goal_minutes: Number(d.get("goal")), focus_role: String(d.get("role")) as (typeof ROLES)[number], focus_goal: String(d.get("focus")) as (typeof FOCUS)[number] });
       setUser(res.user);
       setProfileMsg({ text: t("settings.saved") });
     } catch (err) {
@@ -100,6 +103,18 @@ export function SettingsScreen() {
               <Input id="name" name="name" defaultValue={user.name} required />
             </div>
             <div className="space-y-1.5">
+              <Label htmlFor="role">{t("settings.role")}</Label>
+              <select id="role" name="role" defaultValue={user.focus_role ?? "developer"} className="h-11 w-full rounded-lg border bg-background px-3">
+                {ROLES.map((r) => <option key={r} value={r}>{t(`role.${r}`)}</option>)}
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="focus">{t("settings.focus")}</Label>
+              <select id="focus" name="focus" defaultValue={user.focus_goal ?? "daily_work"} className="h-11 w-full rounded-lg border bg-background px-3">
+                {FOCUS.map((g) => <option key={g} value={g}>{t(`focus.${g}`)}</option>)}
+              </select>
+            </div>
+            <div className="space-y-1.5">
               <Label htmlFor="level">{t("settings.level")}</Label>
               <select id="level" name="level" defaultValue={user.level ?? "elementary"} className="h-11 w-full rounded-lg border bg-background px-3">
                 {LEVELS.map((l) => <option key={l} value={l}>{t(`level.${l}`)}</option>)}
@@ -111,6 +126,7 @@ export function SettingsScreen() {
                 {GOALS.map((g) => <option key={g} value={g}>{t("onboarding.minutes", { count: g })}</option>)}
               </select>
             </div>
+            <Link href="/placement" className="block text-sm text-primary underline underline-offset-4">{t("settings.retake")}</Link>
             <Button type="submit">{t("settings.save")}</Button>
             <Message text={profileMsg?.text ?? null} error={profileMsg?.error} />
           </form>

@@ -9,7 +9,7 @@ module Api
       end
 
       def update
-        current_user.update!(params.expect(user: [ :name, :level, :daily_goal_minutes, :time_zone ]))
+        current_user.update!(params.expect(user: [ :name, :level, :daily_goal_minutes, :time_zone, :focus_role, :focus_goal ]))
         render json: { user: UserSerializer.call(current_user) }
       end
 
@@ -43,7 +43,7 @@ module Api
       end
 
       def onboarding
-        attrs = params.expect(user: [ :level, :daily_goal_minutes, :time_zone ])
+        attrs = params.expect(user: [ :level, :daily_goal_minutes, :time_zone, :focus_role, :focus_goal ])
         raise ActionController::ParameterMissing, :level if attrs[:level].blank?
 
         current_user.update!(attrs.merge(onboarded_at: Time.current))

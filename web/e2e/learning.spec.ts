@@ -341,3 +341,32 @@ test("account: forgot password page, settings, password change and account delet
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("incorrect");
 });
+
+test("personalization: role and goal in onboarding, vocabulary check suggests a level", async ({ page }) => {
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Tester");
+  await page.getByLabel("Email").fill(`place-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+
+  await expect(page.getByRole("group", { name: "Your role" })).toBeVisible();
+  await page.getByLabel("QA / Tester").check({ force: true });
+  await page.getByLabel("Pass a job interview").check({ force: true });
+
+  await page.getByRole("link", { name: /Take the 2-minute vocabulary check/ }).click();
+  await expect(page.getByRole("heading", { name: "Vocabulary check" })).toBeVisible();
+  await expect(page.locator("ol fieldset")).toHaveCount(10);
+  await page.getByRole("button", { name: "See my level" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Answer every question" })).toBeVisible();
+  for (let i = 0; i < 10; i++) await page.locator("ol fieldset").nth(i).locator("input[type=radio]").first().check({ force: true });
+  await page.getByRole("button", { name: "See my level" }).click();
+  await expect(page.getByTestId("placement-result")).toContainText("Suggested level");
+  await page.getByRole("button", { name: "Use this level" }).click();
+
+  await expect(page.getByRole("heading", { name: "Set up your plan" })).toBeVisible();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.goto("/path");
+  await expect(page.getByText("For you").first()).toBeVisible();
+});

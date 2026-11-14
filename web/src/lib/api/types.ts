@@ -1,3 +1,6 @@
+export type FocusRole = "developer" | "qa" | "devops" | "analyst" | "manager" | "other";
+export type FocusGoal = "daily_work" | "interview" | "docs";
+
 export type User = {
   id: number;
   email: string;
@@ -8,6 +11,8 @@ export type User = {
   time_zone: string;
   onboarded: boolean;
   email_verified: boolean;
+  focus_role: FocusRole | null;
+  focus_goal: FocusGoal | null;
   created_at: string;
 };
 

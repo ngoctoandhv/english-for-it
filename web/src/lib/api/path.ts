@@ -17,6 +17,7 @@ export type PathUnit = {
   description: string | null;
   level: "elementary" | "intermediate";
   status: UnitStatus;
+  recommended: boolean;
   steps_done: number;
   steps_total: number;
   steps: PathStep[];

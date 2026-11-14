@@ -484,6 +484,7 @@ CREATE TABLE public.path_units (
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    audiences character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     CONSTRAINT path_units_level_check CHECK (((level)::text = ANY ((ARRAY['elementary'::character varying, 'intermediate'::character varying])::text[]))),
     CONSTRAINT path_units_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
@@ -855,6 +856,8 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     email_verified_at timestamp(6) without time zone,
+    focus_role character varying,
+    focus_goal character varying,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
     CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
 );
@@ -2108,6 +2111,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114180001'),
 ('20261114170001'),
 ('20261114160001'),
 ('20261114150001'),
