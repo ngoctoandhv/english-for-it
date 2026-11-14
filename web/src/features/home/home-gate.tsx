@@ -7,6 +7,8 @@ import { Preferences } from "@/components/layout/preferences";
 import { SectionTitle } from "@/components/layout/section-title";
 import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
+import { PublicFooter } from "@/components/layout/public-shell";
+import { TryIt } from "./try-it";
 import { Dashboard } from "@/features/dashboard/dashboard";
 import { useI18n } from "@/lib/i18n/provider";
 
@@ -87,7 +89,10 @@ export function HomeGate() {
             ))}
           </ul>
         </section>
+
+        {!authed && <TryIt />}
       </main>
+      <PublicFooter />
     </div>
   );
 }

@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       post "path/units/:id/quiz/answers", to: "path#answers"
       get "progress", to: "progress#show"
       get "history", to: "progress#history"
+      get "public/sample", to: "public#sample"
+      get "public/words", to: "public#words"
       post "events", to: "events#create"
       post "reports", to: "reports#create"
       get "placement", to: "placement#show"

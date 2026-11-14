@@ -82,6 +82,11 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             {isLogin ? t("auth.createAccount") : t("auth.signIn")}
           </Link>
         </p>
+        <p className="text-xs text-muted-foreground">
+          {t("legal.agree")}{" "}
+          <Link className="underline underline-offset-4" href="/terms">{t("legal.terms")}</Link>{" · "}
+          <Link className="underline underline-offset-4" href="/privacy">{t("legal.privacy")}</Link>
+        </p>
       </main>
     </div>
   );

@@ -28,6 +28,8 @@ services:
       context: .
       dockerfile: docker/web.prod.Dockerfile
       args: { NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL}" }
+    environment:
+      API_INTERNAL_URL: http://api:3000
     restart: unless-stopped
     depends_on: [api]
 
