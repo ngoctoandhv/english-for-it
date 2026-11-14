@@ -14,6 +14,8 @@ test("a new learner registers, onboards and completes a flashcard session with t
   await page.getByRole("button", { name: "Save and continue" }).click();
 
   await expect(page.getByRole("link", { name: "Start learning" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your vocabulary" })).toBeVisible();
+  await expect(page.getByTestId("solid-count")).toHaveText("0");
   await page.getByRole("link", { name: "Start learning" }).click();
 
   const total = 3; // 5-minute goal introduces 3 new words per day
@@ -125,6 +127,7 @@ test("scripted scenario: step through, reveal the learner's line, complete", asy
   await expect(page.getByText(/Your turn/)).toBeVisible();
   await page.getByRole("button", { name: "Show my line" }).click();
   await expect(page.getByText(/Tip:/)).toBeVisible();
+  await expect(page.getByTestId("say-it").getByRole("button", { name: "Record my voice" })).toBeVisible();
 
   const action = page.getByRole("button", { name: /^(Show my line|Continue|Finish)$/ });
   for (let i = 0; i < 30; i++) {

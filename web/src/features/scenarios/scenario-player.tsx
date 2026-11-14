@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { SayIt } from "@/features/speaking/say-it";
 import { playWord } from "@/features/library/speak";
 import { errorMessage } from "@/lib/api/errors";
 import { getScenario, saveScenarioProgress, type ScenarioDetail } from "@/lib/api/scenarios";
@@ -101,6 +102,7 @@ export function ScenarioPlayer() {
                         </p>
                         {showVi && l.text_vi && <p className="mt-1 text-sm text-muted-foreground">{l.text_vi}</p>}
                         {mine && l.tip && <p className="mt-2 border-t pt-2 text-sm">{t("scen.tip")} {l.tip}</p>}
+                        {mine && i === step && <SayIt key={l.id} text={l.text_en} audioUrl={l.audio_url} />}
                       </>
                     )}
                   </li>

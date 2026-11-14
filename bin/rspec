@@ -2,5 +2,5 @@
 # Run RSpec in Docker (test env). Usage: bin/rspec [rspec args], e.g. bin/rspec spec/requests/auth_spec.rb
 cd "$(dirname "$0")/.."
 docker compose up -d db >/dev/null 2>&1
-docker compose run --rm --no-deps -e RAILS_ENV=test -e DATABASE_URL=postgres://postgres:postgres@db:5432 -e api \
+docker compose run --rm --no-deps -e RAILS_ENV=test -e DATABASE_URL=postgres://postgres:postgres@db:5432 api \
   bash -c 'bin/rails db:prepare >/dev/null 2>&1; bundle exec rspec "$@"' _ "$@"

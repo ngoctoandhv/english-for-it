@@ -48,7 +48,7 @@ Deleting a category that still has words returns 409.
 ## Dashboard, quiz, progress (M4)
 | Method | Path | Notes |
 |---|---|---|
-| GET | /api/v1/dashboard | `due_count, new_available, goal_cards, backlog, can_start, open_session, reviewed_today, days_studied_this_week, words_started`. No streak or "missed days" fields by design. |
+| GET | /api/v1/dashboard | `due_count, new_available, goal_cards, backlog, can_start, open_session, reviewed_today, days_studied_this_week, words_started, vocabulary`. `vocabulary` = `{ total, unseen, learning, familiar, solid, mastered, solid_soon }`, disjoint stages by review interval (solid = 7-20 days, mastered = 21+). No streak or "missed days" fields by design. No streak or "missed days" fields by design. |
 | GET | /api/v1/progress | word strength buckets (learning / young / mature ≥ 21 days), accuracy, last 14 days by local date |
 | GET | /api/v1/history | paginated review history of the current user |
 | GET | /api/v1/quizzes/quick | `?mode=choice\|listen\|type&count=1..10` (default `choice`, 5). `choice`: meaning among 4 options. `listen`: audio (or `speak_text` when no recording exists) and 4 spelled options. `type`: English definition, word length and first letter. No answer key in any payload. |
