@@ -322,3 +322,92 @@ lessons:
       - { prompt: "What is Ngoc's good news?", choices: ["She got a promotion.", "She is getting married.", "She finished a project.", "She is going on holiday."], correct: 0 }
       - { prompt: "How does Ngoc feel about it?", choices: ["Only excited", "Excited but a bit worried", "Tired and confused", "Not interested"], correct: 1 }
       - { prompt: "Why is Bao relieved?", choices: ["The release went well.", "His manager helped him.", "They found the bug before customers did.", "He can take a day off."], correct: 2 }
+  # A1 and B2 (batch 4). DRAFT.
+  - title: "First Day: Meeting the Team"
+    level: a1
+    description: "A new developer meets her team. Listen for names, jobs and places."
+    transcript_en: |
+      Nam: Hi, welcome to the team! My name is Nam. I work as a tester.
+      Thu: Hi Nam. Nice to meet you. I'm Thu. I am the new developer.
+      Nam: Where do you come from, Thu?
+      Thu: I come from Hue, but now I live in Da Nang.
+      Nam: Great. This is your desk, next to the window. Our meeting room is on the fifth floor.
+      Thu: Thank you. Everyone is very friendly.
+    transcript_vi: |
+      Nam: Chào bạn, chào mừng đến với nhóm! Tôi tên là Nam. Tôi làm kiểm thử viên.
+      Thu: Chào anh Nam. Rất vui được gặp anh. Em là Thu. Em là lập trình viên mới.
+      Nam: Thu đến từ đâu?
+      Thu: Em đến từ Huế, nhưng bây giờ em sống ở Đà Nẵng.
+      Nam: Tuyệt. Đây là bàn của em, cạnh cửa sổ. Phòng họp của nhóm ở tầng năm.
+      Thu: Cảm ơn anh. Mọi người rất thân thiện.
+    questions:
+      - { prompt: "What is Nam's job?", choices: ["He is a developer.", "He is a tester.", "He is a manager.", "He is a designer."], correct: 1 }
+      - { prompt: "Where does Thu live now?", choices: ["In Hue", "In Hanoi", "In Da Nang", "In Saigon"], correct: 2 }
+      - { prompt: "Where is the meeting room?", choices: ["On the fifth floor", "Next to the window", "On the first floor", "Next to the kitchen"], correct: 0 }
+  - title: "My Computer Does Not Work"
+    level: a1
+    description: "A new employee asks IT for help with a computer problem. Listen for the steps."
+    transcript_en: |
+      Lan: Hi, can you help me? I have a problem. I cannot log in.
+      IT: OK. Did you type your password again?
+      Lan: Yes, but it does not work. And the screen is very slow.
+      IT: Please close all windows and restart your laptop.
+      Lan: OK. Done. Now I can log in. Thank you!
+      IT: No problem. Please save your files often.
+    transcript_vi: |
+      Lan: Chào anh, anh giúp em được không? Em gặp vấn đề. Em không đăng nhập được.
+      IT: Được. Em đã gõ lại mật khẩu chưa?
+      Lan: Rồi ạ, nhưng không được. Và màn hình chạy rất chậm.
+      IT: Em hãy đóng tất cả cửa sổ và khởi động lại máy.
+      Lan: Vâng. Xong rồi. Giờ em đăng nhập được rồi. Cảm ơn anh!
+      IT: Không có gì. Nhớ lưu tệp thường xuyên nhé.
+    questions:
+      - { prompt: "What is Lan's problem?", choices: ["She cannot log in.", "Her mouse is broken.", "She lost a file.", "The internet is down."], correct: 0 }
+      - { prompt: "What does IT tell her to do?", choices: ["Buy a new laptop", "Close all windows and restart", "Delete her files", "Call the manager"], correct: 1 }
+      - { prompt: "What should Lan do often?", choices: ["Restart her laptop", "Change her password", "Save her files", "Clean the keyboard"], correct: 2 }
+  - title: "Paying Down Technical Debt"
+    level: b2
+    description: "An engineering lead makes the case for refactoring. Listen for the arguments and the compromise."
+    transcript_en: |
+      Lead: I'd like to propose that we spend the next sprint on technical debt. The payment module has become our biggest bottleneck.
+      Product manager: I understand, but the client is expecting the new reports by the end of the month.
+      Lead: Bear in mind that every change to payments now takes three times longer. As a result, the reports will be late anyway.
+      Product manager: That's a fair point. Could you elaborate on the risk?
+      Lead: The module has no tests and a race condition we cannot reproduce reliably. One bad release could double-charge customers.
+      Product manager: OK. On balance, I'd rather not take that risk. Can we compromise and spend half the sprint on it?
+      Lead: That works. Going forward, I'd also suggest we reserve ten percent of each sprint for this kind of work.
+    transcript_vi: |
+      Trưởng nhóm kỹ thuật: Tôi muốn đề xuất dành sprint tới để xử lý nợ kỹ thuật. Mô-đun thanh toán đã trở thành điểm nghẽn lớn nhất.
+      Quản lý sản phẩm: Tôi hiểu, nhưng khách hàng đang chờ báo cáo mới trước cuối tháng.
+      Trưởng nhóm kỹ thuật: Hãy lưu ý rằng giờ mỗi thay đổi ở phần thanh toán mất gấp ba thời gian. Kết quả là báo cáo đằng nào cũng sẽ trễ.
+      Quản lý sản phẩm: Ý đó hợp lý. Anh nói chi tiết hơn về rủi ro được không?
+      Trưởng nhóm kỹ thuật: Mô-đun này không có test và có một race condition mà chúng ta không tái hiện ổn định được. Một lần phát hành lỗi có thể trừ tiền khách hai lần.
+      Quản lý sản phẩm: Được. Cân nhắc mọi mặt, tôi không muốn chịu rủi ro đó. Chúng ta thỏa hiệp dành một nửa sprint được không?
+      Trưởng nhóm kỹ thuật: Được. Từ nay về sau, tôi cũng đề nghị dành mười phần trăm mỗi sprint cho loại việc này.
+    questions:
+      - { prompt: "Why does the lead want to work on technical debt?", choices: ["The team is bored.", "The payment module slows every change down.", "The client asked for it.", "The reports are finished."], correct: 1 }
+      - { prompt: "What is the main risk?", choices: ["Customers could be charged twice.", "The servers are too old.", "The team might leave.", "The reports could be wrong."], correct: 0 }
+      - { prompt: "What do they agree on?", choices: ["A full sprint on technical debt", "No work on technical debt", "Half a sprint on technical debt", "Moving the reports to next year"], correct: 2 }
+  - title: "Designing for Failure"
+    level: b2
+    description: "Two architects review a design. Listen for the weaknesses they find and how they fix them."
+    transcript_en: |
+      Mai: Let me outline the design. Requests go through a load balancer to three API servers, which all write to one database.
+      Duc: In terms of throughput, that looks fine. But it's worth noting that the database is a single point of failure.
+      Mai: True. We could add a replica in a second region for redundancy.
+      Duc: Then we'd have eventual consistency for reads from the replica. Is that acceptable for the order history?
+      Mai: For history, yes. For payments, no. So payments will always read from the primary.
+      Duc: Makes sense. Also, the retry logic must be idempotent, or a timeout could create duplicate orders.
+      Mai: Agreed. To sum up: a replica for fault tolerance, primary reads for payments, and idempotent retries.
+    transcript_vi: |
+      Mai: Để tôi trình bày khái quát thiết kế. Yêu cầu đi qua bộ cân bằng tải đến ba máy chủ API, tất cả cùng ghi vào một cơ sở dữ liệu.
+      Đức: Về thông lượng thì có vẻ ổn. Nhưng cần lưu ý rằng cơ sở dữ liệu là điểm lỗi duy nhất.
+      Mai: Đúng. Chúng ta có thể thêm một bản sao ở vùng thứ hai để dự phòng.
+      Đức: Khi đó việc đọc từ bản sao sẽ là nhất quán cuối cùng. Điều đó có chấp nhận được với lịch sử đơn hàng không?
+      Mai: Với lịch sử thì được. Với thanh toán thì không. Nên thanh toán sẽ luôn đọc từ máy chính.
+      Đức: Hợp lý. Ngoài ra, logic thử lại phải lũy đẳng, nếu không một lần hết thời gian chờ có thể tạo đơn hàng trùng.
+      Mai: Đồng ý. Tóm lại: một bản sao để chịu lỗi, thanh toán đọc từ máy chính, và thử lại có tính lũy đẳng.
+    questions:
+      - { prompt: "What weakness does Duc find?", choices: ["The load balancer is too slow.", "The database is a single point of failure.", "There are too many API servers.", "The code has no tests."], correct: 1 }
+      - { prompt: "Why will payments read from the primary database?", choices: ["It is cheaper.", "The replica may show old data.", "The replica is in another country.", "The primary is faster."], correct: 1 }
+      - { prompt: "Why must retries be idempotent?", choices: ["To make the API faster", "To avoid duplicate orders", "To save memory", "To pass code review"], correct: 1 }

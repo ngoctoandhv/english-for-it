@@ -58,3 +58,9 @@ Every category has a level (the level of the situation, for example small talk A
 `lv`. About 23 words have their own level. Path units, lessons and scenarios have a level too (lessons and scenarios take the level of the unit that uses them).
 These levels are an author's estimate, not checked against the English Vocabulary Profile or another CEFR word list; a reviewer should confirm them.
 Current spread of published words: A1 40, A2 106, B1 112, B2 36. A1 and B2 are thin and need more content.
+
+## Batch 4 (2026-11-14): A1 and B2
+`api/db/seeds/it_vocabulary_4.yml`: A1 (introducing yourself, computer basics, your work day) and B2 (leading and influencing, advanced architecture,
+presenting and writing), 97 entries. Plus 2 A1 and 2 B2 listening lessons, 2 A1 and 2 B2 scenarios, and 6 path units.
+Totals: about 385 words and phrases (A1 90, A2 106, B1 112, B2 77), 20 listening lessons, 21 scenarios, 30 path units (A1 8, A2 7, B1 8, B2 7).
+Voice files generated with Kokoro. DRAFT: needs a native speaker's review; the CEFR levels are estimates.
