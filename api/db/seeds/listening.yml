@@ -1,0 +1,60 @@
+# DRAFT listening content (not yet reviewed). Dialogues are short and use words from the vocabulary seeds.
+# No audio files are included: upload recordings in the admin; until then the app reads the transcript with the browser voice.
+lessons:
+  - title: "Daily Standup: Yesterday, Today, Blockers"
+    level: elementary
+    description: "A short team standup. Listen for what each person did and what is blocking them."
+    transcript_en: |
+      Manager: Good morning, everyone. Let's start the standup. Mai, can you go first?
+      Mai: Sure. Yesterday I fixed the login bug. Today I will write tests for it. I have no blockers.
+      Manager: Great. Tuan, how about you?
+      Tuan: Yesterday I reviewed two pull requests. Today I will start the payment page. I have one blocker. I need access to the test server.
+      Manager: OK. I will ask IT to give you access today.
+    transcript_vi: |
+      Quản lý: Chào buổi sáng mọi người. Chúng ta bắt đầu standup nhé. Mai, bạn nói trước được không?
+      Mai: Vâng. Hôm qua tôi đã sửa lỗi đăng nhập. Hôm nay tôi sẽ viết test cho nó. Tôi không có vấn đề gì cản trở.
+      Quản lý: Tốt. Tuấn, còn bạn thì sao?
+      Tuấn: Hôm qua tôi đã xem xét hai pull request. Hôm nay tôi sẽ bắt đầu trang thanh toán. Tôi có một vấn đề cản trở. Tôi cần quyền truy cập máy chủ thử nghiệm.
+      Quản lý: Được. Tôi sẽ nhờ bộ phận IT cấp quyền cho bạn trong hôm nay.
+    questions:
+      - { prompt: "What did Mai do yesterday?", choices: ["She fixed the login bug.", "She wrote tests.", "She reviewed two pull requests.", "She started the payment page."], correct: 0 }
+      - { prompt: "What is Tuan's blocker?", choices: ["He has too many meetings.", "He needs access to the test server.", "He cannot find the pull request.", "He is sick."], correct: 1 }
+      - { prompt: "Who will ask IT for access?", choices: ["Mai", "Tuan", "The manager", "A customer"], correct: 2 }
+  - title: "Code Review Feedback"
+    level: elementary
+    description: "A colleague gives feedback on a pull request."
+    transcript_en: |
+      Linh: Hi Hoang, I looked at your pull request. The code works well, but I have a small suggestion.
+      Hoang: Sure, what is it?
+      Linh: The function name is not very clear. Maybe you can rename it to calculateTotalPrice.
+      Hoang: Good idea. I will change it and push the update this afternoon.
+      Linh: Thanks. After that I will approve the pull request.
+    transcript_vi: |
+      Linh: Chào Hoàng, mình đã xem pull request của bạn. Code chạy tốt, nhưng mình có một gợi ý nhỏ.
+      Hoàng: Được, gợi ý gì vậy?
+      Linh: Tên hàm chưa rõ lắm. Có lẽ bạn có thể đổi thành calculateTotalPrice.
+      Hoàng: Ý hay đấy. Mình sẽ đổi và đẩy bản cập nhật vào chiều nay.
+      Linh: Cảm ơn. Sau đó mình sẽ phê duyệt pull request.
+    questions:
+      - { prompt: "What does Linh suggest?", choices: ["Delete the function.", "Rename the function.", "Add more tests.", "Merge the branch."], correct: 1 }
+      - { prompt: "When will Hoang update the code?", choices: ["Tomorrow morning", "Tonight", "This afternoon", "Next week"], correct: 2 }
+      - { prompt: "What will Linh do after the update?", choices: ["Approve the pull request.", "Write a new feature.", "Close the ticket.", "Ask for a rollback."], correct: 0 }
+  - title: "Reporting a Bug"
+    level: intermediate
+    description: "Support reports a problem and a developer starts investigating."
+    transcript_en: |
+      Support: Hi team, a customer cannot upload a file. They see an error message after they click the upload button.
+      Dev: Thanks. Can you reproduce the problem?
+      Support: Yes, it happens every time with files larger than ten megabytes.
+      Dev: I see. Let me check the logs. It may be a size limit on the server. As a workaround, ask the customer to use a smaller file.
+      Support: OK. Please tell me when you find the root cause.
+    transcript_vi: |
+      Hỗ trợ: Chào team, một khách hàng không thể tải tệp lên. Họ thấy thông báo lỗi sau khi bấm nút tải lên.
+      Dev: Cảm ơn. Bạn có thể tái hiện lỗi không?
+      Hỗ trợ: Có, lỗi xảy ra mọi lần với các tệp lớn hơn mười megabyte.
+      Dev: Tôi hiểu rồi. Để tôi kiểm tra log. Có thể do giới hạn kích thước trên máy chủ. Tạm thời, hãy bảo khách hàng dùng tệp nhỏ hơn.
+      Hỗ trợ: Được. Khi nào tìm ra nguyên nhân gốc thì báo tôi nhé.
+    questions:
+      - { prompt: "When does the error happen?", choices: ["When the customer logs in", "With files larger than ten megabytes", "Only on Mondays", "After a deploy"], correct: 1 }
+      - { prompt: "What does the developer check first?", choices: ["The logs", "The database backup", "The customer's email", "The sprint backlog"], correct: 0 }
+      - { prompt: "What is the temporary solution?", choices: ["Restart the server.", "Roll back the release.", "Use a smaller file.", "Wait one week."], correct: 2 }

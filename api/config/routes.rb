@@ -23,6 +23,10 @@ Rails.application.routes.draw do
       get "quizzes/quick", to: "quizzes#quick"
       post "quizzes/quick/answers", to: "quizzes#answers"
 
+      resources :listening_lessons, only: %i[index show] do
+        post :attempts, on: :member, action: :attempt
+      end
+
       resources :learning_sessions, only: %i[create show] do
         post :complete, on: :member
       end
@@ -39,6 +43,12 @@ Rails.application.routes.draw do
           end
         end
         resources :collections, controller: "learning_collections", except: %i[new edit]
+        resources :listening, controller: "listening_lessons", except: %i[new edit] do
+          member do
+            post :audio
+            delete :audio, action: :remove_audio
+          end
+        end
       end
 
       resource :me, only: %i[show update], controller: "me" do

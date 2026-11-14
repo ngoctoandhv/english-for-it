@@ -20,3 +20,7 @@ Source of truth: `api/db/schema.rb`. Timestamps are UTC.
 - `learning_sessions` (partial unique index: one `in_progress` per user), `learning_session_items` (unique position and word per session).
 - `review_logs`: append-only (trigger), unique (user, client_request_id), `state_before`/`state_after` jsonb, rating check constraint.
 - Schema is dumped to `api/db/structure.sql`.
+
+## M5 (listening)
+- `listening_lessons` (level, transcripts EN/VI, status, Active Storage `audio`), `listening_questions` (`choices` jsonb array, `correct_index`; model validates consistency),
+  `listening_attempts` (score, total, answers; many per user and lesson, best score is derived).

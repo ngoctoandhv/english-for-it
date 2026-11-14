@@ -220,7 +220,7 @@ CREATE TABLE public.learning_session_items (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY ((ARRAY['new'::character varying, 'review'::character varying])::text[])))
+    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY (ARRAY[('new'::character varying)::text, ('review'::character varying)::text])))
 );
 
 
@@ -255,7 +255,7 @@ CREATE TABLE public.learning_sessions (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY ((ARRAY['in_progress'::character varying, 'completed'::character varying])::text[])))
+    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY (ARRAY[('in_progress'::character varying)::text, ('completed'::character varying)::text])))
 );
 
 
@@ -276,6 +276,118 @@ CREATE SEQUENCE public.learning_sessions_id_seq
 --
 
 ALTER SEQUENCE public.learning_sessions_id_seq OWNED BY public.learning_sessions.id;
+
+
+--
+-- Name: listening_attempts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.listening_attempts (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    listening_lesson_id bigint NOT NULL,
+    score integer NOT NULL,
+    total integer NOT NULL,
+    answers jsonb DEFAULT '[]'::jsonb NOT NULL,
+    completed_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: listening_attempts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.listening_attempts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: listening_attempts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.listening_attempts_id_seq OWNED BY public.listening_attempts.id;
+
+
+--
+-- Name: listening_lessons; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.listening_lessons (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    description text,
+    level character varying DEFAULT 'elementary'::character varying NOT NULL,
+    transcript_en text NOT NULL,
+    transcript_vi text,
+    duration_seconds integer,
+    "position" integer DEFAULT 0 NOT NULL,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT listening_lessons_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT listening_lessons_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+);
+
+
+--
+-- Name: listening_lessons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.listening_lessons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: listening_lessons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.listening_lessons_id_seq OWNED BY public.listening_lessons.id;
+
+
+--
+-- Name: listening_questions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.listening_questions (
+    id bigint NOT NULL,
+    listening_lesson_id bigint NOT NULL,
+    prompt text NOT NULL,
+    choices jsonb DEFAULT '[]'::jsonb NOT NULL,
+    correct_index integer NOT NULL,
+    explanation text,
+    "position" integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: listening_questions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.listening_questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: listening_questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.listening_questions_id_seq OWNED BY public.listening_questions.id;
 
 
 --
@@ -328,7 +440,7 @@ CREATE TABLE public.review_logs (
     state_before jsonb DEFAULT '{}'::jsonb NOT NULL,
     state_after jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY ((ARRAY['again'::character varying, 'hard'::character varying, 'good'::character varying, 'easy'::character varying])::text[])))
+    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY (ARRAY[('again'::character varying)::text, ('hard'::character varying)::text, ('good'::character varying)::text, ('easy'::character varying)::text])))
 );
 
 
@@ -410,7 +522,7 @@ CREATE TABLE public.user_word_progresses (
     last_reviewed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT progress_state_check CHECK (((state)::text = ANY ((ARRAY['learning'::character varying, 'review'::character varying])::text[])))
+    CONSTRAINT progress_state_check CHECK (((state)::text = ANY (ARRAY[('learning'::character varying)::text, ('review'::character varying)::text])))
 );
 
 
@@ -661,6 +773,27 @@ ALTER TABLE ONLY public.learning_sessions ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: listening_attempts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_attempts ALTER COLUMN id SET DEFAULT nextval('public.listening_attempts_id_seq'::regclass);
+
+
+--
+-- Name: listening_lessons id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_lessons ALTER COLUMN id SET DEFAULT nextval('public.listening_lessons_id_seq'::regclass);
+
+
+--
+-- Name: listening_questions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_questions ALTER COLUMN id SET DEFAULT nextval('public.listening_questions_id_seq'::regclass);
+
+
+--
 -- Name: refresh_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -785,6 +918,30 @@ ALTER TABLE ONLY public.learning_session_items
 
 ALTER TABLE ONLY public.learning_sessions
     ADD CONSTRAINT learning_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: listening_attempts listening_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_attempts
+    ADD CONSTRAINT listening_attempts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: listening_lessons listening_lessons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_lessons
+    ADD CONSTRAINT listening_lessons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: listening_questions listening_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_questions
+    ADD CONSTRAINT listening_questions_pkey PRIMARY KEY (id);
 
 
 --
@@ -966,6 +1123,34 @@ CREATE INDEX index_learning_sessions_on_user_id_and_session_date ON public.learn
 
 
 --
+-- Name: index_listening_attempts_on_listening_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_listening_attempts_on_listening_lesson_id ON public.listening_attempts USING btree (listening_lesson_id);
+
+
+--
+-- Name: index_listening_attempts_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_listening_attempts_on_user_id ON public.listening_attempts USING btree (user_id);
+
+
+--
+-- Name: index_listening_attempts_on_user_id_and_listening_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_listening_attempts_on_user_id_and_listening_lesson_id ON public.listening_attempts USING btree (user_id, listening_lesson_id);
+
+
+--
+-- Name: index_listening_questions_on_listening_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_listening_questions_on_listening_lesson_id ON public.listening_questions USING btree (listening_lesson_id);
+
+
+--
 -- Name: index_progress_unique; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1120,6 +1305,22 @@ CREATE TRIGGER review_logs_no_change BEFORE DELETE OR UPDATE ON public.review_lo
 
 
 --
+-- Name: listening_attempts fk_rails_086ffba213; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_attempts
+    ADD CONSTRAINT fk_rails_086ffba213 FOREIGN KEY (listening_lesson_id) REFERENCES public.listening_lessons(id) ON DELETE CASCADE;
+
+
+--
+-- Name: listening_questions fk_rails_08d52369e8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_questions
+    ADD CONSTRAINT fk_rails_08d52369e8 FOREIGN KEY (listening_lesson_id) REFERENCES public.listening_lessons(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_favorites fk_rails_25ed4cb388; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1165,6 +1366,14 @@ ALTER TABLE ONLY public.user_word_progresses
 
 ALTER TABLE ONLY public.review_logs
     ADD CONSTRAINT fk_rails_815271848e FOREIGN KEY (vocabulary_word_id) REFERENCES public.vocabulary_words(id) ON DELETE RESTRICT;
+
+
+--
+-- Name: listening_attempts fk_rails_8427df0adf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.listening_attempts
+    ADD CONSTRAINT fk_rails_8427df0adf FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -1262,6 +1471,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114130001'),
 ('20261114120001'),
 ('20261114110001'),
 ('20261114100002'),

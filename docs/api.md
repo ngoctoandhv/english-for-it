@@ -53,3 +53,11 @@ Deleting a category that still has words returns 409.
 | GET | /api/v1/history | paginated review history of the current user |
 | GET | /api/v1/quizzes/quick | `?count=1..10` (default 5); multiple-choice, 4 options, no answer key in the payload |
 | POST | /api/v1/quizzes/quick/answers | `{answers:[{word_id, choice_word_id}]}` (max 20) graded on the server; does not change scheduling |
+
+## Listening (M5)
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/listening_lessons | published lessons with `questions_count`, `best_score` (null until attempted) |
+| GET | /api/v1/listening_lessons/:id | transcript EN/VI, `audio_url`, questions (`id, prompt, choices`); the answer key is never sent |
+| POST | /api/v1/listening_lessons/:id/attempts | `{answers:[{question_id, choice_index}]}` → 201 `{score,total,results[{correct,correct_index,explanation}]}`; unanswered = wrong |
+| * | /api/v1/admin/listening | CRUD, nested `listening_questions_attributes` (`choices` array, `correct_index`); `POST/DELETE /:id/audio` |

@@ -35,3 +35,17 @@ end
 
 load Rails.root.join("db/seeds/dev_accounts.rb") if Rails.env.development?
 puts "Seeded #{VocabularyWord.count} words (status for new records: #{status})"
+
+listening = YAML.load_file(Rails.root.join("db/seeds/listening.yml"))
+listening["lessons"].each_with_index do |l, i|
+  lesson = ListeningLesson.find_or_initialize_by(title: l["title"])
+  lesson.assign_attributes(level: l["level"], description: l["description"], transcript_en: l["transcript_en"].strip,
+                           transcript_vi: l["transcript_vi"].strip, position: i)
+  lesson.status = status if lesson.new_record?
+  lesson.save!
+  lesson.listening_questions.destroy_all
+  l["questions"].each_with_index do |q, j|
+    lesson.listening_questions.create!(prompt: q["prompt"], choices: q["choices"], correct_index: q["correct"], position: j)
+  end
+end
+puts "Seeded #{ListeningLesson.count} listening lessons"
