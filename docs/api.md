@@ -44,3 +44,12 @@ Deleting a category that still has words returns 409.
 | POST | /api/v1/learning_sessions/:id/complete | finish early; no penalty |
 | POST | /api/v1/reviews | `{review:{word_id, rating: again\|hard\|good\|easy, client_request_id, session_item_id?}}`; 201, or 200 with `duplicate:true` when the id was already processed |
 | GET | /api/v1/reviews/due | `{data:{due_count}}` |
+
+## Dashboard, quiz, progress (M4)
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/dashboard | `due_count, new_available, goal_cards, backlog, can_start, open_session, reviewed_today, days_studied_this_week, words_started`. No streak or "missed days" fields by design. |
+| GET | /api/v1/progress | word strength buckets (learning / young / mature ≥ 21 days), accuracy, last 14 days by local date |
+| GET | /api/v1/history | paginated review history of the current user |
+| GET | /api/v1/quizzes/quick | `?count=1..10` (default 5); multiple-choice, 4 options, no answer key in the payload |
+| POST | /api/v1/quizzes/quick/answers | `{answers:[{word_id, choice_word_id}]}` (max 20) graded on the server; does not change scheduling |

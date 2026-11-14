@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
 import { HealthBadge } from "@/features/health/health-badge";
 import { AppShell } from "@/components/layout/app-shell";
+import { Dashboard } from "@/features/dashboard/dashboard";
 
 export function HomeGate() {
   const { status, user } = useAuth();
@@ -12,12 +13,7 @@ export function HomeGate() {
   if (status === "authenticated" && user?.onboarded) {
     return (
       <AppShell>
-        <div className="space-y-6">
-          <h1 className="text-3xl font-semibold tracking-tight">Ready when you are{user.name ? `, ${user.name}` : ""}</h1>
-          <Link href="/learn" className={buttonVariants({ size: "lg" })}>
-            Start learning
-          </Link>
-        </div>
+        <Dashboard />
       </AppShell>
     );
   }
