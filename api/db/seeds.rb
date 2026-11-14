@@ -89,3 +89,14 @@ path["units"].each_with_index do |u, i|
   end
 end
 puts "Seeded #{PathUnit.count} path units"
+
+toolkit = YAML.load_file(Rails.root.join("db/seeds/toolkit.yml"))
+toolkit["phrases"].group_by { |p| p["c"] }.each do |category, phrases|
+  phrases.each_with_index do |p, i|
+    rec = ToolkitPhrase.find_or_initialize_by(category: category, text_en: p["en"])
+    rec.assign_attributes(text_vi: p["vi"], position: i)
+    rec.status = status if rec.new_record?
+    rec.save!
+  end
+end
+puts "Seeded #{ToolkitPhrase.count} toolkit phrases"

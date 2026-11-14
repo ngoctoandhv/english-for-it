@@ -443,7 +443,7 @@ CREATE TABLE public.path_steps (
     it_scenario_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT path_steps_kind_check CHECK (((kind)::text = ANY ((ARRAY['words'::character varying, 'listening'::character varying, 'scenario'::character varying, 'quiz'::character varying])::text[]))),
+    CONSTRAINT path_steps_kind_check CHECK (((kind)::text = ANY (ARRAY[('words'::character varying)::text, ('listening'::character varying)::text, ('scenario'::character varying)::text, ('quiz'::character varying)::text]))),
     CONSTRAINT path_steps_one_reference_check CHECK (((((kind)::text = 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 0)) OR (((kind)::text <> 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 1))))
 );
 
@@ -481,8 +481,8 @@ CREATE TABLE public.path_units (
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT path_units_level_check CHECK (((level)::text = ANY ((ARRAY['elementary'::character varying, 'intermediate'::character varying])::text[]))),
-    CONSTRAINT path_units_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+    CONSTRAINT path_units_level_check CHECK (((level)::text = ANY (ARRAY[('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
+    CONSTRAINT path_units_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
 );
 
 
@@ -657,6 +657,43 @@ ALTER SEQUENCE public.scenario_progresses_id_seq OWNED BY public.scenario_progre
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: toolkit_phrases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.toolkit_phrases (
+    id bigint NOT NULL,
+    category character varying NOT NULL,
+    text_en text NOT NULL,
+    text_vi text NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT toolkit_phrases_category_check CHECK (((category)::text = ANY ((ARRAY['pr_feedback'::character varying, 'standup'::character varying, 'meeting'::character varying, 'incident'::character varying, 'email'::character varying])::text[]))),
+    CONSTRAINT toolkit_phrases_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
+);
+
+
+--
+-- Name: toolkit_phrases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.toolkit_phrases_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: toolkit_phrases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.toolkit_phrases_id_seq OWNED BY public.toolkit_phrases.id;
 
 
 --
@@ -1096,6 +1133,13 @@ ALTER TABLE ONLY public.scenario_progresses ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: toolkit_phrases id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.toolkit_phrases ALTER COLUMN id SET DEFAULT nextval('public.toolkit_phrases_id_seq'::regclass);
+
+
+--
 -- Name: unit_completions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1324,6 +1368,14 @@ ALTER TABLE ONLY public.scenario_progresses
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: toolkit_phrases toolkit_phrases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.toolkit_phrases
+    ADD CONSTRAINT toolkit_phrases_pkey PRIMARY KEY (id);
 
 
 --
@@ -1655,6 +1707,13 @@ CREATE INDEX index_scenario_progresses_on_user_id ON public.scenario_progresses 
 --
 
 CREATE UNIQUE INDEX index_sessions_one_open_per_user ON public.learning_sessions USING btree (user_id) WHERE ((status)::text = 'in_progress'::text);
+
+
+--
+-- Name: index_toolkit_phrases_on_category_and_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_toolkit_phrases_on_category_and_position ON public.toolkit_phrases USING btree (category, "position");
 
 
 --
@@ -2045,6 +2104,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114160001'),
 ('20261114150001'),
 ('20261114140001'),
 ('20261114130001'),

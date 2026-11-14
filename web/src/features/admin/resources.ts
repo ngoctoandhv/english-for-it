@@ -163,4 +163,24 @@ RESOURCES.push({
   ],
 });
 
+RESOURCES.push({
+  key: "phrases",
+  label: "Phrases",
+  path: "phrases",
+  paramKey: "phrase",
+  columns: [
+    { label: "Text", value: (r) => str(r.text_en) },
+    { label: "Category", value: (r) => str(r.category) },
+    { label: "Status", value: (r) => str(r.status) },
+  ],
+  fields: [
+    { kind: "select", name: "category", label: "Category", required: true, options: ["pr_feedback", "standup", "meeting", "incident", "email"].map((v) => ({ value: v, label: v })) },
+    { kind: "textarea", name: "text_en", label: "English phrase", required: true },
+    { kind: "textarea", name: "text_vi", label: "Vietnamese translation", required: true },
+    { kind: "number", name: "position", label: "Position" },
+    { kind: "select", name: "status", label: "Status", options: STATUS, required: true },
+  ],
+  hasAudio: true,
+});
+
 export const findResource = (key: string) => RESOURCES.find((r) => r.key === key);

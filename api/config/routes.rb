@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       get "dashboard", to: "dashboard#show"
       get "growth", to: "growth#show"
+      get "toolkit/phrases", to: "toolkit_phrases#index"
       get "path", to: "path#index"
       get "path/units/:id", to: "path#show"
       get "path/units/:id/quiz", to: "path#quiz"
@@ -53,6 +54,12 @@ Rails.application.routes.draw do
         end
         resources :collections, controller: "learning_collections", except: %i[new edit]
         resources :scenarios, controller: "it_scenarios", except: %i[new edit]
+        resources :phrases, controller: "toolkit_phrases", except: %i[new edit] do
+          member do
+            post :audio
+            delete :audio, action: :remove_audio
+          end
+        end
         resources :listening, controller: "listening_lessons", except: %i[new edit] do
           member do
             post :audio

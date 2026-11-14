@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Dumbbell, Home, LogOut, Route, Settings2 } from "lucide-react";
+import { BarChart3, Dumbbell, Home, LogOut, Route, Settings2, Wrench } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -15,6 +15,7 @@ const NAV = [
   { href: "/", key: "nav.today", icon: Home },
   { href: "/path", key: "nav.path", icon: Route },
   { href: "/practice", key: "nav.practice", icon: Dumbbell, also: ["/library", "/listening", "/scenarios", "/quiz"] },
+  { href: "/tools", key: "nav.tools", icon: Wrench },
   { href: "/progress", key: "nav.progress", icon: BarChart3 },
 ];
 

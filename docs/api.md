@@ -85,3 +85,13 @@ Listening attempts, scenario progress and quiz answers also return `units_comple
 Step rules: words ≥ 80% of the collection met at least once; listening ≥ 60% on any attempt; scenario played to the end; unit quiz ≥ 70%.
 Unlock rules: first unit of the learner's level is open; each next unit opens when the previous is complete; the next level opens when every unit of the previous level is complete; levels below the learner's own level are fully open.
 XP (never decreases): 1 per review, 3 per word met, 15 per passed lesson, 15 per completed scenario, 50 per completed unit. Ranks: Intern 0, Junior 100, Mid 400, Senior 1000, Lead 2500.
+
+## Work toolkit (R4)
+| Method | Path | Notes |
+|---|---|---|
+| GET | /api/v1/toolkit/phrases | published phrases in order; `?category=pr_feedback\|standup\|meeting\|incident\|email`; `{id, category, text_en, text_vi, audio_url}` |
+| * | /api/v1/admin/phrases | CRUD and `POST/DELETE /:id/audio` |
+
+The standup, incident and email builders run in the browser (`web/src/lib/toolkit`, covered by Vitest). They are deterministic templates, not AI:
+the learner picks verbs and types the details, the builder applies the grammar (past simple for finished work, `will` + base form for plans, `cannot` for impact)
+and leaves visible `[placeholders]` for anything not filled in. Output can be copied or played with the browser voice.
