@@ -22,7 +22,7 @@ export function ScenarioList() {
       <p className="mb-6 text-muted-foreground">{t("scen.sub")}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {items?.length === 0 && <p className="text-muted-foreground">{t("scen.none")}</p>}
-      <ul className="divide-y border-y">
+      <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
         {items?.map((s) => (
           <li key={s.id}>
             <Link href={`/scenarios/${s.slug}`} className="flex items-center justify-between gap-3 px-1 py-4 hover:bg-muted/50 sm:px-2">

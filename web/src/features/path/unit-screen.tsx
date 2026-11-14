@@ -36,15 +36,17 @@ export function UnitScreen() {
       <Link href="/path" className="text-sm text-muted-foreground underline underline-offset-4">{t("path.back")}</Link>
       {error && <p role="alert" className="mt-4 text-destructive">{error}</p>}
       {unit && (
-        <div className="mt-4 max-w-3xl">
+        <div className="mt-4 grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-start">
+          <div className="lg:sticky lg:top-24">
           <h1 className="text-3xl sm:text-4xl">{unit.title}</h1>
           <p className="mt-3 text-muted-foreground">{unit.description}</p>
           <p className="mt-2 font-display text-xs text-muted-foreground">
             {t(`path.status.${unit.status}`)} · {t("path.stepsDone", { done: unit.steps_done, total: unit.steps_total })}
           </p>
           {locked && <p className="mt-4 flex items-center gap-2 text-sm"><Lock className="size-4" aria-hidden /> {t("path.lockedText")}</p>}
+          </div>
 
-          <section aria-labelledby="route" className="mt-10">
+          <section aria-labelledby="route">
             <SectionTitle id="route">{t("path.title")}</SectionTitle>
             <ol className="divide-y border-y">
               {unit.steps.map((s, i) => (

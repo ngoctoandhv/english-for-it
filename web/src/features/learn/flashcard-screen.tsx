@@ -56,7 +56,7 @@ export function FlashcardScreen() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
-        <div className="mx-auto flex h-14 w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
+        <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-3 px-4 sm:px-6">
           <Link href="/" className="inline-flex min-h-10 items-center gap-1.5 text-[15px] text-muted-foreground hover:text-foreground">
             <ArrowLeft className="size-4" aria-hidden /> {t("learn.exit")}
           </Link>
@@ -66,7 +66,8 @@ export function FlashcardScreen() {
         </div>
       </header>
 
-      <main className={cn("mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-5 px-4 py-6 sm:px-6 sm:py-10", card?.revealed ? "pb-36 sm:pb-10" : "pb-28 sm:pb-10")}>
+      <main className={cn("mx-auto grid w-full max-w-5xl flex-1 items-center gap-12 px-4 py-6 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_15rem]", card?.revealed ? "pb-36 sm:pb-10" : "pb-28 sm:pb-10")}>
+      <div className="mx-auto flex w-full max-w-2xl flex-col justify-center gap-5">
         {state.phase === "loading" && <p className="text-center text-muted-foreground">{t("learn.preparing")}</p>}
         {state.phase === "error" && <p role="alert" className="text-center text-destructive">{errorMessage(state.error, t)}</p>}
         {state.phase === "caught_up" && (
@@ -164,6 +165,19 @@ export function FlashcardScreen() {
             </div>
           </>
         )}
+      </div>
+      <aside className="hidden space-y-4 lg:block" aria-label={t("learn.shortcuts")}>
+        <p className="font-display text-xs text-muted-foreground">{t("learn.shortcuts")}</p>
+        <dl className="divide-y border-y text-sm">
+          {[["Space", t("learn.keyReveal")], ["1 – 4", t("learn.keyRate")], ["P", t("learn.keyPlay")]].map(([k, label]) => (
+            <div key={k} className="flex items-center justify-between gap-3 py-2.5">
+              <dt className="rounded border px-1.5 py-0.5 font-display text-xs">{k}</dt>
+              <dd className="text-muted-foreground">{label}</dd>
+            </div>
+          ))}
+        </dl>
+        {card && <p className="tnum font-display text-sm text-muted-foreground">{t("learn.cardOf", { n: card.index + 1, total })}</p>}
+      </aside>
       </main>
     </div>
   );

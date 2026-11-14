@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { AuthAside } from "./auth-aside";
 import { Brand } from "@/components/layout/brand";
 import { Preferences } from "@/components/layout/preferences";
 import { Button } from "@/components/ui/button";
@@ -43,12 +44,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6 md:h-16">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10 md:h-16">
           <Brand />
           <Preferences />
         </div>
       </header>
-      <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-8 px-5 py-10">
+      <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-16 px-5 py-10 lg:grid-cols-2 lg:px-10">
+      <AuthAside />
+      <main className="flex w-full max-w-sm flex-col justify-center gap-8 lg:justify-self-center">
         <div className="space-y-2">
           <h1 className="text-3xl sm:text-4xl">{isLogin ? t("auth.signIn") : t("auth.createAccount")}</h1>
           <p className="text-muted-foreground">{isLogin ? t("auth.signInSub") : t("auth.registerSub")}</p>
@@ -88,6 +91,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           <Link className="underline underline-offset-4" href="/privacy">{t("legal.privacy")}</Link>
         </p>
       </main>
+      </div>
     </div>
   );
 }

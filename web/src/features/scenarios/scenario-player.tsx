@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ReportIssue } from "@/components/report-issue";
+import { Split } from "@/components/layout/split";
+import { SectionTitle } from "@/components/layout/section-title";
+import { Progress } from "@/components/ui/progress";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SayIt } from "@/features/speaking/say-it";
@@ -65,13 +68,27 @@ export function ScenarioPlayer() {
   return (
     <AppShell>
       <Link href="/scenarios" className="text-sm text-muted-foreground underline underline-offset-4">← {t("scen.title")}</Link>
-      <div className="mt-4 max-w-2xl space-y-6">
+      <div className="mt-4 space-y-8">
         <header className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl">{scenario.title}</h1>
-          {scenario.situation && <p className="text-muted-foreground">{scenario.situation}</p>}
-          <ReportIssue type="scenario" id={scenario.id} />
+          <h1 className="text-2xl sm:text-4xl">{scenario.title}</h1>
+          {scenario.situation && <p className="text-muted-foreground lg:hidden">{scenario.situation}</p>}
         </header>
 
+        <Split
+          aside={
+            <>
+              <section aria-labelledby="situation" className="space-y-3">
+                <SectionTitle id="situation">{t("scen.situation")}</SectionTitle>
+                {scenario.situation && <p className="hidden text-muted-foreground lg:block">{scenario.situation}</p>}
+                <div className="space-y-1.5">
+                  <Progress value={((finished ? lines.length : step + 1) / lines.length) * 100} aria-label={t("scen.conversation")} />
+                  <p className="tnum text-sm text-muted-foreground">{finished ? lines.length : step + 1} / {lines.length}</p>
+                </div>
+                <ReportIssue type="scenario" id={scenario.id} />
+              </section>
+            </>
+          }
+        >
         {finished ? (
           <section className="space-y-4">
             <p className="font-display text-xl">{t("scen.done")}</p>
@@ -123,6 +140,7 @@ export function ScenarioPlayer() {
             </div>
           </>
         )}
+        </Split>
       </div>
     </AppShell>
   );

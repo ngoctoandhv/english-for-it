@@ -48,7 +48,7 @@ export function PhraseBank() {
       </div>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {phrases?.length === 0 && <p className="text-muted-foreground">{t("phrases.none")}</p>}
-      <ul className="divide-y border-y">
+      <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
         {phrases?.map((p) => (
           <li key={p.id} className="flex items-start gap-2 py-3">
             <div className="min-w-0 flex-1">

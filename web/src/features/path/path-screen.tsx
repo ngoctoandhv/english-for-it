@@ -26,9 +26,9 @@ export function PathScreen() {
       <p className="mb-10 max-w-prose text-muted-foreground">{t("path.sub")}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {path && path.levels.every((l) => l.units.length === 0) && <p className="text-muted-foreground">{t("path.empty")}</p>}
-      <div className="space-y-12">
+      <div className="grid grid-cols-1 gap-x-12 gap-y-12 lg:grid-cols-2 lg:items-start">
         {path?.levels.filter((l) => l.units.length > 0).map((l) => (
-          <section key={l.level} aria-labelledby={`lvl-${l.level}`} className="max-w-3xl">
+          <section key={l.level} aria-labelledby={`lvl-${l.level}`} className="min-w-0">
             <SectionTitle id={`lvl-${l.level}`}>{t(`path.level.${l.level}`)}</SectionTitle>
             <ol className="divide-y border-y">
               {l.units.map((u, i) => (

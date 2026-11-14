@@ -1,6 +1,7 @@
 "use client";
 
 import { Volume2 } from "lucide-react";
+import { Split } from "@/components/layout/split";
 import { ReportIssue } from "@/components/report-issue";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -32,7 +33,7 @@ export function WordPage() {
       </Link>
       {error && <p role="alert" className="mt-4 text-destructive">{error}</p>}
       {word && (
-        <article className="mt-4 max-w-2xl space-y-6">
+        <article className="mt-4 space-y-8">
           <header>
             <div className="flex items-center gap-1">
               <h1 className="break-words text-4xl leading-none sm:text-6xl">{word.term}</h1>
@@ -44,11 +45,29 @@ export function WordPage() {
               {word.category && ` · ${word.category.name}`}
             </p>
           </header>
-          <section>
-            <p className="text-xl">{word.meaning_vi}</p>
-            <p className="text-muted-foreground">{word.definition_en}</p>
-            <div className="mt-3"><ReportIssue type="word" id={word.id} /></div>
-          </section>
+          <Split
+            aside={
+              <>
+                <section aria-label={t("lib.meaning")}>
+                  <p className="text-2xl">{word.meaning_vi}</p>
+                  <p className="mt-2 text-muted-foreground">{word.definition_en}</p>
+                </section>
+                {word.collocations.length > 0 && (
+                  <section>
+                    <SectionTitle>{t("lib.collocations")}</SectionTitle>
+                    <ul className="flex flex-wrap gap-2">
+                      {word.collocations.map((c) => (
+                        <li key={c.id} className="rounded border px-2 py-1 font-display text-xs">
+                          {c.phrase}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+                <ReportIssue type="word" id={word.id} />
+              </>
+            }
+          >
           {word.examples.length > 0 && (
             <section>
               <SectionTitle>{t("lib.examples")}</SectionTitle>
@@ -67,18 +86,7 @@ export function WordPage() {
               </ul>
             </section>
           )}
-          {word.collocations.length > 0 && (
-            <section>
-              <SectionTitle>{t("lib.collocations")}</SectionTitle>
-              <ul className="flex flex-wrap gap-2">
-                {word.collocations.map((c) => (
-                  <li key={c.id} className="rounded border px-2 py-1 font-display text-xs">
-                    {c.phrase}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+          </Split>
         </article>
       )}
     </AppShell>

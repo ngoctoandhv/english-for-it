@@ -22,7 +22,7 @@ export function LessonList() {
       <p className="mb-6 text-muted-foreground">{t("listen.sub")}</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {lessons?.length === 0 && <p className="text-muted-foreground">{t("listen.none")}</p>}
-      <ul className="divide-y border-y">
+      <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
         {lessons?.map((l) => (
           <li key={l.id}>
             <Link href={`/listening/${l.id}`} className="flex items-center justify-between gap-3 px-1 py-4 hover:bg-muted/50 sm:px-2">

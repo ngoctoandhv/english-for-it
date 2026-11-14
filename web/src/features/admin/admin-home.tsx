@@ -14,9 +14,9 @@ export function AdminHome() {
       <h1 className="mb-3 text-3xl sm:text-4xl">{t("admin.title")}</h1>
       <p className="mb-10 max-w-prose text-muted-foreground">{t("admin.sub")}</p>
       <AdminMetrics />
-      <section aria-labelledby="content" className="max-w-3xl">
+      <section aria-labelledby="content" className="">
         <SectionTitle id="content">{t("nav.admin")}</SectionTitle>
-        <ul className="divide-y border-y">
+        <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
           {RESOURCES.map((r) => (
             <li key={r.key}>
               <Link href={`/admin/${r.key}`} className="grid gap-1 py-4 hover:bg-muted/50 sm:grid-cols-[13rem_1fr] sm:gap-8 sm:px-2">

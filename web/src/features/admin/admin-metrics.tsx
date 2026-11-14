@@ -31,7 +31,7 @@ export function AdminMetrics() {
   if (!m) return <p className="text-muted-foreground">{t("common.loading")}</p>;
 
   return (
-    <section aria-labelledby="metrics" className="mb-12 max-w-3xl space-y-8">
+    <section aria-labelledby="metrics" className="mb-12 space-y-8">
       <SectionTitle id="metrics">{t("metrics.title")}</SectionTitle>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
         <Stat label={t("metrics.users")} value={m.users.total} hint={t("metrics.new7", { n: m.users.new_7d })} />

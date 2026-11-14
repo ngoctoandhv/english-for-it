@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Split } from "@/components/layout/split";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Heatmap } from "@/features/growth/heatmap";
@@ -36,8 +37,34 @@ export function ProgressScreen() {
     <AppShell>
       <h1 className="mb-8 text-3xl sm:text-4xl">{t("progress.title")}</h1>
       {error && <p role="alert" className="text-destructive">{error}</p>}
+      <Split sticky={false} aside={
+      <section aria-labelledby="history">
+          <SectionTitle id="history">{t("progress.history")}</SectionTitle>
+          {history.length === 0 ? (
+            <p className="text-muted-foreground">{t("progress.noReviews")}</p>
+          ) : (
+            <ul className="divide-y border-y">
+              {history.map((h) => (
+                <li key={h.id} className="flex flex-col gap-0.5 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                  <span><span className="font-medium">{h.word.term}</span> <span className="text-muted-foreground">{h.word.meaning_vi}</span></span>
+                  <span className="font-display text-xs text-muted-foreground">
+                    {h.rating} · {new Date(h.reviewed_at).toLocaleString(undefined, { timeZone: zone, dateStyle: "medium", timeStyle: "short" })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {meta && meta.total_pages > 1 && (
+            <div className="mt-4 flex items-center justify-between text-sm">
+              <Button variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>{t("common.prev")}</Button>
+              <span className="tnum font-display text-xs">{t("common.pageOf", { page: meta.page, total: meta.total_pages })}</span>
+              <Button variant="outline" disabled={page >= meta.total_pages} onClick={() => setPage(page + 1)}>{t("common.next")}</Button>
+            </div>
+          )}
+        </section>
+      }>
       {growth && (
-        <section aria-labelledby="growth" className="mb-12 max-w-3xl space-y-6">
+        <section aria-labelledby="growth" className="mb-12 space-y-6">
           <SectionTitle id="growth">{t("growth.title")}</SectionTitle>
           <RankCard growth={growth} />
           <WeekDots growth={growth} />
@@ -51,7 +78,7 @@ export function ProgressScreen() {
       )}
       {summary && (
         <div className="space-y-12">
-          <section aria-labelledby="words" className="max-w-xl">
+          <section aria-labelledby="words">
             <SectionTitle id="words">{t("progress.words")}</SectionTitle>
             <dl className="divide-y border-y">
               <Stat label={t("progress.started")} value={summary.words.started} />
@@ -64,7 +91,7 @@ export function ProgressScreen() {
           </section>
           <section aria-label={t("progress.last14")}>
             <SectionTitle>{t("progress.last14")}</SectionTitle>
-            <div className="flex h-24 max-w-xl items-end gap-1" role="img" aria-label={t("progress.perDay", { values: summary.by_day.map((d) => d.reviews).join(", ") })}>
+            <div className="flex h-24 items-end gap-1" role="img" aria-label={t("progress.perDay", { values: summary.by_day.map((d) => d.reviews).join(", ") })}>
               {summary.by_day.map((d) => (
                 <div key={d.date} title={`${d.date}: ${d.reviews}`} className="flex-1 bg-primary" style={{ height: `${Math.max(4, (d.reviews / max) * 100)}%`, opacity: d.reviews ? 1 : 0.2 }} />
               ))}
@@ -73,30 +100,7 @@ export function ProgressScreen() {
         </div>
       )}
 
-      <section className="mt-10">
-        <SectionTitle>{t("progress.history")}</SectionTitle>
-        {history.length === 0 ? (
-          <p className="text-muted-foreground">{t("progress.noReviews")}</p>
-        ) : (
-          <ul className="divide-y border-y">
-            {history.map((h) => (
-              <li key={h.id} className="flex flex-col gap-0.5 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <span><span className="font-medium">{h.word.term}</span> <span className="text-muted-foreground">{h.word.meaning_vi}</span></span>
-                <span className="font-display text-xs text-muted-foreground">
-                  {h.rating} · {new Date(h.reviewed_at).toLocaleString(undefined, { timeZone: zone, dateStyle: "medium", timeStyle: "short" })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-        {meta && meta.total_pages > 1 && (
-          <div className="mt-4 flex items-center justify-between text-sm">
-            <Button variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>{t("common.prev")}</Button>
-            <span className="tnum font-display text-xs">{t("common.pageOf", { page: meta.page, total: meta.total_pages })}</span>
-            <Button variant="outline" disabled={page >= meta.total_pages} onClick={() => setPage(page + 1)}>{t("common.next")}</Button>
-          </div>
-        )}
-      </section>
+      </Split>
     </AppShell>
   );
 }
