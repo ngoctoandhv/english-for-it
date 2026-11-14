@@ -9,6 +9,7 @@ export function toFormValues(fields: FieldDef[], record: Values | null): Values 
   for (const f of fields) {
     if (f.kind === "list") values[f.name] = ((record?.[f.responseKey] as Item[] | undefined) ?? []).map((i) => itemToForm(f.fields, i));
     else if (f.kind === "id-picker") values[f.name] = (record?.[f.name] as number[] | undefined) ?? [];
+    else if (f.kind === "lines") values[f.name] = ((record?.[f.name] as string[] | undefined) ?? []).join("\n");
     else values[f.name] = record?.[f.name] ?? (f.kind === "select" ? f.options[0]?.value ?? "" : "");
   }
   return values;

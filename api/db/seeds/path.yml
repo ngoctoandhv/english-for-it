@@ -19,3 +19,17 @@ units:
       steps: [ { words: describing-and-comparing }, { scenario: comparing-two-options }, quiz ] }
   - { slug: job-interview, audiences: [interview], title: Job Interview, level: intermediate, description: "Introduce yourself and talk about your experience and strengths.",
       steps: [ { words: job-interview }, { listening: "Tell Me About Yourself" }, { scenario: tell-me-about-yourself }, quiz ] }
+  - { slug: say-it-right, title: Say It Right, level: elementary, description: "Pronounce the IT words that people often get wrong, such as cache, queue and daemon.",
+      steps: [ { words: say-it-right }, quiz ] }
+  - { slug: working-together, title: Working Together, level: elementary, description: "Words and phrases for raising concerns, giving a heads-up and asking for help kindly.",
+      steps: [ { words: working-together }, quiz ] }
+  - { slug: testing-and-qa, title: Testing & QA, level: intermediate, audiences: [qa, developer], description: "Talk about test cases, flaky tests, bug reports and how serious a bug is.",
+      steps: [ { words: testing-and-qa }, quiz ] }
+  - { slug: ci-cd-and-devops, title: CI/CD & DevOps, level: intermediate, audiences: [devops, developer], description: "Builds, monitoring, incidents, rollouts and the words of the on-call engineer.",
+      steps: [ { words: ci-cd-and-devops }, quiz ] }
+  - { slug: apis-and-architecture, title: APIs & Architecture, level: intermediate, audiences: [developer, devops], description: "Explain APIs, caches, queues and how services fit together.",
+      steps: [ { words: apis-and-architecture }, quiz ] }
+  - { slug: frontend-and-backend, title: Frontend & Backend, level: intermediate, audiences: [developer], description: "Words for the parts of a web application and how they are built.",
+      steps: [ { words: frontend-and-backend }, quiz ] }
+  - { slug: projects-and-planning, title: Projects & Planning, level: intermediate, audiences: [manager, analyst], description: "Scope, stakeholders, milestones and the words of planning meetings.",
+      steps: [ { words: projects-and-planning }, quiz ] }

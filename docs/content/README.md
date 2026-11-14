@@ -22,3 +22,15 @@ Quizlet could not be read either (HTTP 403). The quiz modes (choose, listen, typ
 ## Work toolkit content
 `api/db/seeds/toolkit.yml` holds 49 phrases in five categories (pull request feedback, standup, meetings, incidents, email). Same status as the rest: draft until reviewed.
 Verb glosses for the standup builder live in `web/src/lib/toolkit/standup.ts`, and the email templates in `web/src/lib/toolkit/email.ts`; both need the same human review before being promoted as "correct" workplace English.
+
+
+## Batch 2 (2026-11-14): 97 more words, 7 collections, 7 path units
+`api/db/seeds/it_vocabulary_2.yml` adds testing/QA, CI/CD and DevOps, APIs and architecture, frontend and backend, projects and planning, working together
+and a "Say It Right" set of IT words that learners often pronounce wrongly (cache, queue, daemon, SQL, Kubernetes...). Library: about 197 published
+words in development. All of it is DRAFT: Vietnamese meanings, definitions, IPA and examples were written by an AI assistant and need a native speaker and an
+engineer to review. Voice files for the new words and their examples were generated with Kokoro (`bin/audio`).
+The path units for the new collections use words and a unit quiz only (no listening or scenario step yet).
+
+## Adding content without code
+Admin → Vocabulary → **Import CSV** adds or updates words in bulk (dry-run check first). Admin → **Path units** edits units, their audiences and steps
+(`words:slug`, `listening:id`, `scenario:slug`, `quiz`, one per line).

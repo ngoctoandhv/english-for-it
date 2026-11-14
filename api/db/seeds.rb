@@ -3,7 +3,9 @@
 # published by an admin. In development everything is published so the app is usable out of the box.
 status = Rails.env.development? ? "published" : "draft"
 
-data = YAML.load_file(Rails.root.join("db/seeds/it_vocabulary.yml"))
+# Vocabulary comes in batches (one file per batch); categories, words and collections are merged before importing.
+data = %w[it_vocabulary it_vocabulary_2].map { |f| YAML.load_file(Rails.root.join("db/seeds/#{f}.yml")) }
+          .each_with_object({ "categories" => [], "words" => [], "collections" => [] }) { |d, all| all.each_key { |k| all[k].concat(d.fetch(k, [])) } }
 
 categories = data["categories"].each_with_index.to_h do |c, i|
   rec = VocabularyCategory.find_or_initialize_by(slug: c["slug"])

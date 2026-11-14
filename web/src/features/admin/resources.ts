@@ -202,4 +202,27 @@ RESOURCES.push({
   ],
 });
 
+RESOURCES.push({
+  key: "units",
+  label: "Path units",
+  path: "units",
+  paramKey: "unit",
+  columns: [
+    { label: "Title", value: (r) => str(r.title) },
+    { label: "Level", value: (r) => str(r.level) },
+    { label: "Steps", value: (r) => str(r.steps_count) },
+    { label: "Status", value: (r) => str(r.status) },
+  ],
+  fields: [
+    { kind: "text", name: "title", label: "Title", required: true },
+    { kind: "text", name: "slug", label: "Slug" },
+    { kind: "textarea", name: "description", label: "Description" },
+    { kind: "select", name: "level", label: "Level", required: true, options: [{ value: "elementary", label: "Elementary" }, { value: "intermediate", label: "Intermediate" }] },
+    { kind: "lines", name: "audiences", label: "Audiences (one per line)", hint: "Roles: developer, qa, devops, analyst, manager. Goals: daily_work, interview, docs. Empty = everyone." },
+    { kind: "lines", name: "steps", label: "Steps (one per line)", hint: "words:collection-slug, listening:lesson-id, scenario:scenario-slug, or quiz. Replaces all steps when saved." },
+    { kind: "number", name: "position", label: "Position" },
+    { kind: "select", name: "status", label: "Status", options: STATUS, required: true },
+  ],
+});
+
 export const findResource = (key: string) => RESOURCES.find((r) => r.key === key);
