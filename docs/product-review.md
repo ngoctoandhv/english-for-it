@@ -52,7 +52,7 @@ R6 runs in parallel and is the largest piece of work; it needs a person who can 
 | R3 personalization | Done: role and goal in onboarding and Settings, units for other roles move to the end of a level, "For you" badge, 10-question vocabulary check that suggests a level |
 | R4 work toolkit | Done (earlier) |
 | R5 re-engagement | Done: installable PWA, daily Web Push reminder at the learner's hour, Monday recap, welcome-back message. Needs VAPID keys and the hourly GitHub Actions trigger |
-| R6 content scale | Partly: about 294 words and phrases (IT plus everyday English), 24 path units, unlimited extra new-word sessions. Still 8 listening lessons and 9 scenarios. All content is draft |
+| R6 content scale | Partly: about 294 words and phrases (IT plus everyday English), 24 path units, unlimited extra new-word sessions. 16 listening lessons and 17 scenarios (half of them everyday English). All content is draft |
 | R7 measurement | Done: own event log, admin metrics (active users, day-1 and day-7 return, signup funnel), "report a mistake" queue |
 | Word mastery | Done: fill-the-gap and say-it quiz modes, vocabulary strength stages on Home, IT pronunciation set |
 | Accounts | Done: forgot password, email verification, change password, export, delete |

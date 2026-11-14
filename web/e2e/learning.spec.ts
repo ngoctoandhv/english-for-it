@@ -508,3 +508,25 @@ test("learn more: extra new-word sessions beyond the daily plan, from home and a
   await page.getByTestId("more-words").getByRole("link", { name: "+5 new words" }).click();
   await expect(page.getByText("01/05")).toBeVisible();
 });
+
+test("everyday English: a path unit with words, listening and a scenario, and the scenario can be played", async ({ page }) => {
+  await page.goto("/register");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Name").fill("Daily");
+  await page.getByLabel("Email").fill(`daily-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.goto("/path/small-talk");
+  await expect(page.getByText("Monday Morning Small Talk")).toBeVisible();
+  await expect(page.getByText("Small Talk at Work")).toBeVisible();
+
+  await page.goto("/scenarios/small-talk-at-work");
+  await expect(page.getByText("How is it going?")).toBeVisible();
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Show my line" }).click();
+  await expect(page.getByText("Not bad, thanks. How about you?")).toBeVisible();
+  await expect(page.getByText(/Always ask back/)).toBeVisible();
+});

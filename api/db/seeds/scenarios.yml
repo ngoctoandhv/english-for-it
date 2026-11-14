@@ -26,7 +26,7 @@ scenarios:
       - { speaker: Colleague, role: other, en: "Thanks. What would you change?", vi: "Cảm ơn. Bạn sẽ đổi thế nào?" }
       - { speaker: You, role: you, en: "Maybe we can rename it to make it more readable.", vi: "Có lẽ chúng ta có thể đổi tên để dễ đọc hơn.", tip: "'Maybe we can…' sounds gentle, not like an order." }
       - { speaker: Colleague, role: other, en: "Good point. I will update it and push the change.", vi: "Ý hay. Mình sẽ cập nhật và đẩy thay đổi lên." }
-      - { speaker: You, role: you, en: "Thanks. I will approve it after that.", vi: "Cảm ơn. Mình sẽ phê duyệt sau đó." }
+      - { speaker: You, role: you, en: "Thanks. I will approve it after that.", vi: "Cảm ơn. Mình sẽ phê duyệt sau đó.", tip: "Close the loop: say what you will do next." }
   - slug: bug-investigation
     title: Bug Investigation
     level: intermediate
@@ -36,7 +36,7 @@ scenarios:
       - { speaker: Teammate, role: other, en: "The app shows an error after I log in. Can you take a look?", vi: "Ứng dụng báo lỗi sau khi mình đăng nhập. Bạn xem giúp được không?" }
       - { speaker: You, role: you, en: "Of course. Can you reproduce it every time?", vi: "Tất nhiên. Bạn có tái hiện được lỗi mỗi lần không?", tip: "'Reproduce' means to make the problem happen again." }
       - { speaker: Teammate, role: other, en: "Yes. It happens every time with a new account.", vi: "Có. Lỗi xảy ra mỗi lần với tài khoản mới." }
-      - { speaker: You, role: you, en: "Thanks. I will check the logs and the stack trace.", vi: "Cảm ơn. Mình sẽ kiểm tra log và stack trace." }
+      - { speaker: You, role: you, en: "Thanks. I will check the logs and the stack trace.", vi: "Cảm ơn. Mình sẽ kiểm tra log và stack trace.", tip: "Say your next step so the team knows who is working on it." }
       - { speaker: Teammate, role: other, en: "Thanks. Let me know what you find.", vi: "Cảm ơn. Có kết quả thì báo mình nhé." }
       - { speaker: You, role: you, en: "I found the root cause. The profile data is missing for new accounts.", vi: "Mình đã tìm ra nguyên nhân gốc. Dữ liệu hồ sơ bị thiếu với tài khoản mới.", tip: "Say what you found first, then the reason." }
       - { speaker: Teammate, role: other, en: "Is there a workaround?", vi: "Có giải pháp tạm thời không?" }
@@ -116,3 +116,106 @@ scenarios:
       - { speaker: IT Support, role: other, en: "I see. When did the problem start?", vi: "Mình hiểu. Vấn đề bắt đầu từ khi nào?" }
       - { speaker: You, role: you, en: "It started this morning. Could you check my permissions, please?", vi: "Nó bắt đầu từ sáng nay. Bạn kiểm tra quyền truy cập của tôi giúp được không?", tip: "Make a clear request at the end." }
       - { speaker: IT Support, role: other, en: "Sure. I will check and let you know in ten minutes.", vi: "Được. Mình sẽ kiểm tra và báo bạn trong mười phút." }
+  # Everyday English (batch 3). DRAFT.
+  - slug: small-talk-at-work
+    title: Small Talk at Work
+    level: elementary
+    description: "Chat with a colleague in the kitchen and end the conversation kindly."
+    situation: "It is Monday morning. You meet a colleague, Lan, while making coffee."
+    lines:
+      - { speaker: Lan, role: other, en: "Hi! How is it going?", vi: "Chào! Dạo này thế nào?" }
+      - { speaker: You, role: you, en: "Not bad, thanks. How about you?", vi: "Cũng ổn, cảm ơn. Còn bạn thì sao?", tip: "Always ask back: 'How about you?' or 'And you?'" }
+      - { speaker: Lan, role: other, en: "Good, thanks. Did you do anything fun at the weekend?", vi: "Ổn, cảm ơn. Cuối tuần bạn có làm gì vui không?" }
+      - { speaker: You, role: you, en: "Yes, I went to the beach with my family. The weather was great.", vi: "Có, mình đi biển với gia đình. Thời tiết rất đẹp.", tip: "Use the past simple for the weekend: went, watched, stayed." }
+      - { speaker: Lan, role: other, en: "That sounds lovely. I just stayed at home and relaxed.", vi: "Nghe tuyệt quá. Mình chỉ ở nhà nghỉ ngơi thôi." }
+      - { speaker: You, role: you, en: "Sometimes that is the best plan. Sorry, I have a meeting now. Let's catch up at lunch.", vi: "Đôi khi đó là kế hoạch tốt nhất. Xin lỗi, giờ mình có cuộc họp. Trưa mình nói chuyện tiếp nhé.", tip: "End politely: say why you need to go and suggest a later time." }
+      - { speaker: Lan, role: other, en: "Sure. See you later!", vi: "Được. Lát gặp nhé!" }
+  - slug: asking-for-a-favor
+    title: Asking for a Favor
+    level: elementary
+    description: "Ask a busy colleague for help politely and thank them."
+    situation: "You need help with a test that keeps failing. Your colleague Nam is at his desk."
+    lines:
+      - { speaker: You, role: you, en: "Excuse me, Nam. Do you have a minute?", vi: "Xin lỗi anh Nam. Anh có rảnh một chút không?", tip: "'Do you have a minute?' checks if now is a good time." }
+      - { speaker: Nam, role: other, en: "Sure. What's up?", vi: "Được. Có chuyện gì vậy?" }
+      - { speaker: You, role: you, en: "I was wondering if you could help me with a test. It keeps failing and I don't know why.", vi: "Em đang băn khoăn không biết anh có thể giúp em với một bài test không. Nó cứ thất bại mà em không biết tại sao.", tip: "'I was wondering if you could…' is soft and very polite." }
+      - { speaker: Nam, role: other, en: "Of course. I am busy right now, but I can look at it in twenty minutes.", vi: "Tất nhiên. Giờ anh đang bận, nhưng hai mươi phút nữa anh xem được." }
+      - { speaker: You, role: you, en: "No problem. I will send you the error message now. Thanks in advance!", vi: "Không sao ạ. Em gửi anh thông báo lỗi ngay. Cảm ơn anh trước nhé!", tip: "Make it easy for the helper: send the details first." }
+      - { speaker: Nam, role: other, en: "You're welcome. Let me know if you find anything else.", vi: "Không có gì. Nếu tìm ra gì thêm thì cho anh biết nhé." }
+  - slug: video-call-problems
+    title: Video Call Problems
+    level: elementary
+    description: "Handle mute, a bad connection and screen sharing in an online meeting."
+    situation: "You join a video call with the team. The connection is not great."
+    lines:
+      - { speaker: Anna, role: other, en: "Hi! I think you are on mute.", vi: "Chào! Hình như bạn đang tắt micro." }
+      - { speaker: You, role: you, en: "Sorry about that. Can you hear me now?", vi: "Xin lỗi nhé. Giờ mọi người nghe tôi được chưa?", tip: "Short and calm is best: 'Sorry about that.'" }
+      - { speaker: Anna, role: other, en: "Yes, but you are breaking up a little.", vi: "Được rồi, nhưng tiếng bạn hơi bị ngắt quãng." }
+      - { speaker: You, role: you, en: "My connection is slow today. I will turn off my camera. Is that better?", vi: "Hôm nay mạng của tôi chậm. Tôi sẽ tắt camera. Như vậy đã đỡ hơn chưa?", tip: "Explain the problem, say what you will do, then check." }
+      - { speaker: Anna, role: other, en: "Much better, thanks. Could you share your screen and show us the dashboard?", vi: "Đỡ hơn nhiều rồi, cảm ơn. Bạn chia sẻ màn hình và cho mọi người xem bảng theo dõi được không?" }
+      - { speaker: You, role: you, en: "Sure. Let me share my screen. Can everyone see it?", vi: "Được. Để tôi chia sẻ màn hình. Mọi người thấy chưa?", tip: "Always check: 'Can everyone see it?'" }
+      - { speaker: Anna, role: other, en: "Yes, we can see it. Go ahead.", vi: "Có, mọi người thấy rồi. Bạn trình bày đi." }
+  - slug: checking-you-understood
+    title: Checking You Understood
+    level: elementary
+    description: "Ask someone to repeat and explain, then confirm the task."
+    situation: "Your manager gives you a new task quickly at the end of a meeting."
+    lines:
+      - { speaker: Manager, role: other, en: "Can you update the release notes and send them to the client by Thursday?", vi: "Bạn cập nhật ghi chú phát hành và gửi cho khách hàng trước thứ Năm được không?" }
+      - { speaker: You, role: you, en: "Sorry, I did not catch that. Could you repeat the last part?", vi: "Xin lỗi, tôi chưa nghe rõ. Anh nhắc lại phần cuối được không?", tip: "It is normal to ask. Say which part you missed." }
+      - { speaker: Manager, role: other, en: "Of course. Send them to the client by Thursday.", vi: "Được. Gửi cho khách hàng trước thứ Năm." }
+      - { speaker: You, role: you, en: "Thanks. What do you mean by release notes? The list of changes in this version?", vi: "Cảm ơn anh. Ý anh 'ghi chú phát hành' là danh sách thay đổi của phiên bản này phải không?", tip: "Give your guess so the other person can say yes or no quickly." }
+      - { speaker: Manager, role: other, en: "Exactly. A short list is fine.", vi: "Đúng vậy. Một danh sách ngắn là được." }
+      - { speaker: You, role: you, en: "Just to confirm: I update the release notes and email them to the client before Thursday.", vi: "Để xác nhận lại: tôi cập nhật ghi chú phát hành và gửi email cho khách trước thứ Năm.", tip: "Repeat the task in your own words to confirm." }
+      - { speaker: Manager, role: other, en: "That's right. Thanks!", vi: "Chính xác. Cảm ơn nhé!" }
+  - slug: rescheduling-a-meeting
+    title: Rescheduling a Meeting
+    level: elementary
+    description: "Say you are running late and agree on a new time."
+    situation: "You are stuck in traffic and will miss a 10:00 meeting with Mai."
+    lines:
+      - { speaker: You, role: you, en: "Hi Mai, I am so sorry. I am running late because of the traffic.", vi: "Chào Mai, mình rất xin lỗi. Mình đang bị trễ vì kẹt xe.", tip: "Say sorry and the reason in one short sentence." }
+      - { speaker: Mai, role: other, en: "No worries. How late will you be?", vi: "Không sao đâu. Bạn trễ khoảng bao lâu?" }
+      - { speaker: You, role: you, en: "About thirty minutes. Could we reschedule the meeting?", vi: "Khoảng ba mươi phút. Chúng ta dời cuộc họp được không?", tip: "'Could we reschedule…?' is a polite question." }
+      - { speaker: Mai, role: other, en: "Sure. Are you free at two this afternoon?", vi: "Được. Hai giờ chiều nay bạn có rảnh không?" }
+      - { speaker: You, role: you, en: "Two o'clock works for me. I will send a new invite.", vi: "Hai giờ thì được. Mình sẽ gửi lời mời mới.", tip: "'Works for me' means the time is OK for you." }
+      - { speaker: Mai, role: other, en: "Great. See you then.", vi: "Tuyệt. Hẹn gặp lúc đó." }
+  - slug: asking-for-a-day-off
+    title: Asking for a Day Off
+    level: elementary
+    description: "Ask your manager for a day off and arrange your work."
+    situation: "You want to take next Friday off for a family event."
+    lines:
+      - { speaker: You, role: you, en: "Hi Duc, do you have a minute? I would like to take a day off next Friday.", vi: "Chào anh Đức, anh có rảnh một chút không? Em muốn xin nghỉ một ngày vào thứ Sáu tuần sau.", tip: "'I would like to…' is polite for a request at work." }
+      - { speaker: Duc, role: other, en: "Sure. Is everything OK?", vi: "Được chứ. Mọi việc ổn cả chứ?" }
+      - { speaker: You, role: you, en: "Yes, everything is fine. It is a family event.", vi: "Dạ ổn ạ. Nhà em có việc gia đình.", tip: "You do not need to give many details." }
+      - { speaker: Duc, role: other, en: "No problem. What about the ticket you are working on?", vi: "Không vấn đề gì. Còn ticket em đang làm thì sao?" }
+      - { speaker: You, role: you, en: "I will finish it by Thursday, and Linh can cover any questions on Friday.", vi: "Em sẽ hoàn thành trước thứ Năm, và thứ Sáu chị Linh có thể hỗ trợ nếu có câu hỏi.", tip: "Show you have a plan for your work." }
+      - { speaker: Duc, role: other, en: "Perfect. Please add it to the team calendar.", vi: "Tốt lắm. Em thêm vào lịch của nhóm nhé." }
+      - { speaker: You, role: you, en: "I will. Thank you!", vi: "Dạ vâng. Cảm ơn anh!" }
+  - slug: disagreeing-politely
+    title: Disagreeing Politely
+    level: intermediate
+    description: "Give a different opinion in a meeting without sounding rude."
+    situation: "Your team wants to release a new feature on Friday. You think it needs more testing."
+    lines:
+      - { speaker: Lead, role: other, en: "I think we can release the new search feature on Friday. What do you think?", vi: "Tôi nghĩ chúng ta có thể phát hành tính năng tìm kiếm mới vào thứ Sáu. Bạn nghĩ sao?" }
+      - { speaker: You, role: you, en: "I see your point, but to be honest, I am not sure it is ready.", vi: "Tôi hiểu ý anh, nhưng thành thật mà nói, tôi không chắc nó đã sẵn sàng.", tip: "Start by showing you understood: 'I see your point, but…'" }
+      - { speaker: Lead, role: other, en: "Why not? The main tests pass.", vi: "Sao lại không? Các test chính đều qua mà." }
+      - { speaker: You, role: you, en: "That's true. On the other hand, we have not tested it with a lot of users yet.", vi: "Đúng vậy. Mặt khác, chúng ta chưa thử với nhiều người dùng.", tip: "Agree with the true part first, then add your concern." }
+      - { speaker: Lead, role: other, en: "Hmm. What do you suggest?", vi: "Hừm. Vậy bạn đề xuất gì?" }
+      - { speaker: You, role: you, en: "I suggest we release it to ten percent of users first and check the dashboard.", vi: "Tôi đề nghị chúng ta phát hành cho mười phần trăm người dùng trước và theo dõi bảng số liệu.", tip: "Bring a solution, not only a problem." }
+      - { speaker: Lead, role: other, en: "That makes sense. Let's do that.", vi: "Nghe hợp lý. Làm vậy đi." }
+  - slug: reacting-to-news
+    title: Reacting to News
+    level: intermediate
+    description: "React kindly to a colleague's good news and bad news."
+    situation: "Your colleague Ngoc stops by your desk to share some news."
+    lines:
+      - { speaker: Ngoc, role: other, en: "Guess what? I got the team lead job!", vi: "Đoán xem? Mình được làm trưởng nhóm rồi!" }
+      - { speaker: You, role: you, en: "Congratulations! That is great news. You must be so proud.", vi: "Chúc mừng nhé! Tin tuyệt vời. Chắc bạn tự hào lắm.", tip: "React with energy: 'Congratulations! That is great news.'" }
+      - { speaker: Ngoc, role: other, en: "Thanks! But I am a bit worried. It is a big change.", vi: "Cảm ơn! Nhưng mình hơi lo. Đó là một thay đổi lớn." }
+      - { speaker: You, role: you, en: "That is normal. You will be great, and the team is happy to help.", vi: "Chuyện đó bình thường. Bạn sẽ làm tốt thôi, và cả nhóm sẵn lòng giúp.", tip: "Encourage: say the feeling is normal, then support." }
+      - { speaker: Ngoc, role: other, en: "That's kind. By the way, I heard your release was postponed.", vi: "Bạn tốt quá. Nhân tiện, mình nghe nói đợt phát hành của bạn bị hoãn." }
+      - { speaker: You, role: you, en: "Yes, it was. I was frustrated at first, but I am relieved we found the bug early.", vi: "Ừ, đúng vậy. Lúc đầu mình bực, nhưng mình thấy nhẹ nhõm vì đã tìm ra lỗi sớm.", tip: "Name your feelings: frustrated, relieved, worried, excited." }
+      - { speaker: Ngoc, role: other, en: "Good attitude. Let's get lunch to celebrate anyway.", vi: "Thái độ tốt đấy. Dù sao mình cũng đi ăn trưa ăn mừng nhé." }

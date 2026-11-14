@@ -76,4 +76,55 @@ RSpec.describe "Seed content" do
     path = YAML.load_file(root.join("path.yml"))["units"]
     expect(path.reject { |u| u["steps"].last == "quiz" && u["steps"].any? { |s| s.is_a?(Hash) && s["words"] } }.map { |u| u["slug"] }).to be_empty
   end
+
+  describe "listening lessons" do
+    lessons = YAML.load_file(root.join("listening.yml"))["lessons"]
+
+    it "have unique titles, a known level and at least three answerable questions" do
+      expect(lessons.map { |l| l["title"] }.tally.select { |_, n| n > 1 }).to be_empty
+      problems = lessons.flat_map do |l|
+        issues = []
+        issues << "#{l['title']}: level" unless %w[beginner elementary intermediate].include?(l["level"])
+        issues << "#{l['title']}: fewer than 3 questions" if l["questions"].size < 3
+        l["questions"].each do |q|
+          issues << "#{l['title']}: '#{q['prompt']}' correct index out of range" unless q["correct"].is_a?(Integer) && q["correct"].between?(0, q["choices"].size - 1)
+          issues << "#{l['title']}: '#{q['prompt']}' duplicate choices" if q["choices"].uniq.size != q["choices"].size
+        end
+        issues
+      end
+      expect(problems).to be_empty
+    end
+
+    it "write each transcript line as 'Speaker: text' with a Vietnamese line for every English line" do
+      problems = lessons.filter_map do |l|
+        en = l["transcript_en"].strip.lines.map(&:strip).reject(&:empty?)
+        vi = l["transcript_vi"].strip.lines.map(&:strip).reject(&:empty?)
+        next "#{l['title']}: #{en.size} English lines but #{vi.size} Vietnamese" if en.size != vi.size
+        bad = en.reject { |line| line.match?(/\A[^:]{1,40}: \S/) }
+        "#{l['title']}: #{bad.first}" if bad.any?
+      end
+      expect(problems).to be_empty
+    end
+  end
+
+  describe "scenarios" do
+    scenarios = YAML.load_file(root.join("scenarios.yml"))["scenarios"]
+
+    it "have unique slugs and give the learner at least two lines with translations and tips" do
+      expect(scenarios.map { |s| s["slug"] }.tally.select { |_, n| n > 1 }).to be_empty
+      problems = scenarios.flat_map do |sc|
+        issues = []
+        mine = sc["lines"].select { |l| l["role"] == "you" }
+        issues << "#{sc['slug']}: fewer than 2 learner lines" if mine.size < 2
+        sc["lines"].each do |l|
+          issues << "#{sc['slug']}: bad role #{l['role']}" unless %w[you other].include?(l["role"])
+          issues << "#{sc['slug']}: missing text in '#{l['en']}'" if l["en"].blank? || l["vi"].blank?
+        end
+        # Short closing lines ("Thanks!") may go without a tip; anything longer teaches something and needs one.
+        mine.select { |l| l["tip"].blank? && l["en"].split.size > 5 }.each { |l| issues << "#{sc['slug']}: no tip for '#{l['en']}'" }
+        issues
+      end
+      expect(problems).to be_empty
+    end
+  end
 end

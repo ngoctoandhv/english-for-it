@@ -151,3 +151,174 @@ lessons:
       - { prompt: "What kind of password should you use?", choices: ["A short one", "A long and unique one", "The same one everywhere", "One that IT sends you"], correct: 1 }
       - { prompt: "What should you turn on?", choices: ["The firewall", "Two-factor authentication", "A backup", "The monitor"], correct: 1 }
       - { prompt: "What should you do with a strange email?", choices: ["Click the link to check it", "Reply with your password", "Send it to the security team", "Delete your account"], correct: 2 }
+  # Everyday English (batch 3). DRAFT.
+  - title: "Monday Morning Small Talk"
+    level: elementary
+    description: "Two colleagues chat before work. Listen for what they did at the weekend."
+    transcript_en: |
+      Lan: Hi Minh! How is it going?
+      Minh: Not bad, thanks. A bit tired. How was your weekend?
+      Lan: It was great. I went hiking with my sister. The weather was perfect.
+      Minh: Nice! I stayed at home and watched a football match.
+      Lan: Sounds relaxing. By the way, are you free for lunch today?
+      Minh: Sure. Let's catch up at twelve.
+    transcript_vi: |
+      Lan: Chào Minh! Dạo này thế nào?
+      Minh: Cũng ổn, cảm ơn. Hơi mệt một chút. Cuối tuần của bạn thế nào?
+      Lan: Tuyệt lắm. Mình đi leo núi với chị gái. Thời tiết đẹp hoàn hảo.
+      Minh: Hay quá! Mình ở nhà xem một trận bóng đá.
+      Lan: Nghe thư giãn đấy. Nhân tiện, hôm nay bạn có rảnh ăn trưa không?
+      Minh: Được chứ. Mười hai giờ mình gặp nhau trò chuyện nhé.
+    questions:
+      - { prompt: "What did Lan do at the weekend?", choices: ["She went hiking.", "She watched football.", "She worked overtime.", "She stayed at home."], correct: 0 }
+      - { prompt: "How does Minh feel?", choices: ["Excited", "A bit tired", "Worried", "Sick"], correct: 1 }
+      - { prompt: "When will they meet?", choices: ["At ten", "After work", "At twelve", "Tomorrow"], correct: 2 }
+  - title: "Asking a Colleague for Help"
+    level: elementary
+    description: "A developer asks a busy colleague for help. Listen for the polite phrases."
+    transcript_en: |
+      Hoa: Excuse me, Nam. Do you have a minute?
+      Nam: Sure, what's up?
+      Hoa: I was wondering if you could help me with the deployment script. It keeps failing.
+      Nam: Of course. But I am in a meeting until three. Would you mind waiting until then?
+      Hoa: No worries. Thanks in advance!
+      Nam: No problem. Send me the error message, and I will look at it after the meeting.
+    transcript_vi: |
+      Hoa: Xin lỗi anh Nam. Anh có rảnh một chút không?
+      Nam: Được chứ, có chuyện gì vậy?
+      Hoa: Em đang băn khoăn không biết anh có thể giúp em với script triển khai không. Nó cứ bị lỗi mãi.
+      Nam: Tất nhiên. Nhưng anh họp đến ba giờ. Em có phiền đợi đến lúc đó không?
+      Hoa: Không sao đâu ạ. Cảm ơn anh trước nhé!
+      Nam: Không có gì. Gửi anh thông báo lỗi, họp xong anh sẽ xem.
+    questions:
+      - { prompt: "What does Hoa need help with?", choices: ["A presentation", "The deployment script", "A job interview", "Her laptop"], correct: 1 }
+      - { prompt: "Why can Nam not help now?", choices: ["He is on sick leave.", "He is having lunch.", "He is in a meeting.", "He does not know the script."], correct: 2 }
+      - { prompt: "What should Hoa send?", choices: ["The error message", "A meeting invite", "The slides", "Her code review"], correct: 0 }
+  - title: "A Video Call With Problems"
+    level: elementary
+    description: "The start of an online meeting. Listen for the problems people have."
+    transcript_en: |
+      Anna: Hi everyone. Can you hear me?
+      Tuan: Yes, we can hear you. But Phong, I think you are on mute.
+      Phong: Sorry about that. Can you hear me now?
+      Anna: Yes, much better. Phong, you are breaking up a little.
+      Phong: My internet is slow today. I will turn off my camera.
+      Anna: Good idea. OK, let me share my screen and we can start.
+    transcript_vi: |
+      Anna: Chào mọi người. Mọi người nghe tôi nói không?
+      Tuấn: Có, chúng tôi nghe được. Nhưng Phong ơi, hình như bạn đang tắt micro.
+      Phong: Xin lỗi nhé. Giờ mọi người nghe tôi được chưa?
+      Anna: Rồi, rõ hơn nhiều. Phong, tiếng bạn hơi bị ngắt quãng.
+      Phong: Hôm nay mạng nhà tôi chậm. Tôi sẽ tắt camera.
+      Anna: Ý hay đấy. Được rồi, để tôi chia sẻ màn hình rồi chúng ta bắt đầu.
+    questions:
+      - { prompt: "What is Phong's first problem?", choices: ["His camera is broken.", "He is on mute.", "He is late.", "He cannot see the screen."], correct: 1 }
+      - { prompt: "Why is Phong breaking up?", choices: ["His internet is slow.", "His microphone is old.", "There is too much noise.", "He is outside."], correct: 0 }
+      - { prompt: "What will Anna do next?", choices: ["End the call", "Turn off her camera", "Share her screen", "Call Phong"], correct: 2 }
+  - title: "Sorry, Could You Repeat That?"
+    level: elementary
+    description: "A new team member checks the details of a task. Listen for how she asks."
+    transcript_en: |
+      Manager: Please update the user guide and send it to the client by Thursday.
+      Thu: Sorry, I did not catch that. Could you repeat the last part?
+      Manager: Of course. Send it to the client by Thursday.
+      Thu: Thanks. What do you mean by the user guide? The one on the website?
+      Manager: Yes, exactly. The online version.
+      Thu: Just to confirm, I update the online guide and email it to the client before Thursday.
+      Manager: That's right.
+    transcript_vi: |
+      Quản lý: Em hãy cập nhật hướng dẫn sử dụng và gửi cho khách hàng trước thứ Năm nhé.
+      Thu: Xin lỗi, em chưa nghe rõ. Anh nhắc lại phần cuối được không ạ?
+      Quản lý: Được. Gửi cho khách hàng trước thứ Năm.
+      Thu: Cảm ơn anh. Ý anh "hướng dẫn sử dụng" là bản trên trang web phải không ạ?
+      Quản lý: Đúng vậy. Bản trực tuyến.
+      Thu: Để xác nhận lại, em cập nhật hướng dẫn trực tuyến và gửi email cho khách trước thứ Năm.
+      Quản lý: Chính xác.
+    questions:
+      - { prompt: "What did Thu not hear clearly?", choices: ["The client's name", "The last part", "The task name", "The meeting time"], correct: 1 }
+      - { prompt: "Which user guide should she update?", choices: ["The printed one", "The online one", "The old one", "The video"], correct: 1 }
+      - { prompt: "When is the deadline?", choices: ["Today", "Wednesday", "By Thursday", "Next week"], correct: 2 }
+  - title: "Running Late and Rescheduling"
+    level: elementary
+    description: "A phone call about a meeting that needs to move. Listen for the new time."
+    transcript_en: |
+      Khoa: Hi Mai, it's Khoa. I'm sorry, I am running late. There is a lot of traffic.
+      Mai: No worries. How late will you be?
+      Khoa: About thirty minutes. Can we reschedule the meeting?
+      Mai: Sure. Are you free at two o'clock this afternoon?
+      Khoa: Two o'clock works for me. I will book the small meeting room.
+      Mai: Great. See you later.
+    transcript_vi: |
+      Khoa: Chào Mai, Khoa đây. Xin lỗi, mình đang bị trễ. Đường đông xe quá.
+      Mai: Không sao đâu. Bạn trễ khoảng bao lâu?
+      Khoa: Khoảng ba mươi phút. Chúng ta dời cuộc họp được không?
+      Mai: Được. Hai giờ chiều nay bạn có rảnh không?
+      Khoa: Hai giờ thì được. Mình sẽ đặt phòng họp nhỏ.
+      Mai: Tuyệt. Lát gặp nhé.
+    questions:
+      - { prompt: "Why is Khoa late?", choices: ["He is sick.", "There is a lot of traffic.", "He forgot the meeting.", "His laptop broke."], correct: 1 }
+      - { prompt: "What is the new meeting time?", choices: ["Twelve o'clock", "One o'clock", "Two o'clock", "Tomorrow morning"], correct: 2 }
+      - { prompt: "What will Khoa do?", choices: ["Book a meeting room", "Send the slides", "Call the client", "Take a day off"], correct: 0 }
+  - title: "A Day Off and Working From Home"
+    level: elementary
+    description: "A developer talks to her manager about next week. Listen for her plans."
+    transcript_en: |
+      Vy: Hi Duc. Do you have a minute? I would like to take a day off next Friday.
+      Duc: Sure. Is everything OK?
+      Vy: Yes, it's my sister's wedding.
+      Duc: Oh, congratulations to her! That's fine. Please add it to the team calendar.
+      Vy: I will. Also, can I work from home on Monday? My commute will be very long because of the road works.
+      Duc: No problem. Just join the standup on video.
+    transcript_vi: |
+      Vy: Chào anh Đức. Anh có rảnh một chút không? Em muốn xin nghỉ một ngày vào thứ Sáu tuần sau.
+      Đức: Được chứ. Mọi việc ổn cả chứ?
+      Vy: Dạ ổn, đám cưới chị gái em ạ.
+      Đức: Ồ, chúc mừng chị ấy nhé! Không sao. Em thêm vào lịch của nhóm nhé.
+      Vy: Dạ vâng. Ngoài ra, thứ Hai em làm việc ở nhà được không ạ? Đường đang sửa nên em đi làm sẽ rất lâu.
+      Đức: Không vấn đề gì. Chỉ cần tham gia standup qua video là được.
+    questions:
+      - { prompt: "Why does Vy want a day off?", choices: ["She is sick.", "Her sister is getting married.", "She has a job interview.", "She is moving house."], correct: 1 }
+      - { prompt: "What should Vy add to the team calendar?", choices: ["Her day off", "The wedding photos", "A meeting", "Her commute time"], correct: 0 }
+      - { prompt: "Why will she work from home on Monday?", choices: ["Her laptop is at home.", "There is no office on Monday.", "Her commute will be long.", "She is tired."], correct: 2 }
+  - title: "Agreeing and Disagreeing Politely"
+    level: intermediate
+    description: "A team chooses between two tools. Listen for how people give their opinions."
+    transcript_en: |
+      Lead: We need to choose a new testing tool. What do you think?
+      Hung: In my opinion, the first tool is better. It is fast and easy to set up.
+      Trang: I see your point, but to be honest, I am not sure it will scale. On the other hand, the second tool has better reports.
+      Hung: That makes sense. But the second tool is more expensive.
+      Lead: I suggest we try both for one week and compare.
+      Trang: I agree. Let's do that.
+    transcript_vi: |
+      Trưởng nhóm: Chúng ta cần chọn một công cụ kiểm thử mới. Mọi người nghĩ sao?
+      Hùng: Theo ý tôi, công cụ đầu tiên tốt hơn. Nó nhanh và dễ cài đặt.
+      Trang: Tôi hiểu ý anh, nhưng thành thật mà nói, tôi không chắc nó sẽ mở rộng được. Mặt khác, công cụ thứ hai có báo cáo tốt hơn.
+      Hùng: Nghe hợp lý. Nhưng công cụ thứ hai đắt hơn.
+      Trưởng nhóm: Tôi đề nghị chúng ta thử cả hai trong một tuần rồi so sánh.
+      Trang: Tôi đồng ý. Làm vậy đi.
+    questions:
+      - { prompt: "Why does Hung prefer the first tool?", choices: ["It has better reports.", "It is fast and easy to set up.", "It is free.", "His manager likes it."], correct: 1 }
+      - { prompt: "What is Trang worried about?", choices: ["The price", "The first tool may not scale.", "The deadline", "Training the team"], correct: 1 }
+      - { prompt: "What does the lead suggest?", choices: ["Buy the second tool now", "Keep the old tool", "Try both for a week", "Ask the client"], correct: 2 }
+  - title: "Good News and Bad News"
+    level: intermediate
+    description: "Two colleagues share news after a long week. Listen for how they react."
+    transcript_en: |
+      Ngoc: Guess what? I got a promotion! I am going to be the new team lead.
+      Bao: Congratulations! That sounds great. You must be so proud.
+      Ngoc: Thanks. I am excited, but also a bit worried. It is a big change.
+      Bao: You will be fine. I have less happy news. Our release was postponed again.
+      Ngoc: Oh no, sorry to hear that. You must be frustrated.
+      Bao: A little. But I am relieved we found the bug before the customers did.
+    transcript_vi: |
+      Ngọc: Đoán xem? Mình được thăng chức rồi! Mình sắp làm trưởng nhóm mới.
+      Bảo: Chúc mừng nhé! Nghe tuyệt quá. Chắc bạn tự hào lắm.
+      Ngọc: Cảm ơn. Mình hào hứng, nhưng cũng hơi lo. Đó là một thay đổi lớn.
+      Bảo: Bạn sẽ ổn thôi. Còn mình có tin không vui lắm. Đợt phát hành của bọn mình lại bị hoãn.
+      Ngọc: Ôi, tiếc quá. Chắc bạn bực lắm.
+      Bảo: Một chút. Nhưng mình thấy nhẹ nhõm vì đã tìm ra lỗi trước khi khách hàng gặp phải.
+    questions:
+      - { prompt: "What is Ngoc's good news?", choices: ["She got a promotion.", "She is getting married.", "She finished a project.", "She is going on holiday."], correct: 0 }
+      - { prompt: "How does Ngoc feel about it?", choices: ["Only excited", "Excited but a bit worried", "Tired and confused", "Not interested"], correct: 1 }
+      - { prompt: "Why is Bao relieved?", choices: ["The release went well.", "His manager helped him.", "They found the bug before customers did.", "He can take a day off."], correct: 2 }

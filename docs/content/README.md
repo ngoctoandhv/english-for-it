@@ -44,3 +44,11 @@ office life, clarifying and checking. Many entries are phrases (part of speech "
 `api/spec/content/seed_content_spec.rb` runs with RSpec and fails on: duplicate term + part of speech, missing fields, unknown category or part of speech,
 IPA not written as `/.../`, an example that does not contain its word (fill-the-gap needs it), missing final punctuation, collections or path steps
 that point to missing content, unknown audiences. It cannot judge whether the English or the Vietnamese is right; that still needs a person.
+
+## Everyday listening and scenarios (2026-11-14)
+8 listening lessons (small talk, asking for help, a video call with problems, asking someone to repeat, running late, a day off, agreeing and
+disagreeing, good and bad news) and 8 scripted scenarios on the same topics. Each everyday path unit is now words → listening → scenario → quiz.
+Totals: 16 listening lessons, 17 scenarios. Multi-voice audio generated with Kokoro. DRAFT: needs a native speaker's review.
+The seed content spec now also checks listening lessons (unique titles, at least 3 questions, valid answer index, no duplicate choices,
+"Speaker: text" lines with a Vietnamese line for each English line) and scenarios (unique slugs, at least 2 learner lines, translations,
+a tip on every learner line longer than five words).
