@@ -38,6 +38,8 @@ end
 gem "rack-cors"
 gem "rack-attack"
 gem "csv"
+gem "sentry-ruby"
+gem "sentry-rails"
 gem "web-push", "~> 3.0"
 
 group :development, :test do
