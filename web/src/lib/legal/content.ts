@@ -24,6 +24,9 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
       { heading: "Email", body: [
         "We send an email only to confirm your address or to reset your password. It goes through an email delivery provider that sees your address and the message.",
       ] },
+      { heading: "Error reports", body: [
+        "If something breaks, the server may send a technical error report to an error-tracking service (Sentry). The report does not include your name, email address, IP address or your answers.",
+      ] },
       { heading: "Speaking practice", body: [
         "Recording and scoring happen in your browser; we do not upload your voice. Some browsers (for example Chrome) send speech to their own recognition service to turn it into text. That is the browser’s feature and follows the browser vendor’s policy.",
       ] },
@@ -55,6 +58,9 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
       ] },
       { heading: "Email", body: [
         "Chúng tôi chỉ gửi email để xác nhận địa chỉ hoặc đặt lại mật khẩu. Email đi qua một nhà cung cấp dịch vụ gửi thư, nơi thấy địa chỉ và nội dung thư.",
+      ] },
+      { heading: "Báo cáo lỗi kỹ thuật", body: [
+        "Khi có sự cố, máy chủ có thể gửi báo cáo lỗi kỹ thuật đến một dịch vụ theo dõi lỗi (Sentry). Báo cáo không chứa tên, email, địa chỉ IP hay câu trả lời của bạn.",
       ] },
       { heading: "Luyện nói", body: [
         "Việc ghi âm và chấm điểm diễn ra ngay trong trình duyệt; chúng tôi không tải giọng nói của bạn lên. Một số trình duyệt (ví dụ Chrome) gửi giọng nói đến dịch vụ nhận dạng của họ để chuyển thành chữ. Đó là tính năng của trình duyệt và theo chính sách của nhà phát triển trình duyệt.",

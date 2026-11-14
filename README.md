@@ -28,11 +28,13 @@ bin/check --e2e      # also runs Playwright (needs the dev stack and seeded data
 bin/rspec [args]     # api specs only
 ```
 
-## What is in the MVP
-Auth and onboarding · dashboard with a prominent Start learning · vocabulary library, collections, favorites ·
-one-card-at-a-time flashcards with keyboard shortcuts and spaced repetition (Again/Hard/Good/Easy) · quick quiz ·
-listening lessons with transcript and questions · scripted IT scenarios (Daily Standup, Code Review, Bug Investigation) ·
-progress and history · admin CRUD for all content · English/Vietnamese interface and light/dark theme · responsive layout with a mobile tab bar. No AI chat, exam prep, grammar course or social features.
+## What is in the product
+Learn: spaced-repetition flashcards, six quiz modes (choose, listen, type, fill the gap, say it, unit quiz), listening lessons, scripted IT scenarios with
+record-and-compare speaking practice, a learning path of 16 units ordered by the learner's role and goal, a vocabulary strength view (new, learning, familiar,
+solid, mastered), a career ladder with XP and a contribution calendar. Use at work: standup, incident and email builders and a phrase bank with audio.
+Personal: role and goal onboarding, vocabulary placement check, Vietnamese/English interface, light/dark theme, installable app, optional daily reminder.
+Accounts: password reset, email confirmation, data export and account deletion. Public: landing page with a five-word demo, glossary, privacy and terms.
+Admin: content CRUD, CSV word import, path unit editor, report queue and product metrics. No AI chat, exam prep or social features.
 
 Dev accounts (development seed only): `learner@example.test` and `admin@example.test`, password `dev-password-123`.
 Run `docker compose exec api bin/rails db:seed` once to load the sample content. The sample content is **draft** and needs human review.

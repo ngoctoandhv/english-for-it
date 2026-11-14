@@ -1,0 +1,33 @@
+# Render blueprint for the API (free web service). The database is a free Neon Postgres, audio is on Cloudflare R2, the web app is on Vercel.
+# See docs/deployment.md ("Free-tier recipe"). Secrets marked sync: false are entered in the Render dashboard.
+services:
+  - type: web
+    name: english-for-it-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./docker/api.prod.Dockerfile
+    dockerContext: .
+    healthCheckPath: /up
+    envVars:
+      - { key: RAILS_ENV, value: production }
+      - { key: RAILS_LOG_TO_STDOUT, value: "1" }
+      - { key: SECRET_KEY_BASE, generateValue: true }
+      - { key: DATABASE_URL, sync: false }          # Neon connection string, with ?sslmode=require
+      - { key: ALLOWED_HOSTS, sync: false }         # the Render hostname, for example english-for-it-api.onrender.com
+      - { key: CORS_ORIGINS, sync: false }          # the web app origin, for example https://english-for-it.vercel.app
+      - { key: API_PUBLIC_URL, sync: false }
+      - { key: WEB_URL, sync: false }
+      - { key: MAIL_FROM, sync: false }
+      - { key: SMTP_ADDRESS, sync: false }
+      - { key: SMTP_USERNAME, sync: false }
+      - { key: SMTP_PASSWORD, sync: false }
+      - { key: STORAGE_SERVICE, value: s3 }
+      - { key: S3_ENDPOINT, sync: false }
+      - { key: S3_BUCKET, sync: false }
+      - { key: S3_ACCESS_KEY_ID, sync: false }
+      - { key: S3_SECRET_ACCESS_KEY, sync: false }
+      - { key: VAPID_PUBLIC_KEY, sync: false }
+      - { key: VAPID_PRIVATE_KEY, sync: false }
+      - { key: VAPID_SUBJECT, sync: false }
+      - { key: CRON_SECRET, sync: false }
+      - { key: SENTRY_DSN, sync: false }

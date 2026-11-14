@@ -44,3 +44,18 @@ not fear of losing a streak. Every mechanic below only adds; none subtracts.
 ## Suggested first release
 R1 + R2 + the new home screen. Reason: they answer "where am I and what is next" and "I can see myself improving", which is what is missing most. R4 follows because it earns repeat visits during real work.
 R6 runs in parallel and is the largest piece of work; it needs a person who can review content.
+
+## Status update (2026-11-14, after the "do everything on free services" round)
+| Item | Status |
+|---|---|
+| R1 learning path, R2 growth | Done (earlier) |
+| R3 personalization | Done: role and goal in onboarding and Settings, units for other roles move to the end of a level, "For you" badge, 10-question vocabulary check that suggests a level |
+| R4 work toolkit | Done (earlier) |
+| R5 re-engagement | Done: installable PWA, daily Web Push reminder at the learner's hour, Monday recap, welcome-back message. Needs VAPID keys and the hourly GitHub Actions trigger |
+| R6 content scale | Partly: about 197 words (was 100), 16 path units. Still 8 listening lessons and 9 scenarios. All content is draft |
+| R7 measurement | Done: own event log, admin metrics (active users, day-1 and day-7 return, signup funnel), "report a mistake" queue |
+| Word mastery | Done: fill-the-gap and say-it quiz modes, vocabulary strength stages on Home, IT pronunciation set |
+| Accounts | Done: forgot password, email verification, change password, export, delete |
+| Public site | Done: landing demo, glossary, privacy, terms, robots, sitemap, social image |
+| Free-tier deployment | Prepared, not deployed: `render.yaml`, Neon, R2, Vercel recipe, Sentry hook, nightly backup workflow |
+| Still open | Human review of all content; 20 listening lessons and 20 scenarios; legal review of privacy and terms; first real deployment; CI has never run on GitHub (no remote); native mobile apps are out of scope |
