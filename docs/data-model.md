@@ -14,3 +14,9 @@ Source of truth: `api/db/schema.rb`. Timestamps are UTC.
   `user_favorites` (polymorphic, unique per user/type/id, FK cascade from user).
 - Audio: Active Storage attachment `audio` on words (audio/* only, ≤ 5 MB).
 - Learners only see `published` content.
+
+## M3 (learning)
+- `user_word_progresses`: unique (user, word); state learning|review, due_at, interval_days, ease, reps, lapses; index (user, due_at).
+- `learning_sessions` (partial unique index: one `in_progress` per user), `learning_session_items` (unique position and word per session).
+- `review_logs`: append-only (trigger), unique (user, client_request_id), `state_before`/`state_after` jsonb, rating check constraint.
+- Schema is dumped to `api/db/structure.sql`.

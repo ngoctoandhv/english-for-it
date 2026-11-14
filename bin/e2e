@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Run Playwright E2E tests in Docker against the running dev stack. Usage: bin/e2e [playwright args]
+cd "$(dirname "$0")/.."
+docker compose up -d >/dev/null 2>&1
+docker compose run --rm --no-deps e2e npx playwright test "$@"

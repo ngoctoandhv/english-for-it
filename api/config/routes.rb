@@ -17,6 +17,13 @@ Rails.application.routes.draw do
       post "favorites", to: "favorites#create"
       delete "favorites/:type/:id", to: "favorites#destroy"
 
+      resources :learning_sessions, only: %i[create show] do
+        post :complete, on: :member
+      end
+      resources :reviews, only: :create do
+        get :due, on: :collection
+      end
+
       namespace :admin do
         resources :categories, controller: "vocabulary_categories", except: %i[new edit]
         resources :words, controller: "vocabulary_words", except: %i[new edit] do

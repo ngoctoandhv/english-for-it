@@ -6,6 +6,9 @@ class User < ApplicationRecord
   has_secure_password
   has_many :refresh_tokens, dependent: :destroy
   has_many :user_favorites, dependent: :destroy
+  has_many :user_word_progresses, dependent: :destroy
+  has_many :learning_sessions, dependent: :destroy
+  has_many :review_logs, dependent: :restrict_with_error
 
   normalizes :email, with: ->(e) { e.strip.downcase }
   normalizes :name, with: ->(n) { n.strip }

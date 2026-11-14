@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run every check inside Docker and print a short summary. Usage: bin/check [--build]
+# Run every check inside Docker and print a short summary. Usage: bin/check [--build] [--e2e]  (--e2e needs the dev stack and seeded dev data)
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
@@ -27,6 +27,10 @@ run "web: eslint"     docker compose run --rm --no-deps web npm run lint
 run "web: vitest"     docker compose run --rm --no-deps web npm test
 if [ "${1:-}" = "--build" ]; then
   run "web: next build" docker compose run --rm --no-deps web npm run build
+fi
+
+if [ "${1:-}" = "--e2e" ] || [ "${2:-}" = "--e2e" ]; then
+  run "e2e: playwright" bin/e2e
 fi
 
 [ $failed -eq 0 ] && echo "ALL GREEN" || { echo "SOME CHECKS FAILED"; exit 1; }
