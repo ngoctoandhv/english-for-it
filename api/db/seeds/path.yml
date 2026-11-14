@@ -34,18 +34,18 @@ units:
   - { slug: projects-and-planning, title: Projects & Planning, level: intermediate, audiences: [manager, analyst], description: "Scope, stakeholders, milestones and the words of planning meetings.",
       steps: [ { words: projects-and-planning }, quiz ] }
   - { slug: small-talk, title: Small Talk, level: elementary, description: "Start and end conversations with colleagues naturally.",
-      steps: [ { words: small-talk }, quiz ] }
+      steps: [ { words: small-talk }, { listening: "Monday Morning Small Talk" }, { scenario: small-talk-at-work }, quiz ] }
   - { slug: polite-requests, title: Polite Requests, level: elementary, description: "Ask for help, say thanks and answer politely.",
-      steps: [ { words: polite-requests }, quiz ] }
+      steps: [ { words: polite-requests }, { listening: "Asking a Colleague for Help" }, { scenario: asking-for-a-favor }, quiz ] }
   - { slug: calls-and-video-meetings, title: Calls & Video Meetings, level: elementary, description: "Mute, share your screen, deal with a bad connection.",
-      steps: [ { words: calls-and-video-meetings }, quiz ] }
+      steps: [ { words: calls-and-video-meetings }, { listening: "A Video Call With Problems" }, { scenario: video-call-problems }, quiz ] }
   - { slug: clarifying-and-checking, title: Clarifying & Checking, level: elementary, description: "Ask people to repeat, explain and confirm without feeling awkward.",
-      steps: [ { words: clarifying-and-checking }, quiz ] }
+      steps: [ { words: clarifying-and-checking }, { listening: "Sorry, Could You Repeat That?" }, { scenario: checking-you-understood }, quiz ] }
   - { slug: time-and-plans, title: Time & Plans, level: elementary, description: "Talk about delays, free time and changes of plan.",
-      steps: [ { words: time-and-plans }, quiz ] }
+      steps: [ { words: time-and-plans }, { listening: "Running Late and Rescheduling" }, { scenario: rescheduling-a-meeting }, quiz ] }
   - { slug: office-life, title: Office Life, level: elementary, description: "People, time off and everyday life at the office.",
-      steps: [ { words: office-life }, quiz ] }
+      steps: [ { words: office-life }, { listening: "A Day Off and Working From Home" }, { scenario: asking-for-a-day-off }, quiz ] }
   - { slug: opinions-and-agreeing, title: Opinions & Agreeing, level: intermediate, description: "Give your view, agree and disagree politely in meetings.",
-      steps: [ { words: opinions-and-agreeing }, quiz ] }
+      steps: [ { words: opinions-and-agreeing }, { listening: "Agreeing and Disagreeing Politely" }, { scenario: disagreeing-politely }, quiz ] }
   - { slug: feelings-and-reactions, title: Feelings & Reactions, level: intermediate, description: "Say how you feel and react to good and bad news.",
-      steps: [ { words: feelings-and-reactions }, quiz ] }
+      steps: [ { words: feelings-and-reactions }, { listening: "Good News and Bad News" }, { scenario: reacting-to-news }, quiz ] }
