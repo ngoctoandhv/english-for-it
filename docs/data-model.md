@@ -1,6 +1,8 @@
 # Data model
 
-No tables yet (M0). The schema is introduced from M1 (users) and M2 (vocabulary). Source of truth: `api/db/schema.rb`.
-Planned entities: User, VocabularyCategory, VocabularyWord, VocabularyExample, VocabularyCollocation,
-LearningCollection, CollectionWord, UserWordProgress, ReviewLog, ListeningLesson, ListeningQuestion,
-LearningSession, LearningSessionItem, ITScenario, ScenarioDialogue, UserFavorite.
+Source of truth: `api/db/schema.rb`. Timestamps are UTC.
+
+## M1
+- `users`: email (unique on lower(email)), password_digest, name, role (user|admin), level, daily_goal_minutes (5|10|15),
+  time_zone (IANA), onboarded_at.
+- `refresh_tokens`: user_id (FK), token_digest (unique), expires_at, revoked_at, user_agent.
