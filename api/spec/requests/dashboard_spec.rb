@@ -169,6 +169,34 @@ RSpec.describe "Quick quiz modes", type: :request do
     expect(answer.call("")).to include("correct" => false)
   end
 
+  describe "cloze mode" do
+    let!(:deploy) do
+      create(:vocabulary_word, term: "deploy").tap do |w|
+        w.vocabulary_examples.create!(sentence_en: "We deployed the app on Friday.", translation_vi: "Chúng tôi đã triển khai ứng dụng vào thứ Sáu.")
+      end
+    end
+
+    it "blanks the word as it appears in its own example and does not leak it" do
+      get "/api/v1/quizzes/quick", params: { mode: "cloze", count: 7 }, headers: headers
+      q = json["data"]["questions"].find { |x| x["word_id"] == deploy.id }
+      expect(q).to include("mode" => "cloze", "sentence" => "We _____ the app on Friday.", "length" => 8, "first_letter" => "d")
+      expect(q.to_s).not_to include("deployed")
+    end
+
+    it "falls back to a definition question when a word has no usable example" do
+      get "/api/v1/quizzes/quick", params: { mode: "cloze", count: 7 }, headers: headers
+      other = json["data"]["questions"].find { |x| x["word_id"] != deploy.id }
+      expect(other["mode"]).to eq("type")
+    end
+
+    it "accepts the inflected form and the base term" do
+      answer = ->(text) { post "/api/v1/quizzes/quick/answers", params: { answers: [ { word_id: deploy.id, text: text } ] }, headers: headers, as: :json; json["data"]["results"].first }
+      expect(answer.call("deployed")).to include("correct" => true)
+      expect(answer.call("deploy")).to include("correct" => true)
+      expect(answer.call("deployd")).to include("correct" => false, "close" => true)
+    end
+  end
+
   it "falls back to choice mode for unknown modes" do
     get "/api/v1/quizzes/quick", params: { mode: "hack" }, headers: headers
     expect(json["data"]["questions"].first["mode"]).to eq("choice")

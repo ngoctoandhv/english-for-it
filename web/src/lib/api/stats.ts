@@ -37,10 +37,11 @@ export const getDashboard = () => apiFetch<{ data: Dashboard }>("/dashboard").th
 export const getProgress = () => apiFetch<{ data: ProgressSummary }>("/progress").then((r) => r.data);
 export const getHistory = (page: number) => apiFetch<Paginated<HistoryItem>>(`/history?page=${page}&per_page=20`);
 
-export type QuizMode = "choice" | "listen" | "type";
+export type QuizMode = "choice" | "listen" | "type" | "cloze";
 export type QuizQuestion =
   | { mode: "choice"; word_id: number; term: string; ipa: string | null; part_of_speech: string; options: { word_id: number; meaning_vi: string }[] }
   | { mode: "listen"; word_id: number; audio_url: string | null; speak_text: string | null; options: { word_id: number; term: string }[] }
+  | { mode: "cloze"; word_id: number; sentence: string; translation_vi: string; part_of_speech: string; length: number; first_letter: string }
   | { mode: "type"; word_id: number; definition_en: string; meaning_vi: string; part_of_speech: string; length: number; first_letter: string };
 export type QuizAnswer = { word_id: number; choice_word_id?: number; text?: string };
 export type QuizResult = {

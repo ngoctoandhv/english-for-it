@@ -7,22 +7,27 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { playWord } from "@/features/library/speak";
+import { SayIt } from "@/features/speaking/say-it";
 import { errorMessage } from "@/lib/api/errors";
 import { answerQuiz, getQuickQuiz, type QuizMode, type QuizQuestion, type QuizResult } from "@/lib/api/stats";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 
 
+/** "say" is a practice mode with no server grading: words come from the choice quiz and the learner speaks them. */
+type PracticeMode = QuizMode | "say";
 type Feedback = { correct: boolean; close: boolean; term: string; meaning: string; chosen?: number };
 
 export function QuizScreen() {
   const { t } = useI18n();
-  const MODES: { mode: QuizMode; title: string; text: string }[] = [
+  const MODES: { mode: PracticeMode; title: string; text: string }[] = [
     { mode: "choice", title: t("quiz.choose"), text: t("quiz.chooseText") },
     { mode: "listen", title: t("quiz.listen"), text: t("quiz.listenText") },
     { mode: "type", title: t("quiz.type"), text: t("quiz.typeText") },
+    { mode: "cloze", title: t("quiz.cloze"), text: t("quiz.clozeText") },
+    { mode: "say", title: t("quiz.say"), text: t("quiz.sayText") },
   ];
-  const [mode, setMode] = useState<QuizMode | null>(null);
+  const [mode, setMode] = useState<PracticeMode | null>(null);
   const [questions, setQuestions] = useState<QuizQuestion[] | null>(null);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -34,7 +39,7 @@ export function QuizScreen() {
   useEffect(() => {
     if (!mode) return;
     let cancelled = false;
-    getQuickQuiz(mode, 5).then((q) => !cancelled && setQuestions(q)).catch((e) => !cancelled && setError(errorMessage(e, t)));
+    getQuickQuiz(mode === "say" ? "choice" : mode, 5).then((q) => !cancelled && setQuestions(q)).catch((e) => !cancelled && setError(errorMessage(e, t)));
     return () => {
       cancelled = true;
     };
@@ -47,7 +52,7 @@ export function QuizScreen() {
     if (q?.mode === "listen") playWord(q.speak_text ?? "", q.audio_url);
   }, [q]);
 
-  function start(m: QuizMode) {
+  function start(m: PracticeMode) {
     setQuestions(null);
     setIndex(0);
     setScore(0);
@@ -104,7 +109,17 @@ export function QuizScreen() {
           <section className="space-y-6">
             <p className="tnum text-sm text-muted-foreground">{t("quiz.questionOf", { n: index + 1, total: questions!.length })}</p>
 
-            {q.mode === "choice" && (
+            {q.mode === "choice" && mode === "say" && (
+              <div className="space-y-4">
+                <p data-testid="quiz-term" className="break-words font-display text-4xl leading-none sm:text-5xl">{q.term}</p>
+                {q.ipa && <p className="font-display text-muted-foreground">{q.ipa}</p>}
+                <p className="text-muted-foreground">{t("quiz.sayPrompt")}</p>
+                <SayIt key={q.word_id} text={q.term} audioUrl={null} />
+                <Button size="lg" onClick={next}>{index + 1 === questions!.length ? t("quiz.seeResult") : t("quiz.next")}</Button>
+              </div>
+            )}
+
+            {q.mode === "choice" && mode !== "say" && (
               <>
                 <div className="flex items-center gap-2">
                   <p data-testid="quiz-term" className="break-words font-display text-4xl leading-none sm:text-5xl">{q.term}</p>
@@ -139,6 +154,24 @@ export function QuizScreen() {
               </>
             )}
 
+            {q.mode === "cloze" && (
+              <form
+                className="space-y-4"
+                onSubmit={(e: FormEvent) => {
+                  e.preventDefault();
+                  if (typed.trim()) void submit(q, { text: typed });
+                }}
+              >
+                <p data-testid="quiz-term" className="text-xl leading-snug sm:text-2xl">{q.sentence}</p>
+                <p className="text-sm text-muted-foreground">{q.translation_vi}</p>
+                <p className="text-muted-foreground">
+                  {t("quiz.typeHint", { pos: q.part_of_speech, length: q.length, letter: q.first_letter })}
+                </p>
+                <Input ref={inputRef} value={typed} onChange={(e) => setTyped(e.target.value)} disabled={!!feedback} aria-label={t("quiz.yourAnswer")} autoComplete="off" autoCapitalize="off" spellCheck={false} autoFocus />
+                {!feedback && <Button type="submit" size="lg" disabled={!typed.trim()}>{t("quiz.check")}</Button>}
+              </form>
+            )}
+
             {q.mode === "type" && (
               <form
                 className="space-y-4"
@@ -169,8 +202,8 @@ export function QuizScreen() {
 
         {finished && questions!.length > 0 && (
           <section className="space-y-5">
-            <p className="font-display text-5xl leading-none tnum sm:text-6xl" data-testid="quiz-score">{score} / {questions!.length}</p>
-            <p className="text-muted-foreground">{t("quiz.note")}</p>
+            {mode !== "say" && <p className="font-display text-5xl leading-none tnum sm:text-6xl" data-testid="quiz-score">{score} / {questions!.length}</p>}
+            <p className="text-muted-foreground">{mode === "say" ? t("quiz.sayDone") : t("quiz.note")}</p>
             <div className="flex flex-wrap gap-3">
               <Button size="lg" onClick={() => start(mode!)}>{t("quiz.another")}</Button>
               <Button size="lg" variant="outline" onClick={() => { setMode(null); setQuestions(null); }}>{t("quiz.change")}</Button>
