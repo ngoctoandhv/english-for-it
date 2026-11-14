@@ -1,0 +1,9 @@
+class UserSerializer
+  def self.call(user)
+    {
+      id: user.id, email: user.email, name: user.name, role: user.role, level: user.level,
+      daily_goal_minutes: user.daily_goal_minutes, time_zone: user.time_zone,
+      onboarded: user.onboarded?, created_at: user.created_at
+    }
+  end
+end
