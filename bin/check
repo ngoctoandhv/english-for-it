@@ -3,7 +3,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
-TEST_ENV=(-e RAILS_ENV=test -e DATABASE_URL=postgres://postgres:postgres@db:5432 -e REDIS_URL=redis://redis:6379/0)
+TEST_ENV=(-e RAILS_ENV=test -e DATABASE_URL=postgres://postgres:postgres@db:5432)
 failed=0
 
 run() {
@@ -16,7 +16,7 @@ run() {
   fi
 }
 
-docker compose up -d db redis >/dev/null 2>&1
+docker compose up -d db >/dev/null 2>&1
 run "api: db:prepare" docker compose run --rm --no-deps "${TEST_ENV[@]}" api bin/rails db:prepare
 run "api: rspec"      docker compose run --rm --no-deps "${TEST_ENV[@]}" api bundle exec rspec
 run "api: rubocop"    docker compose run --rm --no-deps api bundle exec rubocop

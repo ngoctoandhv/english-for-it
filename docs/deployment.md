@@ -15,13 +15,12 @@ Both builds and a smoke test (migrations, health, host authorization, headers) w
 5. Import the draft content with `bin/rails db:seed` (imports as `draft`), then review and publish it in the admin.
 
 ## Environment variables
-See `docs/setup.md` and `.env.production.example`. Required in production: `SECRET_KEY_BASE`, `DATABASE_URL`, `REDIS_URL`,
+See `docs/setup.md` and `.env.production.example`. Required in production: `SECRET_KEY_BASE`, `DATABASE_URL`,
 `ALLOWED_HOSTS`, `CORS_ORIGINS`, `API_PUBLIC_URL`, and `NEXT_PUBLIC_API_URL` (build argument for the web image).
 
 ## Operations
-- Health: `GET /up` (liveness) and `GET /api/v1/health` (database and Redis).
+- Health: `GET /up` (liveness) and `GET /api/v1/health` (database).
 - Migrations run on container start (`db:prepare`). The schema is `db/structure.sql` (contains the review-log trigger), so the image includes `psql` 17.
 - Audio: use S3-compatible storage (`STORAGE_SERVICE=s3`); local disk is not shared between containers.
 - Backups: back up the Postgres volume/database and the audio bucket. Review history is append-only and valuable.
-- Sidekiq runs from the same image (`bundle exec sidekiq -C config/sidekiq.yml`). No jobs are scheduled in the MVP.
 - CI: `.github/workflows/ci.yml` runs `bin/check --build` and the E2E suite (written, not yet run on GitHub).

@@ -50,7 +50,8 @@ module Api
     # Store timestamps in UTC; the API returns ISO 8601 and the client formats in the user's zone.
     config.time_zone = "UTC"
     config.active_record.default_timezone = :utc
-    config.active_job.queue_adapter = :sidekiq
+    # No background jobs yet; :async runs them in-process. Switch to a durable queue (Solid Queue or Sidekiq) when jobs matter.
+    config.active_job.queue_adapter = :async
     config.middleware.use Rack::Attack
   end
 end
