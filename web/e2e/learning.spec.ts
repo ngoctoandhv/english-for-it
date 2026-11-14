@@ -85,6 +85,18 @@ test("quick quiz gives feedback and a score, and progress shows history", async 
   await page.getByRole("button", { name: "Check answer" }).click();
   await expect(page.getByRole("status")).toContainText("Not quite");
 
+  await page.goto("/quiz");
+  await page.getByRole("button", { name: /^Fill the gap/ }).click();
+  await expect(page.getByTestId("quiz-term")).toBeVisible();
+  await page.getByLabel("Your answer").fill("zzzz");
+  await page.getByRole("button", { name: "Check answer" }).click();
+  await expect(page.getByRole("status")).toContainText("Not quite");
+
+  await page.goto("/quiz");
+  await page.getByRole("button", { name: /^Say it/ }).click();
+  await expect(page.getByTestId("quiz-term")).toBeVisible();
+  await expect(page.getByTestId("say-it").getByRole("button", { name: "Record my voice" })).toBeVisible();
+
   await page.goto("/progress");
   await expect(page.getByRole("heading", { name: "Progress" })).toBeVisible();
   await expect(page.getByText("No reviews yet.")).toBeVisible();
