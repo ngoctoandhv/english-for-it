@@ -77,7 +77,7 @@ export function LibraryPage() {
 
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {!error && words.length === 0 && <p className="text-muted-foreground">No words found.</p>}
-      <ul className="divide-y rounded-lg border">
+      <ul className="divide-y overflow-hidden rounded-xl border bg-card shadow-sm">
         {words.map((w) => (
           <li key={w.id} className="flex items-center gap-2 px-3 py-2.5">
             <PlayButton term={w.term} audioUrl={w.audio_url} />

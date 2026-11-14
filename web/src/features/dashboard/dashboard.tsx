@@ -28,10 +28,11 @@ export function Dashboard() {
       : "You're all caught up. Nothing is due right now.";
 
   return (
-    <div className="space-y-10">
-      <section className="space-y-4">
-        <h1 className="text-3xl font-semibold tracking-tight">Today{user ? `, ${user.name}` : ""}</h1>
-        <p className="text-muted-foreground">{summary}</p>
+    <div className="space-y-8">
+      <section className="space-y-5 rounded-2xl border bg-gradient-to-br from-brand-soft via-card to-card p-8 shadow-sm">
+        <p className="text-sm font-medium text-primary">Today</p>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Hi{user ? `, ${user.name}` : ""} 👋</h1>
+        <p className="text-lg text-muted-foreground">{summary}</p>
         {data.backlog && (
           <p className="max-w-prose text-sm text-muted-foreground">
             You have some cards waiting. No problem: we&apos;ll bring them back a few at a time and pause new words until you&apos;re comfortable.
@@ -39,23 +40,23 @@ export function Dashboard() {
         )}
         <div className="flex flex-wrap gap-3">
           {data.can_start ? (
-            <Link href="/learn" className={buttonVariants({ size: "lg", className: "h-11 px-6 text-base" })}>
+            <Link href="/learn" className={buttonVariants({ size: "lg", className: "h-12 px-7 text-base shadow-md shadow-primary/25" })}>
               {label}
             </Link>
           ) : (
-            <Link href="/quiz" className={buttonVariants({ size: "lg", className: "h-11 px-6 text-base" })}>
+            <Link href="/quiz" className={buttonVariants({ size: "lg", className: "h-12 px-7 text-base shadow-md shadow-primary/25" })}>
               Take a quick quiz
             </Link>
           )}
           {data.can_start && (
-            <Link href="/quiz" className={buttonVariants({ size: "lg", variant: "outline", className: "h-11 px-6 text-base" })}>
+            <Link href="/quiz" className={buttonVariants({ size: "lg", variant: "outline", className: "h-12 px-7 text-base" })}>
               Quick quiz
             </Link>
           )}
         </div>
       </section>
 
-      <dl className="grid max-w-xl grid-cols-3 gap-6">
+      <dl className="grid grid-cols-3 gap-3 sm:gap-4">
         <Stat label="Reviewed today" value={data.reviewed_today} />
         <Stat label="Days studied this week" value={`${data.days_studied_this_week}/7`} />
         <Stat label="Words started" value={data.words_started} />
@@ -66,9 +67,9 @@ export function Dashboard() {
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div>
-      <dd className="text-2xl font-semibold tabular-nums">{value}</dd>
-      <dt className="text-sm text-muted-foreground">{label}</dt>
+    <div className="rounded-xl border bg-card p-4 shadow-sm">
+      <dd className="text-3xl font-semibold tabular-nums tracking-tight">{value}</dd>
+      <dt className="mt-1 text-sm text-muted-foreground">{label}</dt>
     </div>
   );
 }

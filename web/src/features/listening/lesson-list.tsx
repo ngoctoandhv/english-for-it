@@ -20,7 +20,7 @@ export function LessonList() {
       <p className="mb-6 text-muted-foreground">Short workplace dialogues. Listen first, answer, then read the transcript.</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {lessons?.length === 0 && <p className="text-muted-foreground">No lessons yet.</p>}
-      <ul className="divide-y rounded-lg border">
+      <ul className="divide-y overflow-hidden rounded-xl border bg-card shadow-sm">
         {lessons?.map((l) => (
           <li key={l.id}>
             <Link href={`/listening/${l.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50 outline-none">

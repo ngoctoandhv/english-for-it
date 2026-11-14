@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { errorMessage, fieldErrors } from "@/lib/api/errors";
+import { Brand } from "@/components/layout/brand";
 import { useAuth } from "./auth-provider";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
@@ -37,7 +38,9 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4">
+    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4 py-10">
+      <Brand className="self-center" />
+      <div className="space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">{isLogin ? "Welcome back" : "Create your account"}</h1>
         <p className="text-sm text-muted-foreground">
@@ -64,9 +67,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           {busy ? "Please wait…" : isLogin ? "Sign in" : "Create account"}
         </Button>
       </form>
-      <p className="text-sm text-muted-foreground">
+      </div>
+      <p className="text-center text-sm text-muted-foreground">
         {isLogin ? "New here? " : "Already have an account? "}
-        <Link className="underline underline-offset-4" href={isLogin ? "/register" : "/login"}>
+        <Link className="font-medium text-primary underline-offset-4 hover:underline" href={isLogin ? "/register" : "/login"}>
           {isLogin ? "Create an account" : "Sign in"}
         </Link>
       </p>

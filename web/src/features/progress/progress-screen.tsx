@@ -55,7 +55,7 @@ export function ProgressScreen() {
         {history.length === 0 ? (
           <p className="text-muted-foreground">No reviews yet.</p>
         ) : (
-          <ul className="divide-y rounded-lg border">
+          <ul className="divide-y overflow-hidden rounded-xl border bg-card shadow-sm">
             {history.map((h) => (
               <li key={h.id} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
                 <span><span className="font-medium">{h.word.term}</span> <span className="text-muted-foreground">{h.word.meaning_vi}</span></span>

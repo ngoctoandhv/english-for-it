@@ -11,6 +11,13 @@ import { cn } from "@/lib/utils";
 import { actionForKey, RATINGS } from "./keys";
 import { useFlashcards } from "./use-flashcards";
 
+const RATING_STYLE: Record<string, string> = {
+  again: "border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive/10",
+  hard: "border-warning/40 bg-warning/5 text-warning hover:bg-warning/10",
+  good: "shadow-md shadow-primary/25",
+  easy: "border-success/40 bg-success/5 text-success hover:bg-success/10",
+};
+
 export function FlashcardScreen() {
   const { ready } = useRequireAuth();
   const { state, reveal, rate } = useFlashcards();
@@ -37,7 +44,7 @@ export function FlashcardScreen() {
   if (!ready) return null;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-brand-soft/60 to-background">
       <header className="mx-auto flex w-full max-w-2xl items-center gap-4 px-4 py-4">
         <Link href="/" className="text-sm text-muted-foreground underline underline-offset-4">
           Exit
@@ -72,20 +79,20 @@ export function FlashcardScreen() {
 
         {card && word && (
           <>
-            <section aria-live="polite" className="space-y-6 text-center">
-              <p className="text-sm text-muted-foreground">{card.session.items[card.index].kind === "new" ? "New word" : "Review"}</p>
+            <section aria-live="polite" className="space-y-6 rounded-3xl border bg-card p-8 text-center shadow-lg shadow-primary/5 sm:p-12">
+              <p className="mx-auto w-fit rounded-full bg-brand-soft px-3 py-1 text-xs font-medium text-primary">{card.session.items[card.index].kind === "new" ? "New word" : "Review"}</p>
               <div className="flex items-center justify-center gap-1">
-                <h1 data-testid="card-term" className="text-5xl font-semibold tracking-tight">{word.term}</h1>
+                <h1 data-testid="card-term" className="text-5xl font-semibold tracking-tight sm:text-6xl">{word.term}</h1>
                 <PlayButton term={word.term} audioUrl={word.audio_url} />
               </div>
-              <p className="text-muted-foreground">{word.ipa} · {word.part_of_speech}</p>
+              <p className="text-lg text-muted-foreground">{word.ipa} · <span className="italic">{word.part_of_speech}</span></p>
 
               {card.revealed && (
-                <div className="space-y-4 text-left" data-testid="card-answer">
-                  <p className="text-center text-2xl">{word.meaning_vi}</p>
+                <div className="space-y-4 border-t pt-6 text-left" data-testid="card-answer">
+                  <p className="text-center text-3xl font-medium tracking-tight">{word.meaning_vi}</p>
                   <p className="text-center text-muted-foreground">{word.definition_en}</p>
                   {word.examples[0] && (
-                    <blockquote className="border-l-2 pl-3">
+                    <blockquote className="rounded-lg bg-muted/60 p-3 pl-4">
                       <p>{word.examples[0].sentence_en}</p>
                       <p className="text-sm text-muted-foreground">{word.examples[0].translation_vi}</p>
                     </blockquote>
@@ -110,7 +117,7 @@ export function FlashcardScreen() {
                     key={r.rating}
                     variant={r.rating === "good" ? "default" : "outline"}
                     size="lg"
-                    className={cn("h-12", r.rating === "again" && "text-destructive")}
+                    className={cn("h-12 text-base", RATING_STYLE[r.rating])}
                     disabled={card.submitting}
                     onClick={() => rate(r.rating)}
                   >

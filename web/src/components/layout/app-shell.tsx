@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
+import { Brand } from "@/components/layout/brand";
 import { useRequireAuth } from "@/features/auth/use-require-auth";
 import { cn } from "@/lib/utils";
 
@@ -24,24 +25,22 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b">
+      <header className="sticky top-0 z-10 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
-          <Link href="/" className="font-semibold tracking-tight">
-            English for IT
-          </Link>
+          <Brand />
           <nav aria-label="Main" className="flex flex-1 gap-1 overflow-x-auto text-sm">
             {NAV.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 aria-current={pathname === n.href ? "page" : undefined}
-                className={cn("rounded-md px-2.5 py-1.5 hover:bg-muted", pathname === n.href && "bg-muted font-medium")}
+                className={cn("rounded-lg px-3 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground", pathname === n.href && "bg-brand-soft font-medium text-primary hover:bg-brand-soft hover:text-primary")}
               >
                 {n.label}
               </Link>
             ))}
             {user?.role === "admin" && (
-              <Link href="/admin" className={cn("rounded-md px-2.5 py-1.5 hover:bg-muted", pathname.startsWith("/admin") && "bg-muted font-medium")}>
+              <Link href="/admin" className={cn("rounded-lg px-3 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground", pathname.startsWith("/admin") && "bg-brand-soft font-medium text-primary")}>
                 Admin
               </Link>
             )}
@@ -51,7 +50,7 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
           </Button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">{children}</main>
     </div>
   );
 }
