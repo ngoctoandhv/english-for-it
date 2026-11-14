@@ -18,6 +18,9 @@ CREATE FUNCTION public.review_logs_immutable() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
+  IF TG_OP = 'DELETE' AND current_setting('app.erase_account', true) = 'on' THEN
+    RETURN OLD;
+  END IF;
   RAISE EXCEPTION 'review_logs rows are immutable';
 END;
 $$;
@@ -186,8 +189,8 @@ CREATE TABLE public.it_scenarios (
     "position" integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT it_scenarios_level_check CHECK (((level)::text = ANY (ARRAY[('beginner'::character varying)::text, ('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
-    CONSTRAINT it_scenarios_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT it_scenarios_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT it_scenarios_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -223,7 +226,7 @@ CREATE TABLE public.learning_collections (
     "position" integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT learning_collections_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -259,7 +262,7 @@ CREATE TABLE public.learning_session_items (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY (ARRAY[('new'::character varying)::text, ('review'::character varying)::text])))
+    CONSTRAINT items_kind_check CHECK (((kind)::text = ANY ((ARRAY['new'::character varying, 'review'::character varying])::text[])))
 );
 
 
@@ -294,7 +297,7 @@ CREATE TABLE public.learning_sessions (
     completed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY (ARRAY[('in_progress'::character varying)::text, ('completed'::character varying)::text])))
+    CONSTRAINT sessions_status_check CHECK (((status)::text = ANY ((ARRAY['in_progress'::character varying, 'completed'::character varying])::text[])))
 );
 
 
@@ -369,8 +372,8 @@ CREATE TABLE public.listening_lessons (
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT listening_lessons_level_check CHECK (((level)::text = ANY (ARRAY[('beginner'::character varying)::text, ('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
-    CONSTRAINT listening_lessons_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT listening_lessons_level_check CHECK (((level)::text = ANY ((ARRAY['beginner'::character varying, 'elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT listening_lessons_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -443,7 +446,7 @@ CREATE TABLE public.path_steps (
     it_scenario_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT path_steps_kind_check CHECK (((kind)::text = ANY (ARRAY[('words'::character varying)::text, ('listening'::character varying)::text, ('scenario'::character varying)::text, ('quiz'::character varying)::text]))),
+    CONSTRAINT path_steps_kind_check CHECK (((kind)::text = ANY ((ARRAY['words'::character varying, 'listening'::character varying, 'scenario'::character varying, 'quiz'::character varying])::text[]))),
     CONSTRAINT path_steps_one_reference_check CHECK (((((kind)::text = 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 0)) OR (((kind)::text <> 'quiz'::text) AND (num_nonnulls(learning_collection_id, listening_lesson_id, it_scenario_id) = 1))))
 );
 
@@ -481,8 +484,8 @@ CREATE TABLE public.path_units (
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT path_units_level_check CHECK (((level)::text = ANY (ARRAY[('elementary'::character varying)::text, ('intermediate'::character varying)::text]))),
-    CONSTRAINT path_units_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT path_units_level_check CHECK (((level)::text = ANY ((ARRAY['elementary'::character varying, 'intermediate'::character varying])::text[]))),
+    CONSTRAINT path_units_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -555,7 +558,7 @@ CREATE TABLE public.review_logs (
     state_before jsonb DEFAULT '{}'::jsonb NOT NULL,
     state_after jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY (ARRAY[('again'::character varying)::text, ('hard'::character varying)::text, ('good'::character varying)::text, ('easy'::character varying)::text])))
+    CONSTRAINT review_logs_rating_check CHECK (((rating)::text = ANY ((ARRAY['again'::character varying, 'hard'::character varying, 'good'::character varying, 'easy'::character varying])::text[])))
 );
 
 
@@ -593,7 +596,7 @@ CREATE TABLE public.scenario_dialogues (
     tip text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT scenario_dialogues_role_check CHECK (((role)::text = ANY (ARRAY[('other'::character varying)::text, ('you'::character varying)::text])))
+    CONSTRAINT scenario_dialogues_role_check CHECK (((role)::text = ANY ((ARRAY['other'::character varying, 'you'::character varying])::text[])))
 );
 
 
@@ -812,7 +815,7 @@ CREATE TABLE public.user_word_progresses (
     last_reviewed_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT progress_state_check CHECK (((state)::text = ANY (ARRAY[('learning'::character varying)::text, ('review'::character varying)::text])))
+    CONSTRAINT progress_state_check CHECK (((state)::text = ANY ((ARRAY['learning'::character varying, 'review'::character varying])::text[])))
 );
 
 
@@ -851,8 +854,9 @@ CREATE TABLE public.users (
     onboarded_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    email_verified_at timestamp(6) without time zone,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
-    CONSTRAINT users_role_check CHECK (((role)::text = ANY (ARRAY[('user'::character varying)::text, ('admin'::character varying)::text])))
+    CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
 );
 
 
@@ -990,7 +994,7 @@ CREATE TABLE public.vocabulary_words (
     vocabulary_category_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY (ARRAY[('draft'::character varying)::text, ('reviewed'::character varying)::text, ('published'::character varying)::text])))
+    CONSTRAINT vocabulary_words_status_check CHECK (((status)::text = ANY ((ARRAY['draft'::character varying, 'reviewed'::character varying, 'published'::character varying])::text[])))
 );
 
 
@@ -2104,6 +2108,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114170001'),
 ('20261114160001'),
 ('20261114150001'),
 ('20261114140001'),

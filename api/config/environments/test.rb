@@ -42,4 +42,6 @@ Rails.application.configure do
 
   # File storage (audio). Set STORAGE_SERVICE=s3 for S3-compatible storage.
   config.active_storage.service = :test
+
+  config.action_mailer.delivery_method = :test
 end

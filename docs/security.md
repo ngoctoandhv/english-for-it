@@ -28,3 +28,9 @@ Scope: the API (`api/`), the web app (`web/`), the Docker/CI setup. Reviewed aga
 5. **No account lockout**, only IP throttling. Consider per-account throttling.
 6. **Content is draft**: seeded vocabulary, listening and scenarios must be reviewed by a human before publishing (`docs/content/README.md`).
 7. **Dev-only credentials** (`admin@example.test`, `learner@example.test`) exist only when seeding in development. They must never exist in production: `db/seeds.rb` loads them only in the development environment.
+
+## Account recovery, export and erasure
+- Reset and verification tokens use `generates_token_for` (signed, expiring). The reset token embeds the password salt, so it stops working after one use.
+- `POST /auth/password/forgot` returns 204 for every email; send failures are logged, never shown. It has its own throttle (`MAIL_THROTTLE_LIMIT`, default 5 per 10 minutes per IP).
+- `review_logs` stay immutable (UPDATE and DELETE are blocked by a trigger). The single exception is account erasure: `Accounts::Erase` sets the transaction-local setting `app.erase_account` before deleting that user's rows.
+- Email is sent over any SMTP provider (`SMTP_ADDRESS`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `MAIL_FROM`, `WEB_URL`). In development mail is written to `api/tmp/mails`.

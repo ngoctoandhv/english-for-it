@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Dumbbell, Home, LogOut, Route, Settings2, Wrench } from "lucide-react";
+import { BarChart3, Dumbbell, Home, LogOut, Route, Settings, Settings2, Wrench } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -56,6 +56,9 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
           </nav>
           <div className="ml-auto flex items-center gap-2 md:ml-0">
             <Preferences />
+            <Link href="/settings" aria-label={t("nav.settings")} title={t("nav.settings")} className="grid size-10 place-items-center rounded-lg border text-muted-foreground hover:text-foreground">
+              <Settings className="size-[18px]" aria-hidden />
+            </Link>
             <button
               type="button"
               onClick={() => logout()}

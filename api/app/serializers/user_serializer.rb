@@ -3,7 +3,7 @@ class UserSerializer
     {
       id: user.id, email: user.email, name: user.name, role: user.role, level: user.level,
       daily_goal_minutes: user.daily_goal_minutes, time_zone: user.time_zone,
-      onboarded: user.onboarded?, created_at: user.created_at
+      onboarded: user.onboarded?, email_verified: user.email_verified?, created_at: user.created_at
     }
   end
 end

@@ -69,4 +69,16 @@ Rails.application.configure do
   allowed = ENV.fetch("ALLOWED_HOSTS", "").split(",").map(&:strip).reject(&:empty?)
   config.hosts = allowed
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Email through any SMTP provider with a free tier (Brevo, Resend, Mailjet...). Without SMTP_ADDRESS emails are only logged.
+  if ENV["SMTP_ADDRESS"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV["SMTP_ADDRESS"], port: ENV.fetch("SMTP_PORT", 587).to_i,
+      user_name: ENV["SMTP_USERNAME"], password: ENV["SMTP_PASSWORD"], authentication: :plain, enable_starttls_auto: true
+    }
+  else
+    config.action_mailer.delivery_method = :test
+  end
+  config.action_mailer.raise_delivery_errors = false
 end

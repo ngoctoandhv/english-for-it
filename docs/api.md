@@ -95,3 +95,16 @@ XP (never decreases): 1 per review, 3 per word met, 15 per passed lesson, 15 per
 The standup, incident and email builders run in the browser (`web/src/lib/toolkit`, covered by Vitest). They are deterministic templates, not AI:
 the learner picks verbs and types the details, the builder applies the grammar (past simple for finished work, `will` + base form for plans, `cannot` for impact)
 and leaves visible `[placeholders]` for anything not filled in. Output can be copied or played with the browser voice.
+
+## Account management
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| POST | /api/v1/auth/password/forgot | none | `{ email }`. Always 204 (does not reveal whether the account exists). Emails a 30-minute single-use link. |
+| POST | /api/v1/auth/password/reset | none | `{ token, password }`. 204, or 422 `invalid_token`. Signs out every session. |
+| POST | /api/v1/auth/email/verify | none | `{ token }`. 204, or 422 `invalid_token`. Link valid for 3 days. |
+| POST | /api/v1/me/email/resend | user | 204. |
+| PATCH | /api/v1/me/password | user | `{ user: { current_password, new_password } }`. 204. Signs out every session. |
+| GET | /api/v1/me/export | user | All data stored for the user as JSON. |
+| DELETE | /api/v1/me | user | `{ password }`. Permanently deletes the account, including the immutable review log (see `docs/security.md`). |
+
+`email_verified` is part of the user payload. Verification is not required to use the app; it exists so password recovery works.

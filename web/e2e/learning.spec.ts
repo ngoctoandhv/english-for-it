@@ -302,3 +302,42 @@ test("work toolkit: standup, incident and email builders and the phrase bank", a
   await page.getByRole("button", { name: "Incidents" }).click();
   await expect(page.getByText("We are investigating an issue with the payment service.")).toBeVisible();
 });
+
+test("account: forgot password page, settings, password change and account deletion", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("link", { name: "Forgot your password?" }).click();
+  await page.waitForLoadState("networkidle"); // let the form hydrate so submit is handled by React
+  await page.getByLabel("Email").fill("nobody@example.test");
+  await page.getByRole("button", { name: "Send reset link" }).click();
+  await expect(page.getByRole("status")).toContainText("If an account exists");
+
+  await page.goto("/reset-password");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("incomplete");
+
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Settler");
+  await page.getByLabel("Email").fill(`settings-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+
+  await page.getByRole("link", { name: "Settings" }).click();
+  await expect(page.getByText("Not confirmed")).toBeVisible();
+  await page.locator("#name").fill("Settler Two");
+  await page.getByRole("button", { name: "Save changes" }).click();
+  await expect(page.getByText("Saved.")).toBeVisible();
+
+  await page.locator("#current").fill("e2e-password-123");
+  await page.locator("#new-password").fill("e2e-password-456");
+  await page.getByRole("button", { name: "Change password" }).click();
+  await expect(page.getByText("Password changed.")).toBeVisible();
+
+  await page.locator("#del").fill("e2e-password-456");
+  await page.getByRole("button", { name: "Delete my account" }).click();
+  await expect(page).toHaveURL(/\/login/);
+  await page.getByLabel("Email").fill(`settings-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-456");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("incorrect");
+});
