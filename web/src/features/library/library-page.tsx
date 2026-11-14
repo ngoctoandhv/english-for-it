@@ -79,7 +79,7 @@ export function LibraryPage() {
 
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {!error && words.length === 0 && <p className="text-muted-foreground">{t("lib.none")}</p>}
-      <ul className="divide-y border-y">
+      <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
         {words.map((w) => (
           <li key={w.id} className="flex items-center gap-1 py-2 sm:gap-2">
             <PlayButton term={w.term} audioUrl={w.audio_url} />

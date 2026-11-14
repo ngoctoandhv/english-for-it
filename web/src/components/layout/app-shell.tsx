@@ -40,7 +40,7 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
       </a>
 
       <header className="sticky top-0 z-30 border-b bg-background">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6 md:h-16">
+        <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-10 md:h-16">
           <Brand className="shrink-0" />
           <nav aria-label={t("nav.main")} className="ml-4 hidden flex-1 gap-1 md:flex">
             {items.map(({ href, key }) => (
@@ -72,7 +72,7 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
         </div>
       </header>
 
-      <main id="content" className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-8 sm:px-6 md:pb-16 md:pt-12">
+      <main id="content" className="mx-auto w-full max-w-7xl flex-1 px-4 pb-28 pt-8 sm:px-6 lg:px-10 md:pb-16 md:pt-12">
         {children}
       </main>
 

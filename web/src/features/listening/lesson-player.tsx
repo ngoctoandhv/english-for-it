@@ -4,6 +4,7 @@ import { ReportIssue } from "@/components/report-issue";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Split } from "@/components/layout/split";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { errorMessage } from "@/lib/api/errors";
@@ -68,31 +69,52 @@ export function LessonPlayer() {
       <Link href="/listening" className="text-sm text-muted-foreground underline underline-offset-4">← {t("listen.title")}</Link>
       {error && <p role="alert" className="mt-4 text-destructive">{error}</p>}
       {lesson && (
-        <div className="mt-4 max-w-2xl space-y-8">
+        <Split className="mt-4" aside={
+          <>
+            <section aria-label={t("listen.audio")} className="space-y-3">
+              {lesson.audio_url ? (
+                <audio ref={audioRef} controls src={lesson.audio_url} className="w-full" />
+              ) : (
+                <div className="flex items-center gap-3 rounded-lg border p-3">
+                  <Button onClick={speak}>{t("listen.browserVoice")}</Button>
+                  <span className="text-sm text-muted-foreground">{t("listen.noRecording")}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-sm" role="group" aria-label={t("listen.speed")}>
+                <span className="text-muted-foreground">{t("listen.speed")}</span>
+                {SPEEDS.map((s) => (
+                  <Button key={s} size="sm" variant={speed === s ? "default" : "outline"} aria-pressed={speed === s} onClick={() => setSpeed(s)}>
+                    {s}×
+                  </Button>
+                ))}
+              </div>
+            </section>
+            <section aria-label={t("listen.transcript")} className="space-y-3">
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowTranscript((v) => !v)} aria-expanded={showTranscript}>
+                  {showTranscript ? t("listen.hide") : t("listen.show")}
+                </Button>
+                {showTranscript && lesson.transcript_vi && (
+                  <Button variant="outline" onClick={() => setShowVi((v) => !v)} aria-pressed={showVi}>
+                    {t("listen.vi")}
+                  </Button>
+                )}
+              </div>
+              {showTranscript && (
+                <div className="space-y-4 rounded-lg border p-4">
+                  <p className="whitespace-pre-line">{lesson.transcript_en}</p>
+                  {showVi && <p className="whitespace-pre-line border-t pt-4 text-muted-foreground">{lesson.transcript_vi}</p>}
+                </div>
+              )}
+            </section>
+          </>
+        }>
           <header className="space-y-1">
             <h1 className="text-2xl sm:text-3xl">{lesson.title}</h1>
             <p className="text-muted-foreground">{lesson.description}</p>
             <ReportIssue type="listening" id={lesson.id} />
           </header>
 
-          <section aria-label={t("listen.audio")} className="space-y-3">
-            {lesson.audio_url ? (
-              <audio ref={audioRef} controls src={lesson.audio_url} className="w-full" />
-            ) : (
-              <div className="flex items-center gap-3 rounded-lg border p-3">
-                <Button onClick={speak}>{t("listen.browserVoice")}</Button>
-                <span className="text-sm text-muted-foreground">{t("listen.noRecording")}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-2 text-sm" role="group" aria-label={t("listen.speed")}>
-              <span className="text-muted-foreground">{t("listen.speed")}</span>
-              {SPEEDS.map((s) => (
-                <Button key={s} size="sm" variant={speed === s ? "default" : "outline"} aria-pressed={speed === s} onClick={() => setSpeed(s)}>
-                  {s}×
-                </Button>
-              ))}
-            </div>
-          </section>
 
           <section aria-label={t("listen.questions")} className="space-y-6">
             {lesson.questions.map((q, qi) => {
@@ -139,25 +161,7 @@ export function LessonPlayer() {
             )}
           </section>
 
-          <section aria-label={t("listen.transcript")} className="space-y-3">
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setShowTranscript((v) => !v)} aria-expanded={showTranscript}>
-                {showTranscript ? t("listen.hide") : t("listen.show")}
-              </Button>
-              {showTranscript && lesson.transcript_vi && (
-                <Button variant="outline" onClick={() => setShowVi((v) => !v)} aria-pressed={showVi}>
-                  {t("listen.vi")}
-                </Button>
-              )}
-            </div>
-            {showTranscript && (
-              <div className="space-y-4 rounded-lg border p-4">
-                <p className="whitespace-pre-line">{lesson.transcript_en}</p>
-                {showVi && <p className="whitespace-pre-line border-t pt-4 text-muted-foreground">{lesson.transcript_vi}</p>}
-              </div>
-            )}
-          </section>
-        </div>
+        </Split>
       )}
     </AppShell>
   );

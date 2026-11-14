@@ -63,7 +63,7 @@ export function UnitQuizScreen() {
   return (
     <AppShell>
       <Link href={`/path/${slug}`} className="text-sm text-muted-foreground underline underline-offset-4">{t("pathquiz.backUnit")}</Link>
-      <div className="mt-4 max-w-xl space-y-6">
+      <div className="mt-4 max-w-3xl space-y-6">
         <h1 className="text-3xl sm:text-4xl">{t("pathquiz.title")}</h1>
         {!result && <p className="text-muted-foreground">{t("pathquiz.sub")}</p>}
         {error && <p role="alert" className="text-destructive">{error}</p>}

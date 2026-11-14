@@ -29,7 +29,7 @@ export function HomeGate() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6 md:h-16">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 md:h-16">
           <Brand />
           <div className="flex items-center gap-3">
             <Preferences />
@@ -41,7 +41,7 @@ export function HomeGate() {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-10">
         <section className="grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
           <div className="space-y-6">
             <h1 className="text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">{t("landing.title")}</h1>

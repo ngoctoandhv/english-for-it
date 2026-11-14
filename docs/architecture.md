@@ -50,3 +50,6 @@ guide to how clearly a speech engine understood the learner, not a pronunciation
 
 ## Public pages and SEO
 `/` (landing with a five-word demo), `/glossary`, `/privacy`, `/terms` are readable signed out. `robots.txt`, `sitemap.xml` and a generated social image come from Next metadata routes; set `NEXT_PUBLIC_SITE_URL`. The glossary renders on the server using `API_INTERNAL_URL` (set by compose to `http://api:3000`; in development Rails allows that host). Legal text lives in `web/src/lib/legal/content.ts` (English and Vietnamese) and must be reviewed by a lawyer before a public launch.
+
+## Desktop layout
+The app shell is 1280px wide (`max-w-7xl`). Pages use `components/layout/split.tsx`: `Split` puts the task on the left and supporting content on the right (sticky) from the `lg` breakpoint, and stacks below it; `Columns` and the shared list-grid class split long lists into two columns. Examples: listening (questions | audio and transcript), scenarios (conversation | situation and progress), word page (examples | meaning and phrases), quiz (question | quiz types), progress (growth and charts | history), settings (profile and reminders | password, data, delete), path (one column per level), sign-in (product panel | form). Grid children need `min-w-0` or long text pushes the page wider than a phone; the E2E phone test checks this on every main route.

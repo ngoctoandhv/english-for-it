@@ -82,8 +82,10 @@ export function SettingsScreen() {
 
   return (
     <AppShell>
-      <div className="max-w-xl space-y-14">
+      <div className="space-y-10">
         <h1 className="text-3xl sm:text-4xl">{t("settings.title")}</h1>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-14 lg:grid-cols-2 lg:items-start">
+        <div className="max-w-xl space-y-14">
 
         <section aria-labelledby="profile" className="space-y-5">
           <SectionTitle id="profile">{t("settings.profile")}</SectionTitle>
@@ -134,7 +136,9 @@ export function SettingsScreen() {
         </section>
 
         <Reminders />
+        </div>
 
+        <div className="max-w-xl space-y-14">
         <section aria-labelledby="password" className="space-y-5">
           <SectionTitle id="password">{t("settings.password")}</SectionTitle>
           <form onSubmit={savePassword} className="space-y-4">
@@ -168,6 +172,8 @@ export function SettingsScreen() {
             <Message text={delMsg} error />
           </form>
         </section>
+        </div>
+        </div>
       </div>
     </AppShell>
   );

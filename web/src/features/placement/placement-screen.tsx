@@ -53,7 +53,7 @@ export function PlacementScreen() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col gap-8 px-5 py-10">
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-8 px-5 py-10 lg:px-10">
       <div className="flex justify-end"><Preferences /></div>
       <div className="space-y-1">
         <h1 className="text-3xl sm:text-4xl">{t("placement.title")}</h1>
@@ -73,7 +73,7 @@ export function PlacementScreen() {
       ) : (
         <>
           {!questions && !error && <p className="text-muted-foreground">{t("common.loading")}</p>}
-          <ol className="space-y-8">
+          <ol className="grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-2">
             {questions?.map((q, i) => (
               <li key={q.word_id}>
                 <fieldset className="space-y-3">

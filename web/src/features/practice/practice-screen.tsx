@@ -17,9 +17,9 @@ export function PracticeScreen() {
     <AppShell>
       <h1 className="mb-3 text-3xl sm:text-4xl">{t("practice.title")}</h1>
       <p className="mb-10 max-w-prose text-muted-foreground">{t("practice.sub")}</p>
-      <section aria-labelledby="free" className="max-w-3xl">
+      <section aria-labelledby="free" className="">
         <SectionTitle id="free">{t("nav.practice")}</SectionTitle>
-        <ul className="divide-y border-y">
+        <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
           {items.map((p) => (
             <li key={p.href}>
               <Link href={p.href} className="grid gap-1 py-4 hover:bg-muted/50 sm:grid-cols-[13rem_1fr] sm:gap-8 sm:px-2">

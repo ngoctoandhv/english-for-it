@@ -58,15 +58,17 @@ export function OnboardingForm() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-8 px-5 py-10">
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center gap-8 px-5 py-10 lg:px-10">
       <div className="flex justify-end"><Preferences /></div>
       <div className="space-y-1">
         <h1 className="text-3xl sm:text-4xl">{t("onboarding.title")}</h1>
         <p className="text-muted-foreground">{t("onboarding.sub")}</p>
       </div>
-      <Choice legend={t("onboarding.role")} options={ROLES} value={role} onChange={(v) => setRole(v)} />
-      <Choice legend={t("onboarding.focus")} options={FOCUS} value={focus} onChange={(v) => setFocus(v)} />
-      <Choice legend={t("onboarding.level")} options={LEVELS} value={level} onChange={(v) => setLevel(String(v))} />
+      <div className="grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-2">
+        <Choice legend={t("onboarding.role")} options={ROLES} value={role} onChange={(v) => setRole(v)} />
+        <Choice legend={t("onboarding.focus")} options={FOCUS} value={focus} onChange={(v) => setFocus(v)} />
+        <Choice legend={t("onboarding.level")} options={LEVELS} value={level} onChange={(v) => setLevel(String(v))} />
+      </div>
       <Link href="/placement" className="-mt-4 text-sm text-primary underline underline-offset-4">{t("onboarding.unsure")}</Link>
       <Choice legend={t("onboarding.time")} options={GOALS} value={goal} onChange={(v) => setGoal(Number(v))} />
       {error && (

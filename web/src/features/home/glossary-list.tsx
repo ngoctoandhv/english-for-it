@@ -13,7 +13,7 @@ export function GlossaryList({ words }: { words: PublicWord[] }) {
       {words.length === 0 ? (
         <p className="text-muted-foreground">{t("public.glossaryEmpty")}</p>
       ) : (
-        <dl className="divide-y border-y">
+        <dl className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>div]:min-w-0 [&>div]:border-b">
           {words.map((w) => (
             <div key={w.id} className="grid gap-1 py-4 sm:grid-cols-[14rem_1fr] sm:gap-8">
               <dt>

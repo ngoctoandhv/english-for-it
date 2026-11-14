@@ -66,7 +66,7 @@ export function AdminList() {
       {error && <p role="alert" className="mb-4 text-sm text-destructive">{error}</p>}
       {loaded && rows.length === 0 && <p className="text-muted-foreground">{t("admin.empty")}</p>}
 
-      <ul className="divide-y border-y">
+      <ul className="grid grid-cols-1 border-t lg:grid-cols-2 lg:gap-x-12 [&>li]:min-w-0 [&>li]:border-b">
         {rows.map((r) => {
           const status = statusCol ? String(statusCol.value(r)) : null;
           return (

@@ -84,10 +84,14 @@ export function AdminForm() {
       <Link href={`/admin/${config.key}`} className="text-sm text-muted-foreground underline underline-offset-4">← {resName}</Link>
       <h1 className="mb-8 mt-3 text-3xl sm:text-4xl">{isNew ? t("admin.newItem", { name: itemName }) : t("admin.editItem", { name: itemName })}</h1>
       {values && (
-        <form onSubmit={submit} className="max-w-3xl space-y-6" noValidate>
-          {config.fields.map((f) => (
-            <FieldInput key={f.name} field={f} values={values} set={set} />
-          ))}
+        <form onSubmit={submit} className="max-w-5xl space-y-6" noValidate>
+          <div className="grid grid-cols-1 gap-x-10 gap-y-6 lg:grid-cols-2">
+            {config.fields.map((f) => (
+              <div key={f.name} className={f.kind === "text" || f.kind === "number" || f.kind === "select" || f.kind === "remote-select" ? "min-w-0" : "min-w-0 lg:col-span-2"}>
+                <FieldInput field={f} values={values} set={set} />
+              </div>
+            ))}
+          </div>
           {errors.length > 0 && (
             <ul role="alert" className="list-inside list-disc text-sm text-destructive">
               {errors.map((m) => <li key={m}>{m}</li>)}
@@ -98,7 +102,7 @@ export function AdminForm() {
         </form>
       )}
       {config.hasAudio && record && (
-        <section className="mt-12 max-w-3xl space-y-3" aria-labelledby="audio">
+        <section className="mt-12 max-w-5xl space-y-3" aria-labelledby="audio">
           <SectionTitle id="audio">{t("admin.audio")}</SectionTitle>
           {typeof record.audio_url === "string" && (
             <div className="flex flex-wrap items-center gap-3">
