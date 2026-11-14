@@ -1,11 +1,12 @@
 module LearningSessions
   # Returns the user's open session, or builds a new one. Returns nil when there is nothing to study.
   class Start
-    def self.call(user, now: Time.current) = new(user, now).call
+    def self.call(user, now: Time.current, collection: nil) = new(user, now, collection).call
 
-    def initialize(user, now)
+    def initialize(user, now, collection = nil)
       @user = user
       @now = now
+      @collection = collection
       @plan = Plan.new(user, now: now)
     end
 
@@ -22,9 +23,10 @@ module LearningSessions
 
     def build
       reviews = @plan.due_scope.order(:due_at).limit(@plan.goal_cards).pluck(:vocabulary_word_id)
-      new_ids = VocabularyWord.published
-                              .where.not(id: @user.user_word_progresses.select(:vocabulary_word_id))
-                              .order(:id).limit(@plan.new_slots(reviews.size)).pluck(:id)
+      fresh = VocabularyWord.published.where.not(id: @user.user_word_progresses.select(:vocabulary_word_id))
+      # Focus on one collection (from the learning path): its words first, in the collection's own order.
+      fresh = fresh.joins(:collection_words).where(collection_words: { learning_collection_id: @collection.id }).reorder("collection_words.position") if @collection
+      new_ids = (@collection ? fresh : fresh.order(:id)).limit(@plan.new_slots(reviews.size)).pluck(:id)
       return nil if reviews.empty? && new_ids.empty?
 
       LearningSession.transaction do

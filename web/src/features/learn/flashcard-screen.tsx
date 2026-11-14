@@ -2,6 +2,7 @@
 
 import { ArrowLeft, Volume2 } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Preferences } from "@/components/layout/preferences";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -24,7 +25,8 @@ const RATING_STYLE: Record<string, string> = {
 export function FlashcardScreen() {
   const { ready } = useRequireAuth();
   const { t } = useI18n();
-  const { state, reveal, rate } = useFlashcards();
+  const collection = useSearchParams().get("collection") ?? undefined;
+  const { state, reveal, rate } = useFlashcards(collection);
 
   const card = state.phase === "card" ? state : null;
   const word = card ? card.session.items[card.index].word : null;
@@ -68,7 +70,7 @@ export function FlashcardScreen() {
         {state.phase === "loading" && <p className="text-center text-muted-foreground">{t("learn.preparing")}</p>}
         {state.phase === "error" && <p role="alert" className="text-center text-destructive">{errorMessage(state.error, t)}</p>}
         {state.phase === "caught_up" && (
-          <Message title={t("learn.caughtUp")} text={t("learn.caughtUpText")}>
+          <Message title={t("learn.caughtUp")} text={collection ? t("path.moreWordsTomorrow") : t("learn.caughtUpText")}>
             <Link href="/" className={buttonVariants({ size: "lg" })}>{t("learn.backToday")}</Link>
           </Message>
         )}

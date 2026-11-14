@@ -97,7 +97,8 @@ test("listening lesson: answer questions, see the score and the transcript", asy
   await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
 
-  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Listening" }).click();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Practice" }).click();
+  await page.getByRole("link", { name: /^Listening/ }).click();
   await page.getByRole("link", { name: /Daily Standup/ }).click();
   await expect(page.getByText("Show transcript")).toBeVisible();
   await expect(page.getByText("I fixed the login bug")).toHaveCount(0);
@@ -116,7 +117,8 @@ test("scripted scenario: step through, reveal the learner's line, complete", asy
   await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
 
-  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Scenarios" }).click();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Practice" }).click();
+  await page.getByRole("link", { name: /^Scenarios/ }).click();
   await page.getByRole("link", { name: /Code Review/ }).click();
   await expect(page.getByText("could you review my pull request")).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
@@ -168,8 +170,8 @@ test("on a phone the app shows a bottom tab bar and no horizontal scroll", async
 
   const tabBar = page.getByRole("navigation", { name: "Main" });
   await expect(tabBar).toBeVisible();
-  await expect(tabBar.getByRole("link")).toHaveCount(5);
-  for (const path of ["/", "/library", "/listening", "/scenarios", "/progress", "/quiz"]) {
+  await expect(tabBar.getByRole("link")).toHaveCount(4);
+  for (const path of ["/", "/path", "/practice", "/library", "/listening", "/scenarios", "/progress", "/quiz"]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -199,4 +201,45 @@ test("admin screens fit a phone and are translated", async ({ browser }) => {
   await page.goto("/admin/words/new");
   await expect(page.getByRole("heading", { name: "Tạo từ" })).toBeVisible();
   await context.close();
+});
+
+
+test("learning path: next step on home, focused words session, unit steps and growth", async ({ page }) => {
+  await page.goto("/register");
+  await page.getByLabel("Name").fill("Path User");
+  await page.getByLabel("Email").fill(`path-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByLabel(/^5 minutes/).check({ force: true });
+  await page.getByRole("button", { name: "Save and continue" }).click();
+
+  await expect(page.getByRole("heading", { name: "Next step" })).toBeVisible();
+  await expect(page.getByText("Daily Standup").first()).toBeVisible();
+  await expect(page.getByText("Intern")).toBeVisible();
+
+  await page.getByRole("link", { name: "Continue", exact: true }).click();
+  await expect(page).toHaveURL(/\/learn\?collection=daily-standup/);
+  for (let i = 0; i < 3; i++) {
+    await expect(page.getByTestId("card-term")).toBeVisible();
+    await page.keyboard.press("Space");
+    await expect(page.getByTestId("card-answer")).toBeVisible();
+    await page.keyboard.press("3");
+    await expect(page.getByTestId("card-answer")).toHaveCount(0);
+  }
+  await expect(page.getByRole("heading", { name: "Session complete" })).toBeVisible();
+
+  await page.goto("/path");
+  await expect(page.getByRole("link", { name: /Daily Standup/ })).toContainText("In progress");
+  await expect(page.getByRole("link", { name: /Meetings & Email/ })).toContainText("Locked");
+  await page.getByRole("link", { name: /Daily Standup/ }).click();
+  await expect(page.getByRole("heading", { name: "Daily Standup", level: 1 })).toBeVisible();
+  await expect(page.getByRole("listitem").filter({ hasText: "Unit quiz" })).toBeVisible();
+
+  await page.goto("/progress");
+  await expect(page.getByRole("heading", { name: "Growth" })).toBeVisible();
+  await expect(page.getByText("88 XP to Junior")).toBeVisible();
+  await expect(page.getByRole("img", { name: /Learning days/ })).toBeVisible();
+
+  await page.goto("/path/daily-standup/quiz");
+  await expect(page.getByTestId("quiz-term")).toBeVisible();
 });

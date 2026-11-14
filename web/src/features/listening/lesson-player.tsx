@@ -126,7 +126,12 @@ export function LessonPlayer() {
               </Button>
             ) : (
               <div className="flex items-center gap-4">
-                <p role="status" data-testid="listening-score" className="text-xl font-medium">{result.score} / {result.total}</p>
+                <div>
+                  <p role="status" data-testid="listening-score" className="font-display text-xl">{result.score} / {result.total}</p>
+                  {result.units_completed?.map((u) => (
+                    <p key={u.slug} className="mt-1 font-display text-sm text-primary" data-testid="unit-completed">{t("unitdone", { title: u.title })}</p>
+                  ))}
+                </div>
                 <Button variant="outline" onClick={retry}>{t("listen.tryAgain")}</Button>
               </div>
             )}

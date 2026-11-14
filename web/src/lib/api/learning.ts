@@ -12,8 +12,8 @@ export type LearningSession = {
   items: SessionItem[];
 };
 
-export const startSession = () =>
-  apiFetch<{ data: LearningSession | null; reason?: string }>("/learning_sessions", { method: "POST" }).then((r) => r.data);
+export const startSession = (collection?: string) =>
+  apiFetch<{ data: LearningSession | null; reason?: string }>(`/learning_sessions${collection ? `?collection=${encodeURIComponent(collection)}` : ""}`, { method: "POST" }).then((r) => r.data);
 
 export const completeSession = (id: number) => apiFetch<unknown>(`/learning_sessions/${id}/complete`, { method: "POST" });
 

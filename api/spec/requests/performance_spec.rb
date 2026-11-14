@@ -69,4 +69,11 @@ RSpec.describe "Query counts stay flat as data grows", type: :request do
     words.first(2).each(&log)
     flat?("/api/v1/history", headers: auth_headers(user), grow: -> { words.last(6).each(&log) })
   end
+
+  it "GET /path and /growth" do
+    create_list(:path_unit, 2)
+    grow = -> { create_list(:path_unit, 4) }
+    flat?("/api/v1/path", headers: auth_headers(user), grow: grow)
+    flat?("/api/v1/growth", headers: auth_headers(user), grow: -> { create_list(:path_unit, 2) })
+  end
 end

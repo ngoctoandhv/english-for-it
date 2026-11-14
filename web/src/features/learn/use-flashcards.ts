@@ -15,7 +15,7 @@ export type FlashcardState =
 export type Counts = Record<Rating, number>;
 const NO_COUNTS: Counts = { again: 0, hard: 0, good: 0, easy: 0 };
 
-export function useFlashcards() {
+export function useFlashcards(collection?: string) {
   const { t } = useI18n();
   const [state, setState] = useState<FlashcardState>({ phase: "loading" });
   // One request id per card shown. Re-using it on retry makes the submission idempotent on the server.
@@ -23,7 +23,7 @@ export function useFlashcards() {
 
   useEffect(() => {
     let cancelled = false;
-    startSession()
+    startSession(collection)
       .then((session) => {
         if (cancelled) return;
         if (!session) return setState({ phase: "caught_up" });
@@ -34,7 +34,7 @@ export function useFlashcards() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [collection]);
 
   const reveal = useCallback(() => {
     setState((s) => (s.phase === "card" && !s.revealed ? { ...s, revealed: true } : s));

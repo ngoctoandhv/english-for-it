@@ -18,6 +18,11 @@ Rails.application.routes.draw do
       delete "favorites/:type/:id", to: "favorites#destroy"
 
       get "dashboard", to: "dashboard#show"
+      get "growth", to: "growth#show"
+      get "path", to: "path#index"
+      get "path/units/:id", to: "path#show"
+      get "path/units/:id/quiz", to: "path#quiz"
+      post "path/units/:id/quiz/answers", to: "path#answers"
       get "progress", to: "progress#show"
       get "history", to: "progress#history"
       get "quizzes/quick", to: "quizzes#quick"
