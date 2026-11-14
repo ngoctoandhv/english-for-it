@@ -26,7 +26,7 @@ module Api
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets tasks])
+    config.autoload_lib(ignore: %w[assets tasks rack_middleware])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -43,6 +43,9 @@ module Api
 
     # SQL schema dump: keeps the review_logs immutability trigger.
     config.active_record.schema_format = :sql
+
+    # Audio only; no image variants are used.
+    config.active_storage.variant_processor = :disabled
 
     # Store timestamps in UTC; the API returns ISO 8601 and the client formats in the user's zone.
     config.time_zone = "UTC"

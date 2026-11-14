@@ -64,4 +64,9 @@ Rails.application.configure do
 
   # File storage (audio). Set STORAGE_SERVICE=s3 for S3-compatible storage.
   config.active_storage.service = ENV.fetch("STORAGE_SERVICE", "local").to_sym
+
+  # Only answer to the configured hostnames (comma separated ALLOWED_HOSTS); /up stays open for health checks.
+  allowed = ENV.fetch("ALLOWED_HOSTS", "").split(",").map(&:strip).reject(&:empty?)
+  config.hosts = allowed
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
