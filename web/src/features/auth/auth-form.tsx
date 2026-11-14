@@ -64,6 +64,9 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             hint={isLogin ? undefined : t("auth.passwordHint")}
             error={fields.password}
           />
+          {isLogin && (
+            <Link href="/forgot-password" className="block text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">{t("acct.forgotLink")}</Link>
+          )}
           {error && (
             <p role="alert" className="text-sm text-destructive">
               {error}
@@ -84,7 +87,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   );
 }
 
-function Field({ name, label, type = "text", autoComplete, hint, error }: {
+export function Field({ name, label, type = "text", autoComplete, hint, error }: {
   name: string; label: string; type?: string; autoComplete?: string; hint?: string; error?: string;
 }) {
   return (

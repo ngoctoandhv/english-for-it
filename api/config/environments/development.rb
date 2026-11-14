@@ -58,4 +58,8 @@ Rails.application.configure do
 
   # File storage (audio). Set STORAGE_SERVICE=s3 for S3-compatible storage.
   config.active_storage.service = ENV.fetch("STORAGE_SERVICE", "local").to_sym
+
+  # Emails are written to tmp/mails instead of being sent.
+  config.action_mailer.delivery_method = :file
+  config.action_mailer.file_settings = { location: Rails.root.join("tmp/mails") }
 end

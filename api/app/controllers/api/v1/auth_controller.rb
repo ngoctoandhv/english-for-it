@@ -1,9 +1,12 @@
 module Api
   module V1
     class AuthController < BaseController
+      include MailDelivery
+
       def register
         user = User.new(params.expect(user: [ :email, :password, :name, :time_zone ]).to_h.compact_blank)
         user.save!
+        deliver_verification(user)
         render_tokens(user, Auth::IssueTokens.call(user, user_agent: request.user_agent), status: :created)
       end
 

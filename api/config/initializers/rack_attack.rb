@@ -15,3 +15,8 @@ Rack::Attack.throttled_responder = lambda do |_req|
   body = { error: { code: "rate_limited", message: "Too many attempts, try again later", details: nil } }
   [ 429, { "Content-Type" => "application/json" }, [ body.to_json ] ]
 end
+
+# Email-sending endpoints get a tighter limit so they cannot be used to spam an inbox.
+Rack::Attack.throttle("mail/ip", limit: (Rails.env.test? ? 10 : ENV.fetch("MAIL_THROTTLE_LIMIT", 5).to_i), period: 10.minutes.to_i) do |req|
+  req.ip if req.post? && req.path.match?(%r{\A/api/v1/(auth/password/forgot|me/email/resend)\z})
+end

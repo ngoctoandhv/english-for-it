@@ -21,7 +21,7 @@ RSpec.describe "Security", type: :request do
 
   describe "every learner route" do
     it "requires authentication" do
-      open = %w[/api/v1/health /api/v1/auth/register /api/v1/auth/login /api/v1/auth/refresh /api/v1/auth/logout]
+      open = %w[/api/v1/health /api/v1/auth/register /api/v1/auth/login /api/v1/auth/refresh /api/v1/auth/logout /api/v1/auth/password/forgot /api/v1/auth/password/reset /api/v1/auth/email/verify]
       Rails.application.routes.routes.each do |route|
         spec = route.path.spec.to_s.sub("(.:format)", "")
         next unless spec.start_with?("/api/v1/") && !spec.start_with?("/api/v1/admin") && !open.include?(spec)

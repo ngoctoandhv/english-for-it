@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       post "auth/login", to: "auth#login"
       post "auth/refresh", to: "auth#refresh"
       delete "auth/logout", to: "auth#logout"
+      post "auth/password/forgot", to: "passwords#forgot"
+      post "auth/password/reset", to: "passwords#reset"
+      post "auth/email/verify", to: "email_verifications#verify"
 
       resources :categories, only: :index
       resources :words, only: %i[index show]
@@ -68,8 +71,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :me, only: %i[show update], controller: "me" do
+      resource :me, only: %i[show update destroy], controller: "me" do
         post :onboarding
+        patch :password
+        get :export
+        post "email/resend", action: :resend_verification
       end
     end
   end

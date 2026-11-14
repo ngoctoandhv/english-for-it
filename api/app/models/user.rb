@@ -4,6 +4,9 @@ class User < ApplicationRecord
   GOALS = [ 5, 10, 15 ].freeze
 
   has_secure_password
+  # Single use: the token embeds a fragment of the current password hash, so it stops working once the password changes.
+  generates_token_for(:password_reset, expires_in: 30.minutes) { password_salt }
+  generates_token_for(:email_verification, expires_in: 3.days) { email }
   has_many :refresh_tokens, dependent: :destroy
   has_many :user_favorites, dependent: :destroy
   has_many :user_word_progresses, dependent: :destroy
@@ -12,9 +15,11 @@ class User < ApplicationRecord
   has_many :scenario_progresses, dependent: :destroy
   has_many :unit_completions, dependent: :destroy
   has_many :unit_quiz_results, dependent: :destroy
-  has_many :review_logs, dependent: :restrict_with_error
+  has_many :review_logs, dependent: :restrict_with_error # erased only through Accounts::Erase
 
   normalizes :email, with: ->(e) { e.strip.downcase }
+  before_update { self.email_verified_at = nil if email_changed? }
+
   normalizes :name, with: ->(n) { n.strip }
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP },
@@ -28,6 +33,7 @@ class User < ApplicationRecord
 
   def admin? = role == "admin"
   def onboarded? = onboarded_at.present?
+  def email_verified? = email_verified_at.present?
 
   # Current calendar date for this user, used for "today" sessions and streak-free stats.
   def local_today(now = Time.current)

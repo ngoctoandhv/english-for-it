@@ -7,6 +7,7 @@ export type User = {
   daily_goal_minutes: 5 | 10 | 15;
   time_zone: string;
   onboarded: boolean;
+  email_verified: boolean;
   created_at: string;
 };
 
