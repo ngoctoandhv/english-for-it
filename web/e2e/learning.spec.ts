@@ -402,3 +402,29 @@ test("a learner reports a mistake and the admin sees metrics and the report", as
   await expect(admin.getByRole("link", { name: "New" })).toHaveCount(0);
   await ctx.close();
 });
+
+test("public pages: landing try-it, glossary, privacy and terms work signed out and in Vietnamese", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("try-card")).toBeVisible();
+  await page.getByRole("button", { name: "Show meaning" }).click();
+  await page.getByRole("button", { name: "Next word" }).click();
+  await expect(page.getByText("Word 2 of 5")).toBeVisible();
+
+  await page.goto("/glossary");
+  await expect(page.getByRole("heading", { name: "Glossary" })).toBeVisible();
+  await expect(page.locator("dt").first()).toBeVisible();
+
+  await page.goto("/privacy");
+  await expect(page.getByRole("heading", { name: "Privacy policy" })).toBeVisible();
+  await expect(page.getByText("No cookies")).toBeVisible();
+  await page.getByRole("button", { name: "vi", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Chính sách quyền riêng tư" })).toBeVisible();
+
+  await page.goto("/terms");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+  await page.goto("/robots.txt");
+  await expect(page.locator("body")).toContainText("Sitemap:");
+  await page.goto("/sitemap.xml");
+  await expect(page.locator("body")).toContainText("/glossary");
+});

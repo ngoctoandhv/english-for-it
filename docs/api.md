@@ -119,3 +119,6 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 - `POST /reports` `{ report: { type: word|listening|scenario|phrase, id, message } }` (user): "report a mistake". Message up to 500 characters, 20 per user per day.
 - Admin: `GET /admin/metrics` (users, active today/7d/30d, day-1 and day-7 return of recent signups, signup funnel, 7-day learning counts, open reports); `GET/PATCH/DELETE /admin/reports` (triage: open, resolved, dismissed).
 - No third-party analytics: numbers come from our own `events` and `review_logs` tables, so no learner data leaves the database.
+
+## Public content (no sign-in)
+`GET /api/v1/public/sample` (5 random published words) and `GET /api/v1/public/words` (up to 500, cached for 1 hour). Fields: id, term, ipa, part_of_speech, meaning_vi, definition_en, first example. Drafts are never returned. Used by the landing page "Try five words", the `/glossary` page (rendered on the server for search engines) and nothing else.

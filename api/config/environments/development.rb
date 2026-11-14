@@ -62,4 +62,7 @@ Rails.application.configure do
   # Emails are written to tmp/mails instead of being sent.
   config.action_mailer.delivery_method = :file
   config.action_mailer.file_settings = { location: Rails.root.join("tmp/mails") }
+
+  # The web container calls the API as http://api:3000 (server-side rendering of the glossary).
+  config.hosts << "api"
 end

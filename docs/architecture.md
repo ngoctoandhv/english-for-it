@@ -47,3 +47,6 @@ Scenario lines the learner plays ("you" role) show a **Say it out loud** panel (
 `web/src/lib/speaking/compare.ts` aligns the transcript with the target line (word-level LCS, contractions expanded) and returns a match score plus
 missed and extra words. Nothing is uploaded to our server; audio stays in the browser. Needs a secure context (https or localhost). The score is a
 guide to how clearly a speech engine understood the learner, not a pronunciation grade.
+
+## Public pages and SEO
+`/` (landing with a five-word demo), `/glossary`, `/privacy`, `/terms` are readable signed out. `robots.txt`, `sitemap.xml` and a generated social image come from Next metadata routes; set `NEXT_PUBLIC_SITE_URL`. The glossary renders on the server using `API_INTERNAL_URL` (set by compose to `http://api:3000`; in development Rails allows that host). Legal text lives in `web/src/lib/legal/content.ts` (English and Vietnamese) and must be reviewed by a lawyer before a public launch.
