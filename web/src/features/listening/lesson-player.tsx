@@ -67,7 +67,7 @@ export function LessonPlayer() {
       {lesson && (
         <div className="mt-4 max-w-2xl space-y-8">
           <header className="space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight">{lesson.title}</h1>
+            <h1 className="text-4xl leading-tight">{lesson.title}</h1>
             <p className="text-muted-foreground">{lesson.description}</p>
           </header>
 
@@ -124,7 +124,7 @@ export function LessonPlayer() {
               </Button>
             ) : (
               <div className="flex items-center gap-4">
-                <p role="status" data-testid="listening-score" className="text-xl font-semibold">{result.score} / {result.total}</p>
+                <p role="status" data-testid="listening-score" className="text-xl font-medium">{result.score} / {result.total}</p>
                 <Button variant="outline" onClick={retry}>Try again</Button>
               </div>
             )}

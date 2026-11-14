@@ -1,9 +1,12 @@
 "use client";
 
+import { Volume2 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
+import { playWord } from "@/features/library/speak";
 import { errorMessage } from "@/lib/api/errors";
 import { getWord, type WordDetail } from "@/lib/api/vocabulary";
 import { FavoriteButton } from "./favorite-button";
@@ -28,7 +31,7 @@ export function WordPage() {
         <article className="mt-4 max-w-2xl space-y-6">
           <header>
             <div className="flex items-center gap-1">
-              <h1 className="text-4xl font-semibold tracking-tight">{word.term}</h1>
+              <h1 className="text-6xl leading-none">{word.term}</h1>
               <PlayButton term={word.term} audioUrl={word.audio_url} />
               <FavoriteButton wordId={word.id} initial={word.favorited} />
             </div>
@@ -43,12 +46,17 @@ export function WordPage() {
           </section>
           {word.examples.length > 0 && (
             <section>
-              <h2 className="mb-2 text-sm font-medium">Examples</h2>
+              <h2 className="mb-3 text-2xl">Examples</h2>
               <ul className="space-y-3">
                 {word.examples.map((e) => (
-                  <li key={e.id}>
-                    <p>{e.sentence_en}</p>
-                    <p className="text-sm text-muted-foreground">{e.translation_vi}</p>
+                  <li key={e.id} className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <p>{e.sentence_en}</p>
+                      <p className="text-sm text-muted-foreground">{e.translation_vi}</p>
+                    </div>
+                    <Button variant="ghost" size="icon-sm" aria-label="Play example sentence" onClick={() => playWord(e.sentence_en, e.audio_url)}>
+                      <Volume2 aria-hidden />
+                    </Button>
                   </li>
                 ))}
               </ul>
@@ -56,10 +64,10 @@ export function WordPage() {
           )}
           {word.collocations.length > 0 && (
             <section>
-              <h2 className="mb-2 text-sm font-medium">Collocations</h2>
+              <h2 className="mb-3 text-2xl">Collocations</h2>
               <ul className="flex flex-wrap gap-2">
                 {word.collocations.map((c) => (
-                  <li key={c.id} className="rounded-md border px-2 py-1 text-sm">
+                  <li key={c.id} className="rounded-lg border px-3 py-1.5 text-sm">
                     {c.phrase}
                   </li>
                 ))}

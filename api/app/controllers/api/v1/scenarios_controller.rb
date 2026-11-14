@@ -32,7 +32,7 @@ module Api
 
       private
 
-      def find_scenario = ItScenario.published.includes(:scenario_dialogues).find_by!(slug: params[:id])
+      def find_scenario = ItScenario.published.includes(scenario_dialogues: { audio_attachment: :blob }).find_by!(slug: params[:id])
     end
   end
 end

@@ -68,6 +68,16 @@ services:
     depends_on:
       - api
 
+  # Voice files (bin/audio). Kokoro runs on the CPU. Not started by `docker compose up`.
+  tts:
+    build: ./tools/tts
+    profiles: ["tools"]
+    cpus: ${TTS_CPUS:-4}
+    volumes:
+      - ./tools/tts:/app
+      - ./api/tmp/audio:/out
+      - ./api/tmp:/manifest:ro
+
   # End-to-end tests (bin/e2e). Needs the dev stack running; not started by `docker compose up`.
   e2e:
     image: mcr.microsoft.com/playwright:v1.65.1-noble

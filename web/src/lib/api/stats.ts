@@ -26,15 +26,19 @@ export const getDashboard = () => apiFetch<{ data: Dashboard }>("/dashboard").th
 export const getProgress = () => apiFetch<{ data: ProgressSummary }>("/progress").then((r) => r.data);
 export const getHistory = (page: number) => apiFetch<Paginated<HistoryItem>>(`/history?page=${page}&per_page=20`);
 
-export type QuizQuestion = {
-  word_id: number;
-  term: string;
-  ipa: string | null;
-  part_of_speech: string;
-  options: { word_id: number; meaning_vi: string }[];
+export type QuizMode = "choice" | "listen" | "type";
+export type QuizQuestion =
+  | { mode: "choice"; word_id: number; term: string; ipa: string | null; part_of_speech: string; options: { word_id: number; meaning_vi: string }[] }
+  | { mode: "listen"; word_id: number; audio_url: string | null; speak_text: string | null; options: { word_id: number; term: string }[] }
+  | { mode: "type"; word_id: number; definition_en: string; meaning_vi: string; part_of_speech: string; length: number; first_letter: string };
+export type QuizAnswer = { word_id: number; choice_word_id?: number; text?: string };
+export type QuizResult = {
+  score: number;
+  total: number;
+  results: { word_id: number; correct: boolean; close: boolean; correct_term: string; correct_meaning_vi: string }[];
 };
-export type QuizResult = { score: number; total: number; results: { word_id: number; correct: boolean; correct_meaning_vi: string }[] };
 
-export const getQuickQuiz = (count = 5) => apiFetch<{ data: { questions: QuizQuestion[] } }>(`/quizzes/quick?count=${count}`).then((r) => r.data.questions);
-export const answerQuiz = (answers: { word_id: number; choice_word_id: number }[]) =>
+export const getQuickQuiz = (mode: QuizMode, count = 5) =>
+  apiFetch<{ data: { questions: QuizQuestion[] } }>(`/quizzes/quick?mode=${mode}&count=${count}`).then((r) => r.data.questions);
+export const answerQuiz = (answers: QuizAnswer[]) =>
   apiFetch<{ data: QuizResult }>("/quizzes/quick/answers", { method: "POST", body: { answers } }).then((r) => r.data);

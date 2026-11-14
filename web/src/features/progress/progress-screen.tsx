@@ -26,24 +26,26 @@ export function ProgressScreen() {
 
   return (
     <AppShell>
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Progress</h1>
+      <h1 className="mb-6 text-4xl leading-tight">Progress</h1>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {summary && (
-        <div className="space-y-10">
-          <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            <Stat label="Words started" value={summary.words.started} />
-            <Stat label="Learning" value={summary.words.learning} />
-            <Stat label="Getting familiar" value={summary.words.young} />
-            <Stat label="Well known" value={summary.words.mature} />
-          </dl>
-          <p className="text-sm text-muted-foreground">
-            {summary.reviews.total} reviews{summary.reviews.accuracy !== null && ` · ${summary.reviews.accuracy}% remembered`}
-          </p>
+        <div className="space-y-12">
+          <section aria-labelledby="words" className="max-w-xl">
+            <h2 id="words" className="mb-3 text-2xl">Your words</h2>
+            <dl className="divide-y border-y">
+              <Stat label="Started" value={summary.words.started} />
+              <Stat label="Learning" value={summary.words.learning} />
+              <Stat label="Getting familiar" value={summary.words.young} />
+              <Stat label="Well known" value={summary.words.mature} />
+              <Stat label="Reviews" value={summary.reviews.total} />
+              {summary.reviews.accuracy !== null && <Stat label="Remembered" value={`${summary.reviews.accuracy}%`} />}
+            </dl>
+          </section>
           <section aria-label="Reviews in the last 14 days">
-            <h2 className="mb-3 text-sm font-medium">Last 14 days</h2>
-            <div className="flex h-24 items-end gap-1" role="img" aria-label={`Reviews per day: ${summary.by_day.map((d) => d.reviews).join(", ")}`}>
+            <h2 className="mb-3 text-2xl">Last 14 days</h2>
+            <div className="flex h-24 max-w-xl items-end gap-1" role="img" aria-label={`Reviews per day: ${summary.by_day.map((d) => d.reviews).join(", ")}`}>
               {summary.by_day.map((d) => (
-                <div key={d.date} title={`${d.date}: ${d.reviews}`} className="flex-1 rounded-sm bg-primary/70" style={{ height: `${Math.max(4, (d.reviews / max) * 100)}%`, opacity: d.reviews ? 1 : 0.2 }} />
+                <div key={d.date} title={`${d.date}: ${d.reviews}`} className="flex-1 bg-primary" style={{ height: `${Math.max(4, (d.reviews / max) * 100)}%`, opacity: d.reviews ? 1 : 0.2 }} />
               ))}
             </div>
           </section>
@@ -51,11 +53,11 @@ export function ProgressScreen() {
       )}
 
       <section className="mt-10">
-        <h2 className="mb-3 text-sm font-medium">History</h2>
+        <h2 className="mb-3 text-2xl">History</h2>
         {history.length === 0 ? (
           <p className="text-muted-foreground">No reviews yet.</p>
         ) : (
-          <ul className="divide-y rounded-lg border">
+          <ul className="divide-y border-y">
             {history.map((h) => (
               <li key={h.id} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
                 <span><span className="font-medium">{h.word.term}</span> <span className="text-muted-foreground">{h.word.meaning_vi}</span></span>
@@ -78,11 +80,11 @@ export function ProgressScreen() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function Stat({ label, value }: { label: string; value: number | string }) {
   return (
-    <div>
-      <dd className="text-2xl font-semibold tabular-nums">{value}</dd>
-      <dt className="text-sm text-muted-foreground">{label}</dt>
+    <div className="flex items-baseline justify-between py-3">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="tnum font-medium">{value}</dd>
     </div>
   );
 }

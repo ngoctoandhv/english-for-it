@@ -41,7 +41,7 @@ export function AdminList() {
   return (
     <AppShell admin>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">{config.label}</h1>
+        <h1 className="text-4xl leading-tight">{config.label}</h1>
         <Link href={`/admin/${config.key}/new`} className={buttonVariants()}>
           New
         </Link>

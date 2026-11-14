@@ -7,7 +7,7 @@ module Api
         def model = VocabularyWord
 
         def index_scope
-          scope = VocabularyWord.includes(:vocabulary_category, :vocabulary_examples, :vocabulary_collocations, audio_attachment: :blob).order(:term)
+          scope = VocabularyWord.includes(:vocabulary_category, :vocabulary_collocations, vocabulary_examples: { audio_attachment: :blob }, audio_attachment: :blob).order(:term)
           scope = scope.where(status: params[:status]) if params[:status].present?
           scope.search(params[:q])
         end

@@ -5,7 +5,7 @@ module Api
         private
 
         def model = ItScenario
-        def index_scope = ItScenario.ordered.includes(:scenario_dialogues)
+        def index_scope = ItScenario.ordered.includes(scenario_dialogues: { audio_attachment: :blob })
 
         def permitted
           params.expect(scenario: [

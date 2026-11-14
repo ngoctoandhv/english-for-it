@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { Brand } from "@/components/layout/brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,14 +38,15 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">{isLogin ? "Welcome back" : "Create your account"}</h1>
-        <p className="text-sm text-muted-foreground">
-          {isLogin ? "Pick up where you left off. No streaks to lose." : "5–10 minutes a day is enough."}
+    <main className="mx-auto flex min-h-screen w-full max-w-sm flex-col justify-center gap-10 px-6 py-12">
+      <Brand />
+      <div className="space-y-2">
+        <h1 className="text-4xl leading-tight">{isLogin ? "Sign in" : "Create account"}</h1>
+        <p className="text-muted-foreground">
+          {isLogin ? "Pick up where you left off. Missed days never cost you progress." : "Five to ten minutes a day is enough."}
         </p>
       </div>
-      <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      <form onSubmit={onSubmit} className="space-y-5" noValidate>
         {!isLogin && <Field name="name" label="Name" autoComplete="name" error={fields.name} />}
         <Field name="email" label="Email" type="email" autoComplete="email" error={fields.email} />
         <Field
@@ -66,7 +68,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       </form>
       <p className="text-sm text-muted-foreground">
         {isLogin ? "New here? " : "Already have an account? "}
-        <Link className="underline underline-offset-4" href={isLogin ? "/register" : "/login"}>
+        <Link className="text-primary underline underline-offset-4" href={isLogin ? "/register" : "/login"}>
           {isLogin ? "Create an account" : "Sign in"}
         </Link>
       </p>
@@ -79,9 +81,9 @@ function Field({ name, label, type = "text", autoComplete, hint, error }: {
 }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name} className="text-sm font-medium">{label}</Label>
       <Input id={name} name={name} type={type} autoComplete={autoComplete} required aria-invalid={!!error} aria-describedby={`${name}-msg`} />
-      <p id={`${name}-msg`} className={error ? "text-sm text-destructive" : "text-xs text-muted-foreground"}>
+      <p id={`${name}-msg`} className={error ? "text-sm text-destructive" : "text-sm text-muted-foreground"}>
         {error ?? hint}
       </p>
     </div>

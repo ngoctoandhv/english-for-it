@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { Brand } from "@/components/layout/brand";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
 import { useRequireAuth } from "@/features/auth/use-require-auth";
@@ -10,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Today" },
-  { href: "/library", label: "Library" },
+  { href: "/library", label: "Vocabulary" },
   { href: "/listening", label: "Listening" },
   { href: "/scenarios", label: "Scenarios" },
   { href: "/progress", label: "Progress" },
@@ -22,36 +23,40 @@ export function AppShell({ children, admin = false }: { children: ReactNode; adm
   const pathname = usePathname();
   if (!ready) return null;
 
+  const link = (href: string, label: string, active: boolean) => (
+    <Link
+      key={href}
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "whitespace-nowrap rounded-lg px-3 py-2 text-[15px] text-muted-foreground hover:text-foreground",
+        active && "bg-accent font-medium text-accent-foreground hover:text-accent-foreground",
+      )}
+    >
+      {label}
+    </Link>
+  );
+
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b">
-        <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
-          <Link href="/" className="font-semibold tracking-tight">
-            English for IT
-          </Link>
-          <nav aria-label="Main" className="flex flex-1 gap-1 overflow-x-auto text-sm">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                aria-current={pathname === n.href ? "page" : undefined}
-                className={cn("rounded-md px-2.5 py-1.5 hover:bg-muted", pathname === n.href && "bg-muted font-medium")}
-              >
-                {n.label}
-              </Link>
-            ))}
-            {user?.role === "admin" && (
-              <Link href="/admin" className={cn("rounded-md px-2.5 py-1.5 hover:bg-muted", pathname.startsWith("/admin") && "bg-muted font-medium")}>
-                Admin
-              </Link>
-            )}
+      <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground">
+        Skip to content
+      </a>
+      <header className="sticky top-0 z-10 border-b bg-background">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 px-4 sm:h-16 sm:flex-nowrap sm:px-6">
+          <Brand className="flex h-14 shrink-0 items-center sm:h-auto" />
+          <nav aria-label="Main" className="order-last -mx-1 flex w-full gap-1 overflow-x-auto pb-2 sm:order-none sm:w-auto sm:flex-1 sm:pb-0">
+            {NAV.map((n) => link(n.href, n.label, n.href === "/" ? pathname === "/" : pathname.startsWith(n.href)))}
+            {user?.role === "admin" && link("/admin", "Admin", pathname.startsWith("/admin"))}
           </nav>
-          <Button variant="ghost" size="sm" onClick={() => logout()}>
+          <Button variant="ghost" size="sm" className="ml-auto sm:ml-0" onClick={() => logout()}>
             Sign out
           </Button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>
+      <main id="content" className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6">
+        {children}
+      </main>
     </div>
   );
 }

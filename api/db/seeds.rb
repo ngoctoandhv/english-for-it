@@ -18,10 +18,12 @@ data["words"].each do |w|
                         vocabulary_category: categories.fetch(w["cat"]))
   rec.status = status if rec.new_record?
   rec.save!
-  rec.vocabulary_examples.destroy_all
-  rec.vocabulary_examples.create!(sentence_en: w["ex"][0], translation_vi: w["ex"][1], position: 0)
-  rec.vocabulary_collocations.destroy_all
-  Array(w["col"]).each { |c| rec.vocabulary_collocations.create!(phrase: c) }
+  # Update in place (keeps ids, so attached audio survives re-seeding).
+  example = rec.vocabulary_examples.order(:position, :id).first || rec.vocabulary_examples.build
+  example.update!(sentence_en: w["ex"][0], translation_vi: w["ex"][1], position: 0)
+  rec.vocabulary_examples.where.not(id: example.id).destroy_all
+  rec.vocabulary_collocations.where.not(phrase: Array(w["col"])).destroy_all
+  Array(w["col"]).each { |c| rec.vocabulary_collocations.find_or_create_by!(phrase: c) }
   words[w["t"]] = rec
 end
 
@@ -43,10 +45,11 @@ listening["lessons"].each_with_index do |l, i|
                            transcript_vi: l["transcript_vi"].strip, position: i)
   lesson.status = status if lesson.new_record?
   lesson.save!
-  lesson.listening_questions.destroy_all
   l["questions"].each_with_index do |q, j|
-    lesson.listening_questions.create!(prompt: q["prompt"], choices: q["choices"], correct_index: q["correct"], position: j)
+    question = lesson.listening_questions.find_by(position: j) || lesson.listening_questions.build(position: j)
+    question.update!(prompt: q["prompt"], choices: q["choices"], correct_index: q["correct"])
   end
+  lesson.listening_questions.where("position >= ?", l["questions"].size).destroy_all
 end
 puts "Seeded #{ListeningLesson.count} listening lessons"
 
@@ -56,9 +59,10 @@ scenarios["scenarios"].each_with_index do |s, i|
   rec.assign_attributes(title: s["title"], level: s["level"], description: s["description"], situation: s["situation"], position: i)
   rec.status = status if rec.new_record?
   rec.save!
-  rec.scenario_dialogues.destroy_all
   s["lines"].each_with_index do |l, j|
-    rec.scenario_dialogues.create!(position: j, speaker: l["speaker"], role: l["role"], text_en: l["en"], text_vi: l["vi"], tip: l["tip"])
+    line = rec.scenario_dialogues.find_by(position: j) || rec.scenario_dialogues.build(position: j)
+    line.update!(speaker: l["speaker"], role: l["role"], text_en: l["en"], text_vi: l["vi"], tip: l["tip"])
   end
+  rec.scenario_dialogues.where("position >= ?", s["lines"].size).destroy_all
 end
 puts "Seeded #{ItScenario.count} scenarios"

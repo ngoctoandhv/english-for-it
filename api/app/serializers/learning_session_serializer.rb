@@ -1,6 +1,6 @@
 class LearningSessionSerializer
   def self.call(session)
-    items = session.learning_session_items.includes(vocabulary_word: [ :vocabulary_category, :vocabulary_examples, :vocabulary_collocations, { audio_attachment: :blob } ]).to_a
+    items = session.learning_session_items.includes(vocabulary_word: [ :vocabulary_category, :vocabulary_collocations, { vocabulary_examples: { audio_attachment: :blob } }, { audio_attachment: :blob } ]).to_a
     {
       id: session.id, status: session.status, session_date: session.session_date, completed_at: session.completed_at,
       total_items: items.size, completed_items: items.count(&:completed?),

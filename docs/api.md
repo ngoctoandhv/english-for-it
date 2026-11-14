@@ -51,8 +51,8 @@ Deleting a category that still has words returns 409.
 | GET | /api/v1/dashboard | `due_count, new_available, goal_cards, backlog, can_start, open_session, reviewed_today, days_studied_this_week, words_started`. No streak or "missed days" fields by design. |
 | GET | /api/v1/progress | word strength buckets (learning / young / mature ≥ 21 days), accuracy, last 14 days by local date |
 | GET | /api/v1/history | paginated review history of the current user |
-| GET | /api/v1/quizzes/quick | `?count=1..10` (default 5); multiple-choice, 4 options, no answer key in the payload |
-| POST | /api/v1/quizzes/quick/answers | `{answers:[{word_id, choice_word_id}]}` (max 20) graded on the server; does not change scheduling |
+| GET | /api/v1/quizzes/quick | `?mode=choice\|listen\|type&count=1..10` (default `choice`, 5). `choice`: meaning among 4 options. `listen`: audio (or `speak_text` when no recording exists) and 4 spelled options. `type`: English definition, word length and first letter. No answer key in any payload. |
+| POST | /api/v1/quizzes/quick/answers | `{answers:[{word_id, choice_word_id}]}` or `{answers:[{word_id, text}]}` (max 20), graded on the server. Typed answers ignore case, spaces and hyphens, accept plural/singular, and report a one-letter slip as `close`. Does not change scheduling. |
 
 ## Listening (M5)
 | Method | Path | Notes |

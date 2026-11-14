@@ -119,3 +119,44 @@ RSpec.describe "Dashboard, progress and quiz", type: :request do
     end
   end
 end
+
+RSpec.describe "Quick quiz modes", type: :request do
+  let(:user) { create(:user, :onboarded) }
+  let(:headers) { auth_headers(user) }
+  let!(:words) { create_list(:vocabulary_word, 6) }
+
+  it "builds listening questions with four spelled options and no term in the payload when a recording exists" do
+    word = words.first
+    word.audio.attach(io: StringIO.new("RIFFfake"), filename: "a.mp3", content_type: "audio/mpeg")
+    get "/api/v1/quizzes/quick", params: { mode: "listen", count: 6 }, headers: headers
+    questions = json["data"]["questions"]
+    expect(questions.map { |q| q["mode"] }.uniq).to eq(%w[listen])
+    with_audio = questions.find { |q| q["word_id"] == word.id }
+    expect(with_audio["audio_url"]).to be_present
+    expect(with_audio["speak_text"]).to be_nil
+    expect(with_audio["options"].size).to eq(4)
+  end
+
+  it "builds typing questions from the definition without revealing the word" do
+    get "/api/v1/quizzes/quick", params: { mode: "type", count: 3 }, headers: headers
+    q = json["data"]["questions"].first
+    expect(q).to include("mode" => "type", "definition_en" => "A simple definition.")
+    expect(q.keys).not_to include("term")
+    expect(q["length"]).to be > 0
+  end
+
+  it "grades typed answers tolerantly and flags near misses" do
+    w = create(:vocabulary_word, term: "pull request")
+    answer = ->(text) { post "/api/v1/quizzes/quick/answers", params: { answers: [ { word_id: w.id, text: text } ] }, headers: headers, as: :json; json["data"]["results"].first }
+    expect(answer.call("Pull-Request")).to include("correct" => true)
+    expect(answer.call(" pull requests ")).to include("correct" => true)
+    expect(answer.call("pull requst")).to include("correct" => false, "close" => true, "correct_term" => "pull request")
+    expect(answer.call("merge")).to include("correct" => false, "close" => false)
+    expect(answer.call("")).to include("correct" => false)
+  end
+
+  it "falls back to choice mode for unknown modes" do
+    get "/api/v1/quizzes/quick", params: { mode: "hack" }, headers: headers
+    expect(json["data"]["questions"].first["mode"]).to eq("choice")
+  end
+end

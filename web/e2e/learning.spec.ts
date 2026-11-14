@@ -11,7 +11,7 @@ test("a new learner registers, onboards and completes a flashcard session with t
 
   await expect(page.getByRole("heading", { name: "Let's set you up" })).toBeVisible();
   await page.getByLabel(/^5 minutes/).check({ force: true });
-  await page.getByRole("button", { name: "Start learning" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
 
   await expect(page.getByRole("link", { name: "Start learning" })).toBeVisible();
   await page.getByRole("link", { name: "Start learning" }).click();
@@ -27,7 +27,7 @@ test("a new learner registers, onboards and completes a flashcard session with t
   await expect(page.getByRole("heading", { name: "Session complete" })).toBeVisible();
 
   await page.getByRole("link", { name: "Back to today" }).click();
-  await expect(page.getByText("You're all caught up")).toBeVisible();
+  await expect(page.getByText("You are all caught up")).toBeVisible();
   await expect(page.getByRole("link", { name: "Start learning" })).toHaveCount(0);
 });
 
@@ -37,7 +37,7 @@ test("learners cannot open the admin area, admins can create a word", async ({ p
   await page.getByLabel("Email").fill(`plain-${stamp}@example.test`);
   await page.getByLabel("Password").fill("e2e-password-123");
   await page.getByRole("button", { name: "Create account" }).click();
-  await page.getByRole("button", { name: "Start learning" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
   await page.goto("/admin");
   await expect(page).not.toHaveURL(/\/admin/);
 
@@ -63,10 +63,11 @@ test("quick quiz gives feedback and a score, and progress shows history", async 
   await page.getByLabel("Email").fill(`quiz-${stamp}@example.test`);
   await page.getByLabel("Password").fill("e2e-password-123");
   await page.getByRole("button", { name: "Create account" }).click();
-  await page.getByRole("button", { name: "Start learning" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
 
   await page.goto("/quiz");
+  await page.getByRole("button", { name: /^Choose/ }).click();
   for (let i = 0; i < 5; i++) {
     await expect(page.getByTestId("quiz-term")).toBeVisible();
     await page.getByRole("listitem").getByRole("button").first().click();
@@ -74,6 +75,13 @@ test("quick quiz gives feedback and a score, and progress shows history", async 
     await page.getByRole("button", { name: i === 4 ? "See result" : "Next", exact: true }).click();
   }
   await expect(page.getByTestId("quiz-score")).toContainText("/ 5");
+
+  await page.getByRole("button", { name: "Change mode" }).click();
+  await page.getByRole("button", { name: /^Type/ }).click();
+  await expect(page.getByTestId("quiz-term")).toBeVisible();
+  await page.getByLabel("Your answer").fill("zzzz");
+  await page.getByRole("button", { name: "Check answer" }).click();
+  await expect(page.getByRole("status")).toContainText("Not quite");
 
   await page.goto("/progress");
   await expect(page.getByRole("heading", { name: "Progress" })).toBeVisible();
@@ -86,10 +94,10 @@ test("listening lesson: answer questions, see the score and the transcript", asy
   await page.getByLabel("Email").fill(`listen-${stamp}@example.test`);
   await page.getByLabel("Password").fill("e2e-password-123");
   await page.getByRole("button", { name: "Create account" }).click();
-  await page.getByRole("button", { name: "Start learning" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
 
-  await page.getByRole("link", { name: "Listening" }).click();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Listening" }).click();
   await page.getByRole("link", { name: /Daily Standup/ }).click();
   await expect(page.getByText("Show transcript")).toBeVisible();
   await expect(page.getByText("I fixed the login bug")).toHaveCount(0);
@@ -105,10 +113,10 @@ test("scripted scenario: step through, reveal the learner's line, complete", asy
   await page.getByLabel("Email").fill(`talk-${stamp}@example.test`);
   await page.getByLabel("Password").fill("e2e-password-123");
   await page.getByRole("button", { name: "Create account" }).click();
-  await page.getByRole("button", { name: "Start learning" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
   await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
 
-  await page.getByRole("link", { name: "Scenarios" }).click();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Scenarios" }).click();
   await page.getByRole("link", { name: /Code Review/ }).click();
   await expect(page.getByText("could you review my pull request")).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();

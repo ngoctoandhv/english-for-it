@@ -14,7 +14,7 @@ import { errorMessage } from "@/lib/api/errors";
 import { buildPayload, toFormValues, type Values } from "./payload";
 import { findResource, type FieldDef } from "./resources";
 
-const selectClass = "h-8 w-full rounded-lg border border-input bg-transparent px-2 text-sm focus-visible:ring-3 focus-visible:ring-ring/50 outline-none";
+const selectClass = "h-11 w-full rounded-lg border border-input bg-card px-3 text-base focus-visible:ring-3 focus-visible:ring-ring/50 outline-none";
 type Setter = (name: string, value: unknown) => void;
 
 export function AdminForm() {
@@ -71,7 +71,7 @@ export function AdminForm() {
   return (
     <AppShell admin>
       <Link href={`/admin/${config.key}`} className="text-sm text-muted-foreground underline underline-offset-4">← {config.label}</Link>
-      <h1 className="mb-6 mt-2 text-2xl font-semibold tracking-tight">{isNew ? "New" : "Edit"} {config.label.toLowerCase()}</h1>
+      <h1 className="mb-6 mt-2 text-4xl leading-tight">{isNew ? "New" : "Edit"} {config.label.toLowerCase()}</h1>
       {values && (
         <form onSubmit={submit} className="max-w-2xl space-y-5" noValidate>
           {config.fields.map((f) => (

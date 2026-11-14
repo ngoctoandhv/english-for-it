@@ -16,11 +16,11 @@ export function ScenarioList() {
 
   return (
     <AppShell>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">Scenarios</h1>
+      <h1 className="mb-2 text-4xl leading-tight">Scenarios</h1>
       <p className="mb-6 text-muted-foreground">Practise real workplace conversations, step by step.</p>
       {error && <p role="alert" className="text-destructive">{error}</p>}
       {items?.length === 0 && <p className="text-muted-foreground">No scenarios yet.</p>}
-      <ul className="divide-y rounded-lg border">
+      <ul className="divide-y border-y">
         {items?.map((s) => (
           <li key={s.id}>
             <Link href={`/scenarios/${s.slug}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50 outline-none">

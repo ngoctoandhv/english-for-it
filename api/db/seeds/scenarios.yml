@@ -41,3 +41,78 @@ scenarios:
       - { speaker: You, role: you, en: "I found the root cause. The profile data is missing for new accounts.", vi: "Mình đã tìm ra nguyên nhân gốc. Dữ liệu hồ sơ bị thiếu với tài khoản mới.", tip: "Say what you found first, then the reason." }
       - { speaker: Teammate, role: other, en: "Is there a workaround?", vi: "Có giải pháp tạm thời không?" }
       - { speaker: You, role: you, en: "Yes. Please fill in your profile first. I will deploy a fix today.", vi: "Có. Hãy điền hồ sơ trước. Hôm nay mình sẽ triển khai bản sửa.", tip: "A workaround is temporary; a fix solves the problem." }
+  - slug: incident-update
+    title: Incident Update
+    level: intermediate
+    description: "Tell your team and customers what is wrong, what you know and when you will update again."
+    situation: "The payment service has a problem. You are on call and your lead asks for a status update."
+    lines:
+      - { speaker: Lead, role: other, en: "What is the current status?", vi: "Tình hình hiện tại thế nào?" }
+      - { speaker: You, role: you, en: "We are investigating an issue with the payment service. Some customers cannot check out.", vi: "Chúng tôi đang điều tra sự cố ở dịch vụ thanh toán. Một số khách hàng không thể thanh toán.", tip: "Start with the impact: who is affected and what they cannot do." }
+      - { speaker: Lead, role: other, en: "Do we know the cause?", vi: "Chúng ta đã biết nguyên nhân chưa?" }
+      - { speaker: You, role: you, en: "Not yet. We think the database server ran out of storage, but we are still checking.", vi: "Chưa. Chúng tôi nghĩ máy chủ cơ sở dữ liệu hết dung lượng, nhưng vẫn đang kiểm tra.", tip: "Use 'we think' for something you are not sure about yet." }
+      - { speaker: Lead, role: other, en: "When will it be fixed?", vi: "Khi nào sửa xong?" }
+      - { speaker: You, role: you, en: "We expect to restore the service within thirty minutes. I will send another update at ten o'clock.", vi: "Chúng tôi dự kiến khôi phục dịch vụ trong vòng ba mươi phút. Tôi sẽ gửi cập nhật tiếp vào lúc mười giờ.", tip: "Always say when the next update will come." }
+      - { speaker: Lead, role: other, en: "Thanks. Please keep me informed.", vi: "Cảm ơn. Hãy tiếp tục báo cho tôi nhé." }
+  - slug: asking-for-clarification
+    title: Asking for Clarification
+    level: elementary
+    description: "Ask politely when a task or a question is not clear."
+    situation: "Your manager gives you a task in a meeting, but you are not sure about the details."
+    lines:
+      - { speaker: Manager, role: other, en: "Please finish the report soon.", vi: "Hãy hoàn thành báo cáo sớm nhé." }
+      - { speaker: You, role: you, en: "Sorry, could you clarify what you mean by soon?", vi: "Xin lỗi, bạn có thể nói rõ 'sớm' nghĩa là khi nào không?", tip: "'Could you clarify…?' is polite and clear." }
+      - { speaker: Manager, role: other, en: "I need it by Friday.", vi: "Tôi cần nó trước thứ Sáu." }
+      - { speaker: You, role: you, en: "Just to confirm, you need the report by Friday afternoon?", vi: "Để xác nhận lại, bạn cần báo cáo trước chiều thứ Sáu đúng không?", tip: "'Just to confirm…' checks that you understood correctly." }
+      - { speaker: Manager, role: other, en: "Yes, and please include the sales numbers.", vi: "Đúng, và hãy thêm số liệu bán hàng." }
+      - { speaker: You, role: you, en: "Sorry, could you repeat that? I missed the last part.", vi: "Xin lỗi, bạn nhắc lại được không? Tôi bỏ lỡ đoạn cuối.", tip: "It is fine to ask someone to repeat. It is better than guessing." }
+      - { speaker: Manager, role: other, en: "Please include the sales numbers.", vi: "Hãy thêm số liệu bán hàng." }
+  - slug: commenting-on-a-ticket
+    title: Commenting on a Ticket
+    level: elementary
+    description: "Ask for more details and explain what you will do, politely and clearly."
+    situation: "A product manager wrote a ticket for a bug. You need more information."
+    lines:
+      - { speaker: PM, role: other, en: "I created a ticket for the login bug. Can you take it?", vi: "Mình đã tạo ticket cho lỗi đăng nhập. Bạn nhận nhé?" }
+      - { speaker: You, role: you, en: "Sure. Could you please add the steps to reproduce the bug?", vi: "Được. Bạn có thể thêm các bước để tái hiện lỗi không?", tip: "Use 'Could you please…?' for requests." }
+      - { speaker: PM, role: other, en: "OK. I will also add a screenshot.", vi: "Được. Mình cũng sẽ thêm ảnh chụp màn hình." }
+      - { speaker: You, role: you, en: "Thanks. It would be helpful to know which browser you used.", vi: "Cảm ơn. Sẽ hữu ích nếu biết bạn dùng trình duyệt nào.", tip: "'It would be helpful to…' sounds softer than 'You must…'." }
+      - { speaker: PM, role: other, en: "I used Chrome on a laptop.", vi: "Mình dùng Chrome trên laptop." }
+      - { speaker: You, role: you, en: "Thank you. I will start working on it today and update the ticket tomorrow.", vi: "Cảm ơn. Hôm nay tôi sẽ bắt đầu làm và ngày mai sẽ cập nhật ticket.", tip: "Say what you will do and when." }
+  - slug: tell-me-about-yourself
+    title: Tell Me About Yourself
+    level: intermediate
+    description: "A simple three-part answer for the first question in a job interview."
+    situation: "You are in a job interview for a developer role."
+    lines:
+      - { speaker: Interviewer, role: other, en: "Can you tell me about yourself?", vi: "Bạn có thể giới thiệu về bản thân không?" }
+      - { speaker: You, role: you, en: "Of course. I'm a backend developer. I work mainly with Ruby on Rails and PostgreSQL.", vi: "Vâng. Tôi là lập trình viên backend. Tôi chủ yếu làm việc với Ruby on Rails và PostgreSQL.", tip: "Part 1, now: use the present simple for your current role." }
+      - { speaker: You, role: you, en: "I have four years of experience, and I have worked on both small and large projects.", vi: "Tôi có bốn năm kinh nghiệm và đã làm cả dự án nhỏ lẫn lớn.", tip: "Part 2, experience: use the present perfect, 'I have worked…'." }
+      - { speaker: Interviewer, role: other, en: "Why are you interested in this job?", vi: "Vì sao bạn quan tâm đến vị trí này?" }
+      - { speaker: You, role: you, en: "I want to work on a product that helps people learn, and I would like to grow as a team leader.", vi: "Tôi muốn làm việc trên một sản phẩm giúp mọi người học tập, và tôi muốn phát triển thành người dẫn dắt nhóm.", tip: "Part 3, future: use 'I want to' and 'I would like to'." }
+      - { speaker: Interviewer, role: other, en: "Thank you. That is helpful.", vi: "Cảm ơn bạn. Rất hữu ích." }
+  - slug: comparing-two-options
+    title: Comparing Two Options
+    level: intermediate
+    description: "Compare two solutions, give advantages and drawbacks, and make a suggestion."
+    situation: "Your team must choose between a managed cloud service and its own server."
+    lines:
+      - { speaker: Lead, role: other, en: "We need to decide how to host the new service. What are our options?", vi: "Chúng ta cần quyết định cách triển khai dịch vụ mới. Có những lựa chọn nào?" }
+      - { speaker: You, role: you, en: "We have two options. A managed service is easier to maintain, but it costs more.", vi: "Chúng ta có hai lựa chọn. Dịch vụ được quản lý dễ bảo trì hơn nhưng tốn kém hơn.", tip: "Comparatives: easier than, cheaper than, more expensive than. Use 'but' to show a trade-off." }
+      - { speaker: Lead, role: other, en: "And the second option?", vi: "Còn lựa chọn thứ hai?" }
+      - { speaker: You, role: you, en: "Running our own server is cheaper, but it needs more work from the team.", vi: "Tự chạy máy chủ thì rẻ hơn, nhưng cần nhóm bỏ nhiều công sức hơn.", tip: "Give one advantage and one drawback for each option." }
+      - { speaker: Lead, role: other, en: "Which one do you recommend?", vi: "Bạn đề xuất lựa chọn nào?" }
+      - { speaker: You, role: you, en: "I recommend the managed service, because we have a small team and reliability is important.", vi: "Tôi đề xuất dịch vụ được quản lý, vì nhóm chúng ta nhỏ và độ ổn định rất quan trọng.", tip: "'I recommend… because…' gives your choice and your reason." }
+  - slug: asking-it-support
+    title: Asking IT Support for Help
+    level: elementary
+    description: "Describe a problem, say what you tried and ask for what you need."
+    situation: "You cannot log in to the staging server. You write to the IT support desk."
+    lines:
+      - { speaker: IT Support, role: other, en: "Hi, how can I help you?", vi: "Chào bạn, mình có thể giúp gì?" }
+      - { speaker: You, role: you, en: "I can't log in to the staging server. I get a permission error.", vi: "Tôi không đăng nhập được vào máy chủ staging. Tôi nhận được lỗi về quyền truy cập.", tip: "Say what you want to do and what you see." }
+      - { speaker: IT Support, role: other, en: "Have you tried resetting your password?", vi: "Bạn đã thử đặt lại mật khẩu chưa?" }
+      - { speaker: You, role: you, en: "Yes, I have. It didn't help.", vi: "Rồi, tôi đã thử. Không có tác dụng.", tip: "'I have tried…' shows what you already did." }
+      - { speaker: IT Support, role: other, en: "I see. When did the problem start?", vi: "Mình hiểu. Vấn đề bắt đầu từ khi nào?" }
+      - { speaker: You, role: you, en: "It started this morning. Could you check my permissions, please?", vi: "Nó bắt đầu từ sáng nay. Bạn kiểm tra quyền truy cập của tôi giúp được không?", tip: "Make a clear request at the end." }
+      - { speaker: IT Support, role: other, en: "Sure. I will check and let you know in ten minutes.", vi: "Được. Mình sẽ kiểm tra và báo bạn trong mười phút." }
