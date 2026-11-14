@@ -12,6 +12,7 @@ export type User = {
   onboarded: boolean;
   email_verified: boolean;
   reminder_hour: number | null;
+  new_words_per_day: number | null;
   push_devices: number;
   focus_role: FocusRole | null;
   focus_goal: FocusGoal | null;

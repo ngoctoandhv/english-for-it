@@ -39,7 +39,7 @@ export function SettingsScreen() {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
     try {
-      const res = await updateMe({ name: String(d.get("name")), level: String(d.get("level")), daily_goal_minutes: Number(d.get("goal")), focus_role: String(d.get("role")) as (typeof ROLES)[number], focus_goal: String(d.get("focus")) as (typeof FOCUS)[number] });
+      const res = await updateMe({ name: String(d.get("name")), level: String(d.get("level")), daily_goal_minutes: Number(d.get("goal")), focus_role: String(d.get("role")) as (typeof ROLES)[number], focus_goal: String(d.get("focus")) as (typeof FOCUS)[number], new_words_per_day: d.get("newWords") ? Number(d.get("newWords")) : null });
       setUser(res.user);
       setProfileMsg({ text: t("settings.saved") });
     } catch (err) {
@@ -128,6 +128,14 @@ export function SettingsScreen() {
               <select id="goal" name="goal" defaultValue={user.daily_goal_minutes} className="h-11 w-full rounded-lg border bg-background px-3">
                 {GOALS.map((g) => <option key={g} value={g}>{t("onboarding.minutes", { count: g })}</option>)}
               </select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="newWords">{t("settings.newWords")}</Label>
+              <select id="newWords" name="newWords" defaultValue={user.new_words_per_day ?? ""} className="h-11 w-full rounded-lg border bg-background px-3">
+                <option value="">{t("settings.newWordsAuto")}</option>
+                {[5, 10, 15, 20, 30, 50].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+              <p className="text-sm text-muted-foreground">{t("settings.newWordsHint")}</p>
             </div>
             <Link href="/placement" className="block text-sm text-primary underline underline-offset-4">{t("settings.retake")}</Link>
             <Button type="submit">{t("settings.save")}</Button>

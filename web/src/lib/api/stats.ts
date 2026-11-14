@@ -22,6 +22,8 @@ export type Dashboard = {
   days_studied_this_week: number;
   vocabulary: VocabularyStrength;
   days_away: number | null;
+  new_words_per_day: number;
+  new_words_left: number;
   words_started: number;
   favorites_count: number;
 };

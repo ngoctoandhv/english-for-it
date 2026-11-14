@@ -9,7 +9,7 @@ module Api
       end
 
       def update
-        current_user.update!(params.expect(user: [ :name, :level, :daily_goal_minutes, :time_zone, :focus_role, :focus_goal, :reminder_hour ]))
+        current_user.update!(params.expect(user: [ :name, :level, :daily_goal_minutes, :time_zone, :focus_role, :focus_goal, :reminder_hour, :new_words_per_day ]))
         render json: { user: UserSerializer.call(current_user) }
       end
 

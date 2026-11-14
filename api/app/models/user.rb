@@ -40,6 +40,7 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :role, inclusion: { in: ROLES }
   validates :level, inclusion: { in: LEVELS }, allow_nil: true
+  validates :new_words_per_day, inclusion: { in: 1..100 }, allow_nil: true
   validates :reminder_hour, inclusion: { in: 0..23 }, allow_nil: true
   validates :focus_role, inclusion: { in: FOCUS_ROLES }, allow_nil: true
   validates :focus_goal, inclusion: { in: FOCUS_GOALS }, allow_nil: true

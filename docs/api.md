@@ -126,3 +126,9 @@ and leaves visible `[placeholders]` for anything not filled in. Output can be co
 ## Admin content tools
 - `POST /api/v1/admin/words/import` `{ csv, dry_run }`: bulk add or update words (max 500 rows, 1 MB). Returns `{ created, updated, errors: [{ row, message }], dry_run }`; a file with any error saves nothing.
 - `/api/v1/admin/units` (CRUD): path units. `steps` is an array of lines (`words:slug`, `listening:id-or-title`, `scenario:slug`, `quiz`) that replaces all steps on save; `audiences` lists roles and goals.
+
+## Learning more than the daily plan
+- `POST /learning_sessions?extra=N` (N = 5, 10, 20 or 30) starts a session of N new words only, outside the daily limit and even while reviews are waiting (the learner asked for it). Can be repeated without limit. Other values are ignored and the normal daily session is built.
+- New words in a session are taken one per topic in turn, so a session mixes IT and everyday English (collection-focused sessions keep the collection order).
+- `users.new_words_per_day` (1–100, or null for automatic = max(daily minutes / 2, 3)) sets how many new words the daily session brings. Settable with `PATCH /me`.
+- `GET /dashboard` adds `new_words_per_day` and `new_words_left` (published words the learner has not started).
