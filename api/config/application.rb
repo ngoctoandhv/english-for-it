@@ -41,6 +41,9 @@ module Api
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # SQL schema dump: keeps the review_logs immutability trigger.
+    config.active_record.schema_format = :sql
+
     # Store timestamps in UTC; the API returns ISO 8601 and the client formats in the user's zone.
     config.time_zone = "UTC"
     config.active_record.default_timezone = :utc

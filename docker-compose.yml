@@ -68,6 +68,20 @@ services:
     depends_on:
       - api
 
+  # End-to-end tests (bin/e2e). Needs the dev stack running; not started by `docker compose up`.
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.65.1-noble
+    profiles: ["tools"]
+    working_dir: /app
+    environment:
+      E2E_BASE_URL: http://localhost:3101
+      E2E_MAP_LOCALHOST_TO: host.docker.internal
+    volumes:
+      - ./web:/app
+      - web_node_modules:/app/node_modules
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 volumes:
   pgdata:
   bundle:

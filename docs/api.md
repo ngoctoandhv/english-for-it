@@ -35,3 +35,12 @@ Planned endpoints are listed in the Phase 1 plan; this file is updated every mil
 Words accept nested `vocabulary_examples_attributes` / `vocabulary_collocations_attributes` (`_destroy` to remove).
 Collections accept `word_ids` (ordered). `POST/DELETE /admin/words/:id/audio` (multipart field `audio`).
 Deleting a category that still has words returns 409.
+
+## Learning (M3)
+| Method | Path | Notes |
+|---|---|---|
+| POST | /api/v1/learning_sessions | returns the open session (200) or builds one (201); `{data:null, reason:"all_caught_up"}` when nothing is due. Items embed full word details. |
+| GET | /api/v1/learning_sessions/:id | own sessions only |
+| POST | /api/v1/learning_sessions/:id/complete | finish early; no penalty |
+| POST | /api/v1/reviews | `{review:{word_id, rating: again\|hard\|good\|easy, client_request_id, session_item_id?}}`; 201, or 200 with `duplicate:true` when the id was already processed |
+| GET | /api/v1/reviews/due | `{data:{due_count}}` |

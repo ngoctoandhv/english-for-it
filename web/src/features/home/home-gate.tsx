@@ -12,7 +12,12 @@ export function HomeGate() {
   if (status === "authenticated" && user?.onboarded) {
     return (
       <AppShell>
-        <p className="text-muted-foreground">Dashboard coming in M4.</p>
+        <div className="space-y-6">
+          <h1 className="text-3xl font-semibold tracking-tight">Ready when you are{user.name ? `, ${user.name}` : ""}</h1>
+          <Link href="/learn" className={buttonVariants({ size: "lg" })}>
+            Start learning
+          </Link>
+        </div>
       </AppShell>
     );
   }
