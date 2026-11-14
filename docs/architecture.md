@@ -40,3 +40,10 @@ Vitest (web): API client, keyboard mapping, admin payload building, components. 
   The admin screens are English only.
 - **Responsive:** mobile-first. Under 768px the app has a fixed bottom tab bar (safe-area aware) and the flashcard rating buttons are fixed to the bottom for thumb reach;
   from 768px up it has a top navigation. A Playwright test checks a 375px viewport for the tab bar and horizontal overflow.
+
+## Speaking practice
+Scenario lines the learner plays ("you" role) show a **Say it out loud** panel (`web/src/features/speaking`). It records the voice with
+`MediaRecorder` (shadowing: hear yourself next to the model) and, where the browser has `SpeechRecognition` (Chrome, Edge, Safari), transcribes it.
+`web/src/lib/speaking/compare.ts` aligns the transcript with the target line (word-level LCS, contractions expanded) and returns a match score plus
+missed and extra words. Nothing is uploaded to our server; audio stays in the browser. Needs a secure context (https or localhost). The score is a
+guide to how clearly a speech engine understood the learner, not a pronunciation grade.

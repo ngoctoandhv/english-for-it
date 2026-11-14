@@ -1,6 +1,16 @@
 import { apiFetch } from "./client";
 import type { Paginated } from "./types";
 
+export type VocabularyStrength = {
+  total: number;
+  unseen: number;
+  learning: number;
+  familiar: number;
+  solid: number;
+  mastered: number;
+  solid_soon: number;
+};
+
 export type Dashboard = {
   due_count: number;
   new_available: number;
@@ -10,6 +20,7 @@ export type Dashboard = {
   open_session: { id: number; status: string; total_items: number; completed_items: number } | null;
   reviewed_today: number;
   days_studied_this_week: number;
+  vocabulary: VocabularyStrength;
   words_started: number;
   favorites_count: number;
 };

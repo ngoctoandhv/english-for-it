@@ -20,6 +20,7 @@ module Stats
         open_session: LearningSessionSerializer.progress(open),
         reviewed_today: week.last[:reviews],
         days_studied_this_week: week.count { |d| d[:reviews].positive? },
+        vocabulary: Vocabulary.new(@user).call,
         words_started: @user.user_word_progresses.count,
         favorites_count: @user.user_favorites.count
       }

@@ -50,6 +50,20 @@ RSpec.describe "Dashboard, progress and quiz", type: :request do
     end
   end
 
+  describe "vocabulary strength on the dashboard" do
+    it "splits published words into disjoint stages by interval" do
+      progress_for(words[0], interval_days: 0, state: "learning")
+      progress_for(words[1], interval_days: 2)
+      progress_for(words[2], interval_days: 4)
+      progress_for(words[3], interval_days: 9)
+      progress_for(words[4], interval_days: 40)
+      get "/api/v1/dashboard", headers: headers
+      expect(json["data"]["vocabulary"]).to eq(
+        "total" => 8, "unseen" => 3, "learning" => 1, "familiar" => 2, "solid" => 1, "mastered" => 1, "solid_soon" => 1
+      )
+    end
+  end
+
   describe "GET /progress and /history" do
     it "summarises word strength and accuracy" do
       progress_for(words[0], interval_days: 0, state: "learning")
