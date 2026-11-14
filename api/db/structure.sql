@@ -578,6 +578,41 @@ ALTER SEQUENCE public.path_units_id_seq OWNED BY public.path_units.id;
 
 
 --
+-- Name: push_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.push_subscriptions (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    endpoint text NOT NULL,
+    p256dh character varying NOT NULL,
+    auth character varying NOT NULL,
+    user_agent character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: push_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.push_subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: push_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.push_subscriptions_id_seq OWNED BY public.push_subscriptions.id;
+
+
+--
 -- Name: refresh_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -926,7 +961,11 @@ CREATE TABLE public.users (
     email_verified_at timestamp(6) without time zone,
     focus_role character varying,
     focus_goal character varying,
+    reminder_hour integer,
+    reminder_last_sent_on date,
+    recap_last_sent_on date,
     CONSTRAINT users_goal_check CHECK ((daily_goal_minutes = ANY (ARRAY[5, 10, 15]))),
+    CONSTRAINT users_reminder_hour_check CHECK (((reminder_hour IS NULL) OR ((reminder_hour >= 0) AND (reminder_hour <= 23)))),
     CONSTRAINT users_role_check CHECK (((role)::text = ANY ((ARRAY['user'::character varying, 'admin'::character varying])::text[])))
 );
 
@@ -1194,6 +1233,13 @@ ALTER TABLE ONLY public.path_units ALTER COLUMN id SET DEFAULT nextval('public.p
 
 
 --
+-- Name: push_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.push_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.push_subscriptions_id_seq'::regclass);
+
+
+--
 -- Name: refresh_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1425,6 +1471,14 @@ ALTER TABLE ONLY public.path_steps
 
 ALTER TABLE ONLY public.path_units
     ADD CONSTRAINT path_units_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: push_subscriptions push_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.push_subscriptions
+    ADD CONSTRAINT push_subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1773,6 +1827,20 @@ CREATE UNIQUE INDEX index_progress_unique ON public.user_word_progresses USING b
 
 
 --
+-- Name: index_push_subscriptions_on_endpoint; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_push_subscriptions_on_endpoint ON public.push_subscriptions USING btree (endpoint);
+
+
+--
+-- Name: index_push_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_push_subscriptions_on_user_id ON public.push_subscriptions USING btree (user_id);
+
+
+--
 -- Name: index_refresh_tokens_on_token_digest; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2061,6 +2129,14 @@ ALTER TABLE ONLY public.path_steps
 
 
 --
+-- Name: push_subscriptions fk_rails_43d43720fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.push_subscriptions
+    ADD CONSTRAINT fk_rails_43d43720fc FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: path_steps fk_rails_49b91f9803; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2267,6 +2343,7 @@ ALTER TABLE ONLY public.vocabulary_collocations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114200001'),
 ('20261114190001'),
 ('20261114180001'),
 ('20261114170001'),

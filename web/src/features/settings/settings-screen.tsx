@@ -7,6 +7,7 @@ import { SectionTitle } from "@/components/layout/section-title";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Reminders } from "./reminders";
 import { useAuth } from "@/features/auth/auth-provider";
 import { useRequireAuth } from "@/features/auth/use-require-auth";
 import { changePassword, deleteAccount, exportMyData, resendVerification, updateMe } from "@/lib/api/auth";
@@ -131,6 +132,8 @@ export function SettingsScreen() {
             <Message text={profileMsg?.text ?? null} error={profileMsg?.error} />
           </form>
         </section>
+
+        <Reminders />
 
         <section aria-labelledby="password" className="space-y-5">
           <SectionTitle id="password">{t("settings.password")}</SectionTitle>

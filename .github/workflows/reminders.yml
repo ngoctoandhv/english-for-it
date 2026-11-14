@@ -1,0 +1,19 @@
+# Hourly trigger for daily reminders and the Monday recap. Free: GitHub Actions scheduled workflows.
+# Needs repository secrets API_URL (for example https://api.example.com) and CRON_SECRET (same value as on the server).
+name: reminders
+on:
+  schedule:
+    - cron: "5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the reminder endpoint
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$API_URL" && test -n "$CRON_SECRET" || { echo "API_URL or CRON_SECRET not set; skipping"; exit 0; }
+          curl --fail --silent --show-error --max-time 60 -X POST "$API_URL/api/v1/internal/reminders" -H "X-Cron-Secret: $CRON_SECRET"

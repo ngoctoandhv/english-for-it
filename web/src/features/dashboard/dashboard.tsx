@@ -40,6 +40,9 @@ export function Dashboard() {
   return (
     <div className="space-y-8">
       <h1 className="text-4xl sm:text-5xl">{t("dash.title")}</h1>
+      {data.days_away !== null && data.days_away >= 7 && (
+        <p role="status" className="max-w-prose rounded-lg border border-primary/30 bg-primary/5 p-4" data-testid="welcome-back">{t("dash.welcomeBack")}</p>
+      )}
 
       <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
         <div className="space-y-12">

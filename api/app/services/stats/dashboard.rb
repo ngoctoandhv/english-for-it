@@ -21,9 +21,21 @@ module Stats
         reviewed_today: week.last[:reviews],
         days_studied_this_week: week.count { |d| d[:reviews].positive? },
         vocabulary: Vocabulary.new(@user).call,
+        days_away: days_away,
         words_started: @user.user_word_progresses.count,
         favorites_count: @user.user_favorites.count
       }
+    end
+
+    private
+
+    # Whole days since the learner last reviewed a card; nil when they have never studied or studied today.
+    def days_away
+      last = @user.review_logs.maximum(:reviewed_at)
+      return nil unless last
+
+      days = (@user.local_today(@now) - last.in_time_zone(@user.time_zone).to_date).to_i
+      days.positive? ? days : nil
     end
   end
 end

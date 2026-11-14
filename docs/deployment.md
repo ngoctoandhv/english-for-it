@@ -24,3 +24,9 @@ See `docs/setup.md` and `.env.production.example`. Required in production: `SECR
 - Audio: use S3-compatible storage (`STORAGE_SERVICE=s3`); local disk is not shared between containers.
 - Backups: back up the Postgres volume/database and the audio bucket. Review history is append-only and valuable.
 - CI: `.github/workflows/ci.yml` runs `bin/check --build` and the E2E suite (written, not yet run on GitHub).
+
+## Reminders and installable app (free)
+- **Install:** the web app ships a manifest, icons and a service worker, so browsers offer "Install". Settings has an Install button when the browser allows it.
+- **Reminders:** daily Web Push at the hour the learner picks (their own time zone), plus a Monday recap. No streak or guilt wording. Needs `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` (generate with `rails push:keys`) and `CRON_SECRET`. Without VAPID keys the Settings section says reminders are unavailable.
+- **Scheduler without a worker:** `.github/workflows/reminders.yml` calls `POST /api/v1/internal/reminders` every hour with the secret (GitHub Actions scheduled workflows are free; repository secrets `API_URL` and `CRON_SECRET`). Any free cron service works the same way. The endpoint does nothing for users whose chosen hour is not now, and sends each user at most one reminder per local day.
+- iPhone: Web Push works only after the user adds the app to the Home Screen (iOS 16.4+).
