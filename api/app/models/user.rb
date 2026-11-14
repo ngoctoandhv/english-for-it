@@ -2,6 +2,12 @@ class User < ApplicationRecord
   ROLES = %w[user admin].freeze
   LEVELS = %w[beginner elementary intermediate].freeze
   GOALS = [ 5, 10, 15 ].freeze
+  # Browsers still report some legacy names (Chrome says Asia/Saigon for Vietnam); map them to the canonical IANA names.
+  TIME_ZONE_ALIASES = {
+    "Asia/Saigon" => "Asia/Ho_Chi_Minh", "Asia/Calcutta" => "Asia/Kolkata", "Asia/Katmandu" => "Asia/Kathmandu",
+    "Asia/Rangoon" => "Asia/Yangon", "Asia/Dacca" => "Asia/Dhaka", "Europe/Kiev" => "Europe/Kyiv",
+    "America/Buenos_Aires" => "America/Argentina/Buenos_Aires", "Pacific/Samoa" => "Pacific/Pago_Pago"
+  }.freeze
   FOCUS_ROLES = %w[developer qa devops analyst manager other].freeze
   FOCUS_GOALS = %w[daily_work interview docs].freeze
 
@@ -24,6 +30,7 @@ class User < ApplicationRecord
 
   normalizes :email, with: ->(e) { e.strip.downcase }
   before_update { self.email_verified_at = nil if email_changed? }
+  before_validation :normalize_time_zone
 
   normalizes :name, with: ->(n) { n.strip }
 
@@ -49,6 +56,14 @@ class User < ApplicationRecord
   end
 
   private
+
+  # Legacy aliases are mapped. A new account with a name we cannot read starts in UTC instead of failing to sign up.
+  def normalize_time_zone
+    self.time_zone = TIME_ZONE_ALIASES.fetch(time_zone, time_zone)
+    TZInfo::Timezone.get(time_zone)
+  rescue TZInfo::InvalidTimezoneIdentifier
+    self.time_zone = "UTC" if new_record?
+  end
 
   def time_zone_must_be_valid
     TZInfo::Timezone.get(time_zone)

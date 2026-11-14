@@ -472,3 +472,17 @@ test("admin imports words from CSV and sees path units", async ({ page }) => {
   await page.goto("/admin/units");
   await expect(page.getByText("Say It Right").first()).toBeVisible();
 });
+
+test("sign-up works for a browser that reports the legacy time zone Asia/Saigon", async ({ browser }) => {
+  const context = await browser.newContext({ timezoneId: "Asia/Saigon" });
+  const page = await context.newPage();
+  await page.goto("/register");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Name").fill("Saigon User");
+  await page.getByLabel("Email").fill(`saigon-${stamp}@example.test`);
+  await page.getByLabel("Password").fill("e2e-password-123");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page.getByRole("heading", { name: /^Today/ })).toBeVisible();
+  await context.close();
+});

@@ -13,6 +13,23 @@ RSpec.describe "Auth", type: :request do
       expect(json.to_s).not_to include("password_digest")
     end
 
+    it "accepts the legacy time zone name that Chrome reports for Vietnam" do
+      valid[:user][:time_zone] = "Asia/Saigon"
+      post "/api/v1/auth/register", params: valid, as: :json
+      expect(response).to have_http_status(:created)
+      expect(json["user"]["time_zone"]).to eq("Asia/Ho_Chi_Minh")
+    end
+
+    it "falls back to UTC for an unknown time zone at sign-up but rejects it on update" do
+      valid[:user][:time_zone] = "Mars/Olympus"
+      post "/api/v1/auth/register", params: valid, as: :json
+      expect(response).to have_http_status(:created)
+      expect(json["user"]["time_zone"]).to eq("UTC")
+
+      patch "/api/v1/me", params: { user: { time_zone: "Mars/Olympus" } }, headers: { "Authorization" => "Bearer #{json['access_token']}" }, as: :json
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
     it "rejects a duplicate email regardless of case" do
       create(:user, email: "new@example.test")
       post "/api/v1/auth/register", params: valid, as: :json
