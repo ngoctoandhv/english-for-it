@@ -3,10 +3,13 @@
 import { ArrowLeft, Volume2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { Preferences } from "@/components/layout/preferences";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useRequireAuth } from "@/features/auth/use-require-auth";
 import { playWord } from "@/features/library/speak";
+import { errorMessage } from "@/lib/api/errors";
+import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 import { actionForKey, RATINGS } from "./keys";
 import { useFlashcards } from "./use-flashcards";
@@ -20,6 +23,7 @@ const RATING_STYLE: Record<string, string> = {
 
 export function FlashcardScreen() {
   const { ready } = useRequireAuth();
+  const { t } = useI18n();
   const { state, reveal, rate } = useFlashcards();
 
   const card = state.phase === "card" ? state : null;
@@ -44,102 +48,118 @@ export function FlashcardScreen() {
   if (!ready) return null;
 
   const example = word?.examples[0];
+  const total = card?.session.items.length ?? 0;
+  const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="mx-auto flex h-16 w-full max-w-2xl items-center gap-4 px-4 sm:px-6">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-[15px] text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="size-4" aria-hidden /> Exit
-        </Link>
-        {card && (
-          <>
-            <Progress value={(card.index / card.session.items.length) * 100} aria-label={`Card ${card.index + 1} of ${card.session.items.length}`} className="flex-1" />
-            <span className="tnum text-sm text-muted-foreground">
-              {card.index + 1} of {card.session.items.length}
-            </span>
-          </>
-        )}
+      <header className="border-b">
+        <div className="mx-auto flex h-14 w-full max-w-2xl items-center gap-3 px-4 sm:px-6">
+          <Link href="/" className="inline-flex min-h-10 items-center gap-1.5 text-[15px] text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="size-4" aria-hidden /> {t("learn.exit")}
+          </Link>
+          {card && <Progress value={(card.index / total) * 100} aria-label={t("learn.cardOf", { n: card.index + 1, total })} className="flex-1" />}
+          {!card && <div className="flex-1" />}
+          <Preferences />
+        </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-4 pb-12 sm:px-6">
-        {state.phase === "loading" && <p className="text-center text-muted-foreground">Preparing your session…</p>}
-        {state.phase === "error" && <p role="alert" className="text-center text-destructive">{state.message}</p>}
+      <main className={cn("mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-5 px-4 py-6 sm:px-6 sm:py-10", card?.revealed ? "pb-36 sm:pb-10" : "pb-28 sm:pb-10")}>
+        {state.phase === "loading" && <p className="text-center text-muted-foreground">{t("learn.preparing")}</p>}
+        {state.phase === "error" && <p role="alert" className="text-center text-destructive">{errorMessage(state.error, t)}</p>}
         {state.phase === "caught_up" && (
-          <Message title="All caught up" text="Nothing is due right now. Come back later.">
-            <Link href="/" className={buttonVariants({ size: "lg" })}>Back to today</Link>
+          <Message title={t("learn.caughtUp")} text={t("learn.caughtUpText")}>
+            <Link href="/" className={buttonVariants({ size: "lg" })}>{t("learn.backToday")}</Link>
           </Message>
         )}
         {state.phase === "done" && (
-          <Message title="Session complete" text={`You reviewed ${state.reviewed} ${state.reviewed === 1 ? "card" : "cards"}.`}>
+          <Message title={t("learn.done")} text={t("learn.reviewed", { count: state.reviewed })}>
             <dl className="mx-auto w-full max-w-xs divide-y border-y text-left">
               {RATINGS.map((r) => (
                 <div key={r.rating} className="flex justify-between py-2.5">
-                  <dt className={cn("text-muted-foreground", RATING_STYLE[r.rating])}>{r.label}</dt>
-                  <dd className="tnum font-medium">{state.counts[r.rating]}</dd>
+                  <dt className={cn("text-muted-foreground", RATING_STYLE[r.rating])}>{t(`learn.${r.rating}`)}</dt>
+                  <dd className="tnum font-display">{state.counts[r.rating]}</dd>
                 </div>
               ))}
             </dl>
-            <Link href="/" className={buttonVariants({ size: "lg" })}>Back to today</Link>
+            <Link href="/" className={buttonVariants({ size: "lg" })}>{t("learn.backToday")}</Link>
           </Message>
         )}
 
         {card && word && (
           <>
-            <p className="min-h-6 text-center text-sm text-muted-foreground" aria-live="polite">{card.note}</p>
-            <section aria-live="polite" className="space-y-6 rounded-xl border bg-card px-6 py-10 text-center sm:px-12 sm:py-14">
-              <p className="text-sm text-muted-foreground">{card.session.items[card.index].kind === "new" ? "New word" : "Review"}</p>
-              <div className="flex items-center justify-center gap-2">
-                <h1 data-testid="card-term" className="text-6xl leading-none sm:text-7xl">{word.term}</h1>
-                <Button variant="ghost" size="icon" aria-label={`Play pronunciation of ${word.term}`} onClick={() => playWord(word.term, word.audio_url)}>
-                  <Volume2 aria-hidden />
-                </Button>
+            <p className="min-h-5 text-center text-sm text-muted-foreground" aria-live="polite">{card.note}</p>
+            <section aria-live="polite" className="overflow-hidden rounded-lg border bg-card">
+              <div className="flex items-center justify-between border-b bg-muted px-4 py-2 font-display text-xs text-muted-foreground">
+                <span className="tnum">{pad(card.index + 1)}/{pad(total)}</span>
+                <span className={cn("rounded border px-1.5 py-0.5", card.session.items[card.index].kind === "new" ? "border-primary/40 text-primary" : "")}>
+                  {card.session.items[card.index].kind === "new" ? t("learn.newWord") : t("learn.review")}
+                </span>
               </div>
-              <p className="text-lg text-muted-foreground">{word.ipa} · {word.part_of_speech}</p>
+              <div className="space-y-4 px-5 py-8 text-center sm:px-10 sm:py-12">
+                <div className="flex items-center justify-center gap-1">
+                  <h1 data-testid="card-term" className="break-words text-4xl leading-none sm:text-6xl">{word.term}</h1>
+                  <Button variant="ghost" size="icon" aria-label={t("learn.playWord", { term: word.term })} onClick={() => playWord(word.term, word.audio_url)}>
+                    <Volume2 aria-hidden />
+                  </Button>
+                </div>
+                <p className="font-display text-base text-muted-foreground">{word.ipa} · {word.part_of_speech}</p>
+              </div>
 
               {card.revealed && (
-                <div className="space-y-5 border-t pt-8 text-left" data-testid="card-answer">
-                  <p className="text-center text-3xl font-medium tracking-tight">{word.meaning_vi}</p>
+                <div className="space-y-5 border-t px-5 py-6 sm:px-10" data-testid="card-answer">
+                  <p className="text-center text-2xl font-medium tracking-tight sm:text-3xl">{word.meaning_vi}</p>
                   <p className="text-center text-muted-foreground">{word.definition_en}</p>
                   {example && (
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-2 rounded-md bg-muted p-3">
                       <div className="flex-1">
                         <p>{example.sentence_en}</p>
                         <p className="text-sm text-muted-foreground">{example.translation_vi}</p>
                       </div>
-                      <Button variant="ghost" size="icon-sm" aria-label="Play example sentence" onClick={() => playWord(example.sentence_en, example.audio_url)}>
+                      <Button variant="ghost" size="icon-sm" aria-label={t("learn.playExample")} onClick={() => playWord(example.sentence_en, example.audio_url)}>
                         <Volume2 aria-hidden />
                       </Button>
                     </div>
                   )}
                   {word.collocations.length > 0 && (
-                    <p className="text-sm text-muted-foreground">Often used: {word.collocations.map((c) => c.phrase).join(", ")}</p>
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">{t("learn.often")}</span>
+                      {word.collocations.map((c) => (
+                        <span key={c.id} className="rounded border px-2 py-0.5 font-display text-xs">{c.phrase}</span>
+                      ))}
+                    </div>
                   )}
                 </div>
               )}
             </section>
 
-            {card.error && <p role="alert" className="text-center text-sm text-destructive">{card.error}</p>}
-
-            {!card.revealed ? (
-              <Button size="lg" className="mx-auto h-12 w-full max-w-xs" onClick={reveal}>
-                Show answer <kbd className="ml-1 hidden text-sm opacity-70 sm:inline">Space</kbd>
-              </Button>
-            ) : (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="group" aria-label="How well did you remember?">
-                {RATINGS.map((r) => (
-                  <Button
-                    key={r.rating}
-                    variant={r.rating === "good" ? "default" : "outline"}
-                    size="lg"
-                    className={cn("h-12", RATING_STYLE[r.rating])}
-                    disabled={card.submitting}
-                    onClick={() => rate(r.rating)}
-                  >
-                    {r.label} <kbd className="ml-1 hidden text-sm opacity-60 sm:inline">{r.key}</kbd>
-                  </Button>
-                ))}
-              </div>
+            {card.error != null && (
+              <p role="alert" className="text-center text-sm text-destructive">{errorMessage(card.error, t)} {t("learn.notSaved")}</p>
             )}
+
+            <div className="pb-safe fixed inset-x-0 bottom-0 z-20 border-t bg-background px-4 py-3 sm:static sm:border-0 sm:bg-transparent sm:p-0">
+              {!card.revealed ? (
+                <Button size="lg" className="mx-auto flex h-12 w-full max-w-xs" onClick={reveal}>
+                  {t("learn.show")} <kbd className="ml-1 hidden text-sm opacity-70 sm:inline">Space</kbd>
+                </Button>
+              ) : (
+                <div className="mx-auto grid max-w-2xl grid-cols-4 gap-2" role="group" aria-label={t("learn.howWell")}>
+                  {RATINGS.map((r) => (
+                    <Button
+                      key={r.rating}
+                      variant={r.rating === "good" ? "default" : "outline"}
+                      size="lg"
+                      className={cn("h-14 flex-col gap-0 px-1 text-sm sm:h-12 sm:flex-row sm:gap-1 sm:text-base", RATING_STYLE[r.rating])}
+                      disabled={card.submitting}
+                      onClick={() => rate(r.rating)}
+                    >
+                      {t(`learn.${r.rating}`)}
+                      <kbd className="text-xs opacity-60">{r.key}</kbd>
+                    </Button>
+                  ))}
+                </div>
+              )}
+            </div>
           </>
         )}
       </main>
@@ -150,7 +170,7 @@ export function FlashcardScreen() {
 function Message({ title, text, children }: { title: string; text: string; children: React.ReactNode }) {
   return (
     <div className="space-y-6 text-center">
-      <h1 className="text-5xl">{title}</h1>
+      <h1 className="text-3xl sm:text-4xl">{title}</h1>
       <p className="text-lg text-muted-foreground">{text}</p>
       {children}
     </div>

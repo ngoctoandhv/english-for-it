@@ -1,26 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { errorMessage } from "@/lib/api/errors";
 import { startSession, submitReview, type LearningSession, type Rating } from "@/lib/api/learning";
+import { useI18n } from "@/lib/i18n/provider";
 import { newId } from "@/lib/uuid";
 
 export type FlashcardState =
   | { phase: "loading" }
   | { phase: "caught_up" }
-  | { phase: "error"; message: string }
-  | { phase: "card"; session: LearningSession; index: number; revealed: boolean; submitting: boolean; error: string | null; note: string | null; counts: Counts }
+  | { phase: "error"; error: unknown }
+  | { phase: "card"; session: LearningSession; index: number; revealed: boolean; submitting: boolean; error: unknown | null; note: string | null; counts: Counts }
   | { phase: "done"; session: LearningSession; reviewed: number; counts: Counts };
 
 export type Counts = Record<Rating, number>;
 const NO_COUNTS: Counts = { again: 0, hard: 0, good: 0, easy: 0 };
 
-function nextSeen(rating: Rating, days: number): string {
-  if (rating === "again" || days < 1) return "See it again in a few minutes.";
-  return `See it again in ${days} ${days === 1 ? "day" : "days"}.`;
-}
-
 export function useFlashcards() {
+  const { t } = useI18n();
   const [state, setState] = useState<FlashcardState>({ phase: "loading" });
   // One request id per card shown. Re-using it on retry makes the submission idempotent on the server.
   const requestId = useRef<string | null>(null);
@@ -34,7 +30,7 @@ export function useFlashcards() {
         const index = session.items.findIndex((i) => !i.completed);
         setState(index === -1 ? { phase: "done", session, reviewed: session.total_items, counts: NO_COUNTS } : { phase: "card", session, index, revealed: false, submitting: false, error: null, note: null, counts: NO_COUNTS });
       })
-      .catch((e) => !cancelled && setState({ phase: "error", message: errorMessage(e) }));
+      .catch((e) => !cancelled && setState({ phase: "error", error: e }));
     return () => {
       cancelled = true;
     };
@@ -55,17 +51,18 @@ export function useFlashcards() {
         requestId.current = null;
         const next = index + 1;
         const newCounts = { ...counts, [rating]: counts[rating] + 1 };
-        const note = `${rating[0].toUpperCase()}${rating.slice(1)}. ${nextSeen(rating, res.data.progress?.interval_days ?? 0)}`;
+        const days = res.data.progress?.interval_days ?? 0;
+        const note = `${t(`learn.${rating}`)}. ${rating === "again" || days < 1 ? t("learn.seeMinutes") : t("learn.seeDays", { count: days })}`;
         setState(
           next >= session.items.length
             ? { phase: "done", session, reviewed: session.items.length, counts: newCounts }
             : { phase: "card", session, index: next, revealed: false, submitting: false, error: null, note, counts: newCounts },
         );
       } catch (e) {
-        setState({ ...state, submitting: false, error: `${errorMessage(e)} Your answer was not saved. Try again.` });
+        setState({ ...state, submitting: false, error: e });
       }
     },
-    [state],
+    [state, t],
   );
 
   return { state, reveal, rate };

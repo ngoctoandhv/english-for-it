@@ -1,10 +1,10 @@
 import type { Rating } from "@/lib/api/learning";
 
-export const RATINGS: { rating: Rating; label: string; key: string }[] = [
-  { rating: "again", label: "Again", key: "1" },
-  { rating: "hard", label: "Hard", key: "2" },
-  { rating: "good", label: "Good", key: "3" },
-  { rating: "easy", label: "Easy", key: "4" },
+export const RATINGS: { rating: Rating; key: string }[] = [
+  { rating: "again", key: "1" },
+  { rating: "hard", key: "2" },
+  { rating: "good", key: "3" },
+  { rating: "easy", key: "4" },
 ];
 
 export type KeyAction = { type: "reveal" } | { type: "rate"; rating: Rating } | { type: "play" } | null;
