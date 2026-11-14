@@ -2,6 +2,8 @@ class User < ApplicationRecord
   ROLES = %w[user admin].freeze
   LEVELS = %w[beginner elementary intermediate].freeze
   GOALS = [ 5, 10, 15 ].freeze
+  FOCUS_ROLES = %w[developer qa devops analyst manager other].freeze
+  FOCUS_GOALS = %w[daily_work interview docs].freeze
 
   has_secure_password
   # Single use: the token embeds a fragment of the current password hash, so it stops working once the password changes.
@@ -28,6 +30,8 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :role, inclusion: { in: ROLES }
   validates :level, inclusion: { in: LEVELS }, allow_nil: true
+  validates :focus_role, inclusion: { in: FOCUS_ROLES }, allow_nil: true
+  validates :focus_goal, inclusion: { in: FOCUS_GOALS }, allow_nil: true
   validates :daily_goal_minutes, inclusion: { in: GOALS }
   validate :time_zone_must_be_valid
 

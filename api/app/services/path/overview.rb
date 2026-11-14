@@ -5,7 +5,9 @@ module Path
 
     def initialize(user)
       @user = user
-      @units = PathUnit.published.ordered.includes(path_steps: %i[learning_collection listening_lesson it_scenario]).to_a
+      units = PathUnit.published.ordered.includes(path_steps: %i[learning_collection listening_lesson it_scenario]).to_a
+      # Stable sort: units aimed at a different role or goal move to the end of their level.
+      @units = units.each_with_index.sort_by { |u, i| [ LEVELS.index(u.level), u.relevance_for(user), i ] }.map(&:first)
       @progress = Progress.new(user).preload(@units)
       @completed_ids = user.unit_completions.pluck(:path_unit_id).to_set
     end
@@ -39,6 +41,7 @@ module Path
       status = complete ? "completed" : !unlocked ? "locked" : started ? "in_progress" : "available"
       done = steps.count { |s| s[:complete] }
       { slug: unit.slug, title: unit.title, description: unit.description, level: unit.level, status: status,
+        recommended: unit.audiences.any? && unit.matches?(@user),
         steps_done: done, steps_total: steps.size, steps: steps,
         next_step: status == "completed" || status == "locked" ? nil : steps.find { |s| !s[:complete] } }
     end
