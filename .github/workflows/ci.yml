@@ -22,6 +22,10 @@ jobs:
         run: bin/check --build
       - name: End-to-end tests
         run: |
-          docker compose up -d
-          docker compose exec -T api bin/rails db:seed
-          bin/e2e
+          set -o pipefail
+          report() { msg=$(tail -30 "$1" | sed -e 's/%/%25/g' | awk '{printf "%s%%0A", $0}'); echo "::error title=$2::$msg"; }
+          docker compose up -d 2>&1 | tee up.log || { report up.log "docker compose up"; exit 1; }
+          for i in $(seq 1 60); do curl -fsS http://localhost:3100/up >/dev/null 2>&1 && break; sleep 2; done
+          docker compose exec -T api bin/rails db:seed 2>&1 | tee seed.log || { report seed.log "db:seed"; exit 1; }
+          curl -fsS -o /dev/null http://localhost:3101/ || true
+          bin/e2e 2>&1 | tee e2e.log || { report e2e.log "playwright"; docker compose logs --tail 40 web api > stack.log 2>&1; report stack.log "web and api logs"; exit 1; }
