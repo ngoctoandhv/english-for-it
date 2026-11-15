@@ -7,9 +7,11 @@ const mapLocalhost = process.env.E2E_MAP_LOCALHOST_TO;
 export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
-  retries: 0,
   workers: 1,
-  reporter: [["list"]],
+  // On GitHub Actions, failures also become annotations on the run (readable through the API without signing in).
+  reporter: process.env.GITHUB_ACTIONS ? [["list"], ["github"]] : [["list"]],
+  // CI machines are slower and the dev server compiles pages on first visit: allow one retry there.
+  retries: process.env.CI ? 1 : 0,
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3101",
     trace: "retain-on-failure",
