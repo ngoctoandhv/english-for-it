@@ -21,7 +21,7 @@ run() {
   fi
 }
 
-docker compose up -d db >/dev/null 2>&1
+docker compose up -d --wait db >/dev/null 2>&1
 run "api: db:prepare" docker compose run --rm --no-deps "${TEST_ENV[@]}" api bin/rails db:prepare
 run "api: rspec"      docker compose run --rm --no-deps "${TEST_ENV[@]}" api bundle exec rspec
 run "api: rubocop"    docker compose run --rm --no-deps api bundle exec rubocop
