@@ -1,6 +1,9 @@
 # Content seeds. Re-runnable (idempotent).
 # Content in db/seeds/*.yml is DRAFT: outside development it is imported as "draft" and must be reviewed and
 # published by an admin. In development everything is published so the app is usable out of the box.
+# Never seed the test database: specs build their own data (db:prepare seeds a freshly created database, as on CI).
+return if Rails.env.test?
+
 status = Rails.env.development? ? "published" : "draft"
 
 # Vocabulary comes in batches (one file per batch); categories, words and collections are merged before importing.

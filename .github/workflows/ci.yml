@@ -13,6 +13,11 @@ jobs:
         run: cp .env.example .env
       - name: Build images
         run: docker compose build
+      - name: Throwaway Web Push keys for the reminder tests
+        run: |
+          sed -i '/^VAPID_PUBLIC_KEY=$/d; /^VAPID_PRIVATE_KEY=$/d' .env
+          docker compose run --rm --no-deps api bin/rails push:keys | grep '^VAPID_' >> .env
+          grep -c '^VAPID_P' .env
       - name: Run all checks (rspec, rubocop, brakeman, bundler-audit, tsc, eslint, vitest, next build)
         run: bin/check --build
       - name: End-to-end tests
